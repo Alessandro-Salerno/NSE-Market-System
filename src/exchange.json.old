@@ -1,0 +1,6199 @@
+{
+  "usersByName": {
+    "admin": {
+      "immediate": {
+        "current": {
+          "balance": 0.0,
+          "assets": {}
+        },
+        "setled": {
+          "balance": -Infinity,
+          "assets": {}
+        }
+      },
+      "history": {
+        "assets": {
+          "2023-07-31": {},
+          "2023-08-01": {}
+        },
+        "balance": {
+          "2023-07-31": 0,
+          "2023-08-01": 269121.0
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "tzyvoski": {
+      "immediate": {
+        "current": {
+          "balance": 0,
+          "assets": {}
+        },
+        "setled": {
+          "balance": 0,
+          "assets": {}
+        }
+      },
+      "history": {
+        "assets": {
+          "2023-08-01": {}
+        },
+        "balance": {
+          "2023-08-01": 0
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "UNB": {
+      "immediate": {
+        "current": {
+          "balance": 0,
+          "assets": {}
+        },
+        "setled": {
+          "balance": -Infinity,
+          "assets": {
+            "PLTC": 11500
+          }
+        }
+      },
+      "history": {
+        "assets": {
+          "2023-08-01": {
+            "PLTC": 11500
+          }
+        },
+        "balance": {
+          "2023-08-01": -Infinity
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    }
+  },
+  "assetsByTicker": {
+    "UNIT": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": 1266.0,
+        "ask": 1288.0,
+        "bidVolume": 100,
+        "askVolume": 100,
+        "averagePrice": 1277.0,
+        "lastBid": 1266.0,
+        "lastAsk": 1285.0,
+        "imbalance": 0,
+        "lastPrice": null,
+        "lastVolume": null
+      },
+      "sessionData": {
+        "buyVolume": 800.0,
+        "sellVolume": 1500,
+        "tradedValue": 227445.0,
+        "previousClose": 1277.0,
+        "open": 1277.0,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 98,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:20:26": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 98,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:30:26": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 98,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:40:26": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 98,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:50:26": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 98,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 01:00:26": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 98,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:13:52": {
+            "bid": 1266.0,
+            "ask": 1285.0,
+            "bidVolume": 100,
+            "askVolume": 177,
+            "averagePrice": 1275.5,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:20:00": {
+            "bid": 1266.0,
+            "ask": 1285.0,
+            "bidVolume": 100,
+            "askVolume": 177,
+            "averagePrice": 1275.5,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:30:00": {
+            "bid": 1266.0,
+            "ask": 1285.0,
+            "bidVolume": 100,
+            "askVolume": 177,
+            "averagePrice": 1275.5,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:40:00": {
+            "bid": 1266.0,
+            "ask": 1285.0,
+            "bidVolume": 100,
+            "askVolume": 177,
+            "averagePrice": 1275.5,
+            "lastBid": 1266.0,
+            "lastAsk": 1288.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 16:13:16": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 100,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1285.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 16:20:16": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 100,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1285.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 16:30:16": {
+            "bid": 1266.0,
+            "ask": 1288.0,
+            "bidVolume": 100,
+            "askVolume": 100,
+            "averagePrice": 1277.0,
+            "lastBid": 1266.0,
+            "lastAsk": 1285.0,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          }
+        },
+        "intraday": {
+          "2023-07-31": {},
+          "2023-08-01": {
+            "2023-08-01 15:40:47": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 100,
+              "averagePrice": 1277.0,
+              "lastPrice": null,
+              "lastVolume": null,
+              "imbalance": 0
+            },
+            "2023-08-01 15:50:47": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 100,
+              "averagePrice": 1277.0,
+              "lastPrice": null,
+              "lastVolume": null,
+              "imbalance": 0
+            },
+            "2023-08-01 16:00:33": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 100,
+              "averagePrice": 1277.0,
+              "lastBid": null,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 16:50:44": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 98,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 17:00:44": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 98,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 17:13:21": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 17:30:22": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 19:20:46": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 19:40:52": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 19:50:52": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:13:54": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:20:54": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:30:54": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:40:54": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:50:54": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:00:54": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:13:54": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:30:23": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:40:05": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:50:15": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 22:00:47": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 22:30:30": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 22:50:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:00:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:13:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:20:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:30:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:40:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:50:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-02 00:00:26": {
+              "bid": 1266.0,
+              "ask": 1288.0,
+              "bidVolume": 100,
+              "askVolume": 98,
+              "averagePrice": 1277.0,
+              "lastBid": 1266.0,
+              "lastAsk": 1288.0,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            }
+          }
+        },
+        "daily": {
+          "2023-07-31": {
+            "buyVolume": 200,
+            "sellVolume": 200,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": 1277.0,
+            "open": 1277.0,
+            "close": 1277.0
+          },
+          "2023-08-01": {
+            "buyVolume": 3796.0,
+            "sellVolume": 3646.0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": 1277.0,
+            "open": 1277.0,
+            "close": 1277.0
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "PLTC": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": 24.44,
+        "ask": 24.45,
+        "bidVolume": 223,
+        "askVolume": 480,
+        "averagePrice": 24.445,
+        "lastBid": 24.44,
+        "lastAsk": 24.45,
+        "imbalance": -0.3655761024182077,
+        "lastPrice": null,
+        "lastVolume": null
+      },
+      "sessionData": {
+        "buyVolume": 892.0,
+        "sellVolume": 1960,
+        "tradedValue": 489.0,
+        "previousClose": null,
+        "open": 24.445,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": 0,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:20:00": {
+            "bid": 24.44,
+            "ask": 24.45,
+            "bidVolume": 223,
+            "askVolume": 480,
+            "averagePrice": 24.445,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": -0.3655761024182077,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:30:00": {
+            "bid": 24.44,
+            "ask": 24.45,
+            "bidVolume": 223,
+            "askVolume": 480,
+            "averagePrice": 24.445,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": -0.3655761024182077,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 15:40:00": {
+            "bid": 24.44,
+            "ask": 24.45,
+            "bidVolume": 223,
+            "askVolume": 480,
+            "averagePrice": 24.445,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": -0.3655761024182077,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 16:13:16": {
+            "bid": 24.44,
+            "ask": 24.45,
+            "bidVolume": 223,
+            "askVolume": 480,
+            "averagePrice": 24.445,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": -0.3655761024182077,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 16:20:16": {
+            "bid": 24.44,
+            "ask": 24.45,
+            "bidVolume": 223,
+            "askVolume": 480,
+            "averagePrice": 24.445,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": -0.3655761024182077,
+            "lastPrice": null,
+            "lastVolume": null
+          },
+          "2023-08-02 16:30:16": {
+            "bid": 24.44,
+            "ask": 24.45,
+            "bidVolume": 223,
+            "askVolume": 480,
+            "averagePrice": 24.445,
+            "lastBid": 24.44,
+            "lastAsk": 24.45,
+            "imbalance": -0.3655761024182077,
+            "lastPrice": null,
+            "lastVolume": null
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 15:40:47": {
+              "bid": null,
+              "ask": 24.45,
+              "bidVolume": null,
+              "askVolume": 989000,
+              "averagePrice": null,
+              "lastPrice": null,
+              "lastVolume": null,
+              "imbalance": -1
+            },
+            "2023-08-01 15:50:47": {
+              "bid": null,
+              "ask": 24.45,
+              "bidVolume": null,
+              "askVolume": 989000,
+              "averagePrice": null,
+              "lastPrice": null,
+              "lastVolume": null,
+              "imbalance": -1
+            },
+            "2023-08-01 16:00:33": {
+              "bid": null,
+              "ask": 24.45,
+              "bidVolume": null,
+              "askVolume": 990000,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": 24.45,
+              "imbalance": -1,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 16:50:44": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": 0,
+              "askVolume": null,
+              "averagePrice": Infinity,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 1,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 17:00:44": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": 0,
+              "askVolume": null,
+              "averagePrice": Infinity,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 1,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 17:13:21": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 17:30:22": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": 24.44,
+              "lastAsk": 24.45,
+              "imbalance": 0,
+              "lastPrice": null,
+              "lastVolume": null
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 1983497.0,
+            "sellVolume": 4950000.0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": 24.445,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "GOLD": {
+      "info": {
+        "class": "G",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 17:30:22": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "NETH": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 17:30:22": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "NSEG": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 17:30:22": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "GLIN": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 17:30:22": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "PLTB": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "UNIB": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "IEBK": {
+      "info": {
+        "class": "A",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "DIAM": {
+      "info": {
+        "class": "G",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "EMRL": {
+      "info": {
+        "class": "G",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "REdS": {
+      "info": {
+        "class": "G",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "COAL": {
+      "info": {
+        "class": "G",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    },
+    "NETR": {
+      "info": {
+        "class": "G",
+        "issuer": "admin",
+        "outstandingUnits": 1
+      },
+      "immediate": {
+        "bid": null,
+        "ask": null,
+        "bidVolume": null,
+        "askVolume": null,
+        "averagePrice": null,
+        "lastBid": null,
+        "lastAsk": null,
+        "imbalance": 0
+      },
+      "sessionData": {
+        "buyVolume": 0,
+        "sellVolume": 0,
+        "tradedValue": 0,
+        "previousClose": null,
+        "open": null,
+        "close": null,
+        "dollarBuyVolume": 0,
+        "dollarSellVolume": 0
+      },
+      "history": {
+        "today": {
+          "2023-08-02 00:13:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:20:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:30:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:40:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 00:50:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 01:00:26": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:13:52": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:20:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:30:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 15:40:00": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:13:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:20:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          },
+          "2023-08-02 16:30:16": {
+            "bid": null,
+            "ask": null,
+            "bidVolume": null,
+            "askVolume": null,
+            "averagePrice": null,
+            "lastBid": null,
+            "lastAsk": null,
+            "imbalance": 0
+          }
+        },
+        "intraday": {
+          "2023-08-01": {
+            "2023-08-01 19:20:46": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:40:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 19:50:52": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:20:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:30:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:40:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 20:50:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:00:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:13:54": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:30:23": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:40:05": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 21:50:15": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:00:47": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:30:30": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 22:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:13:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:20:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:30:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:40:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-01 23:50:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            },
+            "2023-08-02 00:00:26": {
+              "bid": null,
+              "ask": null,
+              "bidVolume": null,
+              "askVolume": null,
+              "averagePrice": null,
+              "lastBid": null,
+              "lastAsk": null,
+              "imbalance": 0
+            }
+          }
+        },
+        "daily": {
+          "2023-08-01": {
+            "buyVolume": 0,
+            "sellVolume": 0,
+            "dollarBuyVolume": 0,
+            "dollarSellVolume": 0,
+            "previousClose": null,
+            "open": null,
+            "close": null
+          }
+        }
+      },
+      "__PLATFORMDB_LOCK__": true
+    }
+  },
+  "assetsByClass": {
+    "A": [
+      "UNIT",
+      "PLTC",
+      "NETH",
+      "NSEG",
+      "GLIN",
+      "PLTB",
+      "UNIB",
+      "IEBK"
+    ],
+    "G": [
+      "GOLD",
+      "DIAM",
+      "EMRL",
+      "REdS",
+      "COAL",
+      "NETR"
+    ]
+  },
+  "ordersById": {
+    "1": {
+      "execution": "LIMIT",
+      "ticker": "UNIT",
+      "issuer": "admin",
+      "side": "SELL",
+      "size": 98,
+      "price": 1288.0,
+      "__PLATFORMDB_LOCK__": true
+    },
+    "6": {
+      "execution": "LIMIT",
+      "ticker": "UNIT",
+      "issuer": "admin",
+      "side": "BUY",
+      "size": 100,
+      "price": 1266.0,
+      "__PLATFORMDB_LOCK__": true
+    },
+    "7": {
+      "execution": "LIMIT",
+      "ticker": "UNIT",
+      "issuer": "admin",
+      "side": "SELL",
+      "size": 2,
+      "price": 1288.0,
+      "__PLATFORMDB_LOCK__": true
+    },
+    "9": {
+      "execution": "LIMIT",
+      "ticker": "PLTC",
+      "issuer": "admin",
+      "side": "SELL",
+      "size": 480,
+      "price": 24.45,
+      "__PLATFORMDB_LOCK__": true
+    },
+    "10": {
+      "execution": "LIMIT",
+      "ticker": "PLTC",
+      "issuer": "admin",
+      "side": "BUY",
+      "size": 223,
+      "price": 24.44,
+      "__PLATFORMDB_LOCK__": true
+    }
+  },
+  "openDate": "2023-08-02"
+}
