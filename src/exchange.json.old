@@ -84,14 +84,14 @@
         "askVolume": 100,
         "averagePrice": 1277.0,
         "lastBid": 1266.0,
-        "lastAsk": 1285.0,
+        "lastAsk": 1288.0,
         "imbalance": 0,
         "lastPrice": null,
         "lastVolume": null
       },
       "sessionData": {
-        "buyVolume": 800.0,
-        "sellVolume": 1500,
+        "buyVolume": 900.0,
+        "sellVolume": 1600,
         "tradedValue": 227445.0,
         "previousClose": 1277.0,
         "open": 1277.0,
@@ -661,8 +661,8 @@
         "lastVolume": null
       },
       "sessionData": {
-        "buyVolume": 892.0,
-        "sellVolume": 1960,
+        "buyVolume": 1115.0,
+        "sellVolume": 2440,
         "tradedValue": 489.0,
         "previousClose": null,
         "open": 24.445,
