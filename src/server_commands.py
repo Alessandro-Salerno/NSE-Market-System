@@ -353,6 +353,8 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     user = ExchangeDatabase().users[username].get_unsafe()
                     uassets = user['immediate']['current']['assets']
                     sassets = user['immediate']['setled']['assets']
+                    if ExchangeDatabase().user_is_issuer(username, ExchangeDatabase().assets[ticker].get_unsafe()):
+                        continue
                     if ticker in uassets and uassets[ticker] < 0:
                         shortabs += abs(uassets[ticker])
                     if ticker in sassets and sassets[ticker] < 0:
@@ -423,7 +425,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
     @unet_command('pendingorders', 'orders', 'ordini', 'or', 'po', 'op')
     def pendingorders(self, command: UNetServerCommand):
-        colums = ['TICKER', 'ORDER', 'EXEC', 'SIZE', 'PRICE']
+        colums = ['TICKER', 'ORDER', 'EXEC', 'SIDE', 'SIZE', 'PRICE']
         rows = []
 
         with ExchangeDatabase().users[command.issuer] as user:
@@ -433,6 +435,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 rows[index].append(order['ticker'])
                 rows[index].append(order_id)
                 rows[index].append(order['execution'])
+                rows[index].append(order['side'])
                 rows[index].append(order['size'])
                 rows[index].append(utils.value_fmt(order['price']))
 
@@ -501,5 +504,70 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             message={
                 'errno': r,
                 'content': message
+            }
+        )
+    
+    @unet_command('transfer', 'trasferisci', 'tr', 'mv')
+    def transfer(self, command: UNetServerCommand, ticker: str, qty: str, who: str):
+        ticker = ticker.upper()
+        if ticker not in ExchangeDatabase().assets:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': f"No such ticker '{ticker}'"
+                }
+            )
+        
+        try:
+            qty = int(qty)
+        except:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': f"Invalid value '{qty}' for quantity."
+                }
+            )
+        
+        if who not in ExchangeDatabase().users:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': f"No such user '{who}'"
+                }
+            )
+    
+        with ExchangeDatabase().users[command.issuer] as sender:
+            if not ExchangeDatabase().user_is_issuer(command.issuer, ExchangeDatabase().assets[ticker].get_unsafe()):
+                if ticker not in sender['immediate']['setled']['assets'] or sender['immediate']['setled']['assets'][ticker] < qty:
+                    return unet_make_status_message(
+                        mode=UNetStatusMode.ERR,
+                        code=UNetStatusCode.DENY,
+                        message={
+                            'content': f"The specified amount of {qty} units is higher than your setled portfolio allows."
+                        }
+                    )
+                
+            else:
+                if ticker not in sender['immediate']['setled']['assets']:
+                    sender['immediate']['setled']['assets'].__setitem__(ticker, 0)
+            
+            sender['immediate']['setled']['assets'][ticker] -= qty
+            if sender['immediate']['setled']['assets'][ticker] == 0:
+                sender['immediate']['setled']['assets'].pop(ticker)
+
+        with ExchangeDatabase().users[who] as receiver:
+            if ticker not in receiver['immediate']['setled']['assets']:
+                receiver['immediate']['setled']['assets'].__setitem__(ticker, 0)
+
+            receiver['immediate']['setled']['assets'][ticker] += qty
+        
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK,
+            code=UNetStatusCode.DONE,
+            message={
+                'content': f"Transfered {qty} units of '{ticker}' to '{who}'"
             }
         )
