@@ -28,6 +28,7 @@ from unet.protocol import *
 from unet.database import UNetUserDatabase
 
 from exdb import ExchangeDatabase
+from global_market import GlobalMarket
 from setlement import Marketsetlement
 from email_engine import EmailEngine
 
@@ -439,4 +440,66 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             title=f'PENDING ORDERS',
             columns=colums,
             rows=rows
+        )
+    
+    @unet_command('clearoders', 'annullaordini', 'co', 'ao')
+    def clearoders(self, command: UNetServerCommand, ticker: str):
+        ticker = ticker.upper()
+        if ticker not in ExchangeDatabase().assets:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': f"No such ticker '{ticker}'"
+                }
+            )
+        
+        order_ids = []
+        for order_id in ExchangeDatabase().users[command.issuer].get_unsafe()['immediate']['orders']:
+            if ExchangeDatabase().orders[order_id].get_unsafe()['ticker'] == ticker:
+                order_ids.append(order_id)
+
+        tot = 0
+        for order_id in order_ids:
+            tot += GlobalMarket().cancel_order(int(order_id), command.issuer) == None
+
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK,
+            code=UNetStatusCode.DONE,
+            message={
+                'total': len(order_ids),
+                'successful': tot,
+                'failed': len(order_ids) - tot,
+                'content': f'{len(order_ids)} orders processed, {tot} successful, {len(order_ids) - tot} failed.'
+            }
+        )
+
+    @unet_command('deleteorder', 'cancellaordine', 'do', 'co')
+    def deleteorder(self, command: UNetServerCommand, order_id: int):
+        try:
+            order_id = int(order_id)
+        except:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': f"Invalid value '{order_id}' for Order ID."
+                }
+            )
+        
+        r = GlobalMarket().cancel_order(int(order_id), command.issuer)
+
+        message = {
+            -1: f"No such Order ID '{order_id}'.",
+            -2: 'Permission denied.',
+            None: 'Order deleted.'
+        }[r]
+
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK if r == None else UNetStatusMode.ERR,
+            code=UNetStatusCode.DONE if r == None else UNetStatusCode.DENY,
+            message={
+                'errno': r,
+                'content': message
+            }
         )

@@ -66,6 +66,8 @@ class MarketManager:
     def cancel_order(self, order):
         with self._engine_lock as engine:
             engine.unprocessed_orders.remove(order)
+            order.size = 0
+            self.update_asset(order, engine)
 
     def update_asset(self, order: Order, engine: MatchingEngine):
         with ExchangeDatabase().assets[self._ticker] as asset:
