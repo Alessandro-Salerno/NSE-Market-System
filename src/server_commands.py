@@ -474,7 +474,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             }
         )
 
-    @unet_command('deleteorder', 'cancellaordine', 'do', 'co')
+    @unet_command('deleteorder', 'cancellaordine', 'do')
     def deleteorder(self, command: UNetServerCommand, order_id: int):
         try:
             order_id = int(order_id)
