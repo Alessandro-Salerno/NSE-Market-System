@@ -93,18 +93,16 @@ class GlobalMarket(UNetSingleton):
         o = market.add_market_order(side, size, issuer)
         return o
 
-    def cancel_order(self, ticker, order_id, issuer):
-        if ticker not in self.markets.keys():
-            return -1
-        
+    def cancel_order(self, order_id, issuer):
         if order_id not in self.orders.keys():
             return -2
         
-        if self.orders[order_id].trader_id != issuer:
-            return -3
-        
-        self.markets[ticker].cancel_order(self.orders[order_id])
-        self.remove_order(order_id)
+        with ExchangeDatabase().orders[str(order_id)] as order:
+            if self.orders[order_id].trader_id != issuer:
+                return -3
+            
+            self.markets[order['ticker']].cancel_order(self.orders[order_id])
+            self.remove_order(order_id)
     
     def add_order(self, ticker: str, order):
         self.orders.__setitem__(order.order_id, order)
@@ -121,5 +119,6 @@ class GlobalMarket(UNetSingleton):
                                         order.price)
 
     def remove_order(self, order_id):
+        ExchangeDatabase().users[self.orders[order_id].trader_id].get_unsafe()['immediate']['orders'].remove(str(order_id))
         self.orders.pop(order_id)
         ExchangeDatabase().orders.pop(str(order_id))

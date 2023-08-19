@@ -78,7 +78,7 @@ class MarketManager:
             asset['immediate']['lastAsk'] = asset['immediate']['ask'] if asset['immediate']['ask'] is not None else asset['immediate']['lastAsk']
             asset['immediate']['bid'] = engine.unprocessed_orders.max_bid if engine.unprocessed_orders.max_bid > 0 and engine.unprocessed_orders.max_bid != float('inf') else None
             asset['immediate']['ask'] = engine.unprocessed_orders.min_offer if engine.unprocessed_orders.min_offer > 0 and engine.unprocessed_orders.min_offer != float('inf') else None
-            asset['immediate']['averagePrice'] = engine.unprocessed_orders.current_price if engine.unprocessed_orders.max_bid > 0 and engine.unprocessed_orders.min_offer > 0 else None
+            asset['immediate']['mid'] = engine.unprocessed_orders.current_price if engine.unprocessed_orders.max_bid > 0 and engine.unprocessed_orders.min_offer > 0 and engine.unprocessed_orders.current_price != float('inf') else None
             asset['immediate']['imbalance'] = engine.unprocessed_orders.get_imbalance()
 
             if engine.unprocessed_orders.max_bid in engine.unprocessed_orders.bids.keys():
@@ -100,7 +100,7 @@ class MarketManager:
                 asset['immediate']['askVolume'] = None
 
             if asset['sessionData']['open'] == None:
-                asset['sessionData']['open'] = asset['immediate']['averagePrice']
+                asset['sessionData']['open'] = asset['immediate']['mid']
 
     def transact(self, trades):
         for trade in trades.trades:

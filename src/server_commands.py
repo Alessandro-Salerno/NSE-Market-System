@@ -187,7 +187,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
     @unet_command('market', 'mercato', 'mark', 'mkt', 'mer', 'mm', 'mk')
     def market(self, command: UNetServerCommand):
-        colums = ['TICKER', 'BID', 'ASK', 'AVG', 'BID V', 'ASK V', 'CHANGE']
+        colums = ['TICKER', 'BID', 'ASK', 'MID', 'BID V', 'ASK V', 'CHANGE']
         tables = []
 
         for aclass in sorted(list(ExchangeDatabase().asset_classes.keys())):
@@ -203,11 +203,11 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     rows[index].append(ticker)
                     rows[index].append(utils.value_fmt(immediate['bid']))
                     rows[index].append(utils.value_fmt(immediate['ask']))
-                    rows[index].append(utils.value_fmt(immediate['averagePrice']))
+                    rows[index].append(utils.value_fmt(immediate['mid']))
                     rows[index].append(utils.value_fmt(immediate['bidVolume']))
                     rows[index].append(utils.value_fmt(immediate['askVolume']))
-                    rows[index].append(f"{(((immediate['averagePrice'] - session_data['previousClose']) / session_data['previousClose']) * 100):+.2f}%"
-                                    if utils.are_none(immediate['averagePrice'], session_data['previousClose'])
+                    rows[index].append(f"{(((immediate['mid'] - session_data['previousClose']) / session_data['previousClose']) * 100):+.2f}%"
+                                    if utils.are_none(immediate['mid'], session_data['previousClose'])
                                         else utils.value_fmt(None))
                     
             tables.append(unet_make_table_message(
@@ -223,7 +223,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
     @unet_command('today', 'oggi', 'tt', 'oo')
     def today(self, command: UNetServerCommand, ticker: str):
-        return cb.show_chart(ticker, 'today', property='averagePrice')
+        return cb.show_chart(ticker, 'today', property='mid')
     
     @unet_command('todayspread', 'spreadoggi', 'tsp', 'spo')
     def today_spread(self, command: UNetServerCommand, ticker: str):
@@ -231,7 +231,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
     @unet_command('intraday', 'intragiornaliero', 'ii', 'ig')
     def intraday(self, command: UNetServerCommand, ticker: str, day: str, month: str, year: str):
-        return cb.show_chart(ticker, 'intraday', property='averagePrice', day=f'{year}-{day}-{month}')
+        return cb.show_chart(ticker, 'intraday', property='mid', day=f'{year}-{day}-{month}')
 
     @unet_command('intradayspread', 'spreadintragiornaliero', 'isp', 'spig')
     def intraday_spread(self, command: UNetServerCommand, ticker: str, day: str, month: str, year: str):
@@ -239,7 +239,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
     @unet_command('daily', 'dd', 'giornaliero', 'gr')
     def daily(self, command: UNetServerCommand, ticker :str):
-        return cb.show_chart(ticker.upper(), 'daily', property='close', current_property='averagePrice')
+        return cb.show_chart(ticker.upper(), 'daily', property='close', current_property='mid')
     
     @unet_command('selllimit', 'vendilimite', 'slmt', 'sl', 'vl')
     def sell_limit(self, command: UNetServerCommand, ticker: str, qty: str, price: str):
@@ -369,7 +369,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     rows[index].append(utils.value_fmt(session_data['buyVolume']))
                     rows[index].append(utils.value_fmt(session_data['sellVolume']))
                     rows[index].append(utils.value_fmt(session_data['tradedValue']))
-                    rows[index].append(utils.value_fmt(round((immediate['ask'] - immediate['bid']) / round(immediate['averagePrice'], 3) * 10000, 2)\
+                    rows[index].append(utils.value_fmt(round((immediate['ask'] - immediate['bid']) / round(immediate['mid'], 3) * 10000, 2)\
                                                         if immediate['bid'] != None and immediate['ask'] != None
                                                         else None))
 
@@ -418,4 +418,25 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             message={
                 'content': 'E-Mail Address updated'
             }
+        )
+    
+    @unet_command('pendingorders', 'orders', 'ordini', 'or', 'po', 'op')
+    def pendingorders(self, command: UNetServerCommand):
+        colums = ['TICKER', 'ORDER', 'EXEC', 'SIZE', 'PRICE']
+        rows = []
+
+        with ExchangeDatabase().users[command.issuer] as user:
+            for index, order_id in enumerate(user['immediate']['orders']):
+                order = ExchangeDatabase().orders[order_id].get_unsafe()
+                rows.append([])
+                rows[index].append(order['ticker'])
+                rows[index].append(order_id)
+                rows[index].append(order['execution'])
+                rows[index].append(order['size'])
+                rows[index].append(utils.value_fmt(order['price']))
+
+        return unet_make_table_message(
+            title=f'PENDING ORDERS',
+            columns=colums,
+            rows=rows
         )

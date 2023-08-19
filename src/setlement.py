@@ -65,13 +65,13 @@ class Marketsetlement(UNetSingleton):
                 intraday = history['intraday']
                 daily = history['daily']
 
-                session_data['close'] = immediate['averagePrice']
+                session_data['close'] = immediate['mid']
                 daily.__setitem__(ExchangeDatabase().get_open_date(), dict(session_data).copy())
 
                 session_data['sellVolume'] = 0
                 session_data['buyVolume'] = 0
                 session_data['tradedValue'] = 0
-                session_data['open'] = immediate['averagePrice']
+                session_data['open'] = immediate['mid']
                 session_data['previousClose'] = session_data['close']
                 session_data['close'] = None
 

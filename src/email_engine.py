@@ -43,10 +43,10 @@ class EmailEngine(UNetSingleton):
             assets = ExchangeDatabase().asset_classes[aclass]
             for assetname in sorted(assets):
                 with ExchangeDatabase().assets[assetname] as asset:
-                    price = utils.value_fmt(asset['immediate']['averagePrice'])
+                    price = utils.value_fmt(asset['immediate']['mid'])
                     symbol = f'{assetname}={aclass}'
-                    change = (f"{((asset['immediate']['averagePrice'] - asset['sessionData']['previousClose']) / asset['sessionData']['previousClose'] * 100):+.2f}%"
-                                    if utils.are_none(asset['immediate']['averagePrice'], asset['sessionData']['previousClose'])
+                    change = (f"{((asset['immediate']['mid'] - asset['sessionData']['previousClose']) / asset['sessionData']['previousClose'] * 100):+.2f}%"
+                                    if utils.are_none(asset['immediate']['mid'], asset['sessionData']['previousClose'])
                                     else utils.value_fmt(None))
                     
                     table.add_row([symbol, price, change])

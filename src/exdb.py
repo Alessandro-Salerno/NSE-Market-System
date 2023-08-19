@@ -46,6 +46,7 @@ class ExchangeDatabase(UNetSingleton):
                     'balance': balance,
                     'assets': assets
                 },
+                'orders': []
             },
             'history': {
                 'assets': {},
@@ -68,7 +69,7 @@ class ExchangeDatabase(UNetSingleton):
                 'ask': None,
                 'bidVolume': None,
                 'askVolume': None,
-                'averagePrice': None,
+                'mid': None,
                 'lastBid': None,
                 'lastAsk': None,
                 'imbalance': 0
@@ -152,6 +153,9 @@ class ExchangeDatabase(UNetSingleton):
                                                                 ticker,
                                                                 size,
                                                                 price)))
+        
+        self.users[issuer].get_unsafe()['immediate']['orders'].append(str(order_id))
+
         return True
         
     def update_order(self,

@@ -50,8 +50,8 @@ class ExchangeAuthenticationHandler(UNetAuthenticationHandler):
 
 
 if __name__ == '__main__':
-    print("""
-MC-UMSR-NSE-Market-System Copyright (C) 2023 Alessandro Salerno
+    print(
+"""MC-UMSR-NSE-Market-System Copyright (C) 2023 Alessandro Salerno
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
 """)
