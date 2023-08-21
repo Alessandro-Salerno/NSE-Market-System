@@ -91,7 +91,7 @@ def show_chart(ticker: str, timeframe: str, **kwargs):
             mode=UNetStatusMode.ERR,
             code=UNetStatusCode.DENY,
             message={
-                'content': 'Insufficient data.'
+                'content': 'Insufficient data'
             }
         )
 

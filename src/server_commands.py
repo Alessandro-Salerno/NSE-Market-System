@@ -27,6 +27,9 @@ from unet.server import UNetServerCommand
 from unet.protocol import * 
 from unet.database import UNetUserDatabase
 
+from platformdb import PlatformDB
+from object_lock import ObjectLock
+
 from exdb import ExchangeDatabase
 from global_market import GlobalMarket
 from setlement import Marketsetlement
@@ -473,7 +476,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 'total': len(order_ids),
                 'successful': tot,
                 'failed': len(order_ids) - tot,
-                'content': f'{len(order_ids)} orders processed, {tot} successful, {len(order_ids) - tot} failed.'
+                'content': f'{len(order_ids)} orders processed, {tot} successful, {len(order_ids) - tot} failed'
             }
         )
 
@@ -486,16 +489,16 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
                 message={
-                    'content': f"Invalid value '{order_id}' for Order ID."
+                    'content': f"Invalid value '{order_id}' for Order ID"
                 }
             )
         
         r = GlobalMarket().cancel_order(int(order_id), command.issuer)
 
         message = {
-            -1: f"No such Order ID '{order_id}'.",
-            -2: 'Permission denied.',
-            None: 'Order deleted.'
+            -1: f"No such Order ID '{order_id}'",
+            -2: 'Permission denied',
+            None: 'Order deleted'
         }[r]
 
         return unet_make_status_message(
@@ -526,7 +529,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
                 message={
-                    'content': f"Invalid value '{qty}' for quantity."
+                    'content': f"Invalid value '{qty}' for quantity"
                 }
             )
         
@@ -546,7 +549,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                         mode=UNetStatusMode.ERR,
                         code=UNetStatusCode.DENY,
                         message={
-                            'content': f"The specified amount of {qty} units is higher than your setled portfolio allows."
+                            'content': f"The specified amount of {qty} units is higher than your setled portfolio allows"
                         }
                     )
                 
@@ -571,3 +574,60 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 'content': f"Transfered {qty} units of '{ticker}' to '{who}'"
             }
         )
+    
+    @unet_command('json')
+    def json(self, command: UNetServerCommand, path: str):
+        path_steps = path.split('/')
+        target_key = path_steps.pop(len(path_steps) - 1) if len(path_steps) > 0 and path != '' else 'db'
+        if '' in path_steps:
+            path_steps.remove('')
+        base = {'db': ExchangeDatabase().db.db}
+        locks = []
+
+        try:
+            for index, step in enumerate(path_steps):
+                if isinstance(base, dict):
+                    base = base[step]
+                    continue
+
+                if isinstance(base, ObjectLock):
+                    if base.lock not in locks:
+                        base.lock.acquire()
+                        locks.append(base.lock)
+                    base = base.get_unsafe()[step]
+
+            if isinstance(base, ObjectLock):
+                if base.lock not in locks:
+                    base.lock.acquire()
+                    locks.append(base.lock)
+                base = base.get_unsafe()
+
+            root = base[target_key]
+            
+            if isinstance(root, ObjectLock):
+                if root.lock not in locks:
+                    root.lock.acquire()
+                    locks.append(root.lock)
+                root = root.get_unsafe()
+
+            target = PlatformDB.to_dict(root) if isinstance(root, dict) else root
+            for lock in locks:
+                lock.release()
+
+            return unet_make_value_message(
+                name=target_key,
+                value=target
+            )
+        except KeyError as ke:
+            (lock.release() for lock in locks)
+            
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'key': None,
+                    'content': f"Uknown key"
+                }
+            )
+
+    

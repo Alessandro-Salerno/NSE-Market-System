@@ -158,6 +158,10 @@ class UNetAuthenticationHandler(MComConnectionHandler):
         return self._authenticated_handler(socket=self.protocol.socket, parent=self.parent, user=init_json['name'])
     
     def signup(self, init_json):
+        if not str(init_json['name']).replace('_', '').isalnum():
+            return self.bad_request('Username contains invalid characters')
+            return
+
         if UNetUserDatabase().exists(init_json['name'], init_json['password']) != 0:
             self.bad_request('User already exists')
             return
