@@ -43,6 +43,7 @@ class MarketManager:
                                timestamp=pandas.Timestamp.now(),
                                price_number_of_digits=3)
             
+            order.left = size # add 'left' attribute to store unprocessed blocks
             trades = engine.match(timestamp=pandas.Timestamp.now(), orders=Orders([order]))
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
@@ -57,6 +58,7 @@ class MarketManager:
                                 trader_id=issuer,
                                 timestamp=pandas.Timestamp.now())
             
+            order.left = size # add 'left' attribute to store unprocessed blocks
             trades = engine.match(timestamp=pandas.Timestamp.now(), orders=Orders([order]))
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
@@ -73,14 +75,16 @@ class MarketManager:
         with ExchangeDatabase().assets[self._ticker] as asset:
             if order.side == Side.SELL:
                 asset['sessionData']['sellVolume'] += order.size
+                asset['immediate']['lastAsk'] = asset['immediate']['ask'] if asset['immediate']['ask'] is not None \
+                    and asset['immediate']['ask'] != engine.unprocessed_orders.min_offer else asset['immediate']['lastAsk']
             else:
                 asset['sessionData']['buyVolume'] += order.size
+                asset['immediate']['lastBid'] = asset['immediate']['bid'] if asset['immediate']['bid'] is not None and \
+                     asset['immediate']['bid'] != engine.unprocessed_orders.max_bid else asset['immediate']['lastBid']
 
-            asset['immediate']['lastBid'] = asset['immediate']['bid'] if asset['immediate']['bid'] is not None else asset['immediate']['lastBid']
-            asset['immediate']['lastAsk'] = asset['immediate']['ask'] if asset['immediate']['ask'] is not None else asset['immediate']['lastAsk']
             asset['immediate']['bid'] = engine.unprocessed_orders.max_bid if engine.unprocessed_orders.max_bid > 0 and engine.unprocessed_orders.max_bid != float('inf') else None
             asset['immediate']['ask'] = engine.unprocessed_orders.min_offer if engine.unprocessed_orders.min_offer > 0 and engine.unprocessed_orders.min_offer != float('inf') else None
-            asset['immediate']['mid'] = engine.unprocessed_orders.current_price if engine.unprocessed_orders.max_bid > 0 and engine.unprocessed_orders.min_offer > 0 and engine.unprocessed_orders.current_price != float('inf') else None
+            asset['immediate']['mid'] = round(engine.unprocessed_orders.current_price, 3) if engine.unprocessed_orders.max_bid > 0 and engine.unprocessed_orders.min_offer > 0 and engine.unprocessed_orders.current_price != float('inf') else None
             asset['immediate']['imbalance'] = engine.unprocessed_orders.get_imbalance()
 
             if engine.unprocessed_orders.max_bid in engine.unprocessed_orders.bids.keys():
@@ -108,6 +112,9 @@ class MarketManager:
         for trade in trades.trades:
             sell_order_id = None
             buy_order_id = None
+            from order_matching.trade import Trade
+            trade: Trade
+            print(f"{GlobalMarket().orders.keys()} {trade.book_order_id} {trade.incoming_order_id}")
 
             if trade.side == Side.SELL:
                 sell_order_id = trade.incoming_order_id
@@ -182,13 +189,16 @@ class MarketManager:
             ExchangeDatabase().update_order(buy_order.order_id, buy_order.size)
             ExchangeDatabase().update_order(sell_order.order_id, sell_order.size)
 
-            if not buy_order.size > 0:
-                GlobalMarket().remove_order(buy_order.order_id)
+            buy_order.left -= trade.size
+            sell_order.left -= trade.size
+
+            if not buy_order.left > 0:
+                GlobalMarket().remove_order(buy_order_id)
             else:
                 buy_order.price = buy_order_original_price
 
-            if not sell_order.size > 0:
-                GlobalMarket().remove_order(sell_order.order_id)
+            if not sell_order.left > 0:
+                GlobalMarket().remove_order(sell_order_id)
             else:
                 sell_order.price = sell_order_original_price
 
