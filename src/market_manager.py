@@ -112,9 +112,6 @@ class MarketManager:
         for trade in trades.trades:
             sell_order_id = None
             buy_order_id = None
-            from order_matching.trade import Trade
-            trade: Trade
-            print(f"{GlobalMarket().orders.keys()} {trade.book_order_id} {trade.incoming_order_id}")
 
             if trade.side == Side.SELL:
                 sell_order_id = trade.incoming_order_id
