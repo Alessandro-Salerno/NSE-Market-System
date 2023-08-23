@@ -84,7 +84,7 @@ def show_chart(ticker: str, timeframe: str, **kwargs):
         'daily': _daily_chart
     }
 
-    x, y = backends[timeframe](ticker, **kwargs)
+    x, y, fmt = backends[timeframe](ticker, **kwargs)
 
     if len(x) != len(y) or len(x) < 2:
         return unet_make_status_message(
@@ -103,7 +103,7 @@ def show_chart(ticker: str, timeframe: str, **kwargs):
         ),
 
         title=ticker,
-        xformat='d/m/Y H:M',
+        xformat=fmt,
         xlabel='Time',
         ylabel='Value'
     )
@@ -111,7 +111,7 @@ def show_chart(ticker: str, timeframe: str, **kwargs):
 
 def _today_chart(ticker: str, property: str):
     if property == '__SPREAD__':
-        x, y = _spread_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['today'])
+        x, y, xfmt = _spread_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['today'])
 
         bid = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['bid']
         ask = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['ask']
@@ -123,8 +123,39 @@ def _today_chart(ticker: str, property: str):
 
         x.append(f'{utils.tomorrow()} 00:00:00')
         y.append(None)
-        return x, y
+        return x, y, xfmt
     
+    if property == '__DEPTH__':
+        bids = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['depth']['bids']
+        offers = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['depth']['offers']
+        
+        bidkeys = sorted([float(k) for k in bids])
+        offerkeys = sorted([float(k) for k in offers])
+
+        fbids = {float(k): bids[str(k)] for k in bidkeys}
+        foffers = {float(k): offers[str(k)] for k in offerkeys}
+        
+        both = {}
+        both.update(fbids)
+        both.update(foffers)
+
+        x = []
+        y = []
+
+        bid_qty = sum([fbids[i] for i in fbids])
+        offer_qty = 0
+        
+        for bid in bidkeys:
+            x.append(bid)
+            y.append(bid_qty)
+            bid_qty -= both[bid]
+
+        for offer in offerkeys:
+            offer_qty += both[offer]
+            x.append(offer)
+            y.append(offer_qty)
+        return x, y, None
+
     return _now_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['today'],
                        property,
                        ExchangeDatabase().assets[ticker].get_unsafe()['immediate'][property])
@@ -132,7 +163,7 @@ def _today_chart(ticker: str, property: str):
 
 def _intraday_chart(ticker: str, property: str, day: str):
     if day not in ExchangeDatabase().assets[ticker].get_unsafe()['history']['intraday']:
-        return [], []
+        return [], [], None
     
     if property == '__SPREAD__':
         return _spread_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['intraday']['day'])
@@ -157,19 +188,19 @@ def _now_series(history: dict, propertY: str, current: float):
     x.append(f'{utils.tomorrow()} 00:00:00')
     y.append(None)
 
-    return x, y
+    return x, y, 'd/m/Y H:M'
 
 
 def _intraday_series(ticks: dict, propertY: str):
     pass
-
 
 def _spread_series(history: dict):
     return list(history.keys()), \
             [(round((history[e]['ask'] - history[e]['bid']) / round((history[e]['ask'] + history[e]['bid']) / 2, 3) * 10000, 2)
              if history[e]['bid'] != None and history[e]['ask'] != None
              else None)
-              for e in history]
+              for e in history], \
+            'd/m/Y H:M'
 
 
 def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price: str):

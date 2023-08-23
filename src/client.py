@@ -147,15 +147,18 @@ class MyHandler(MComConnectionHandler):
                 
                 ts = os.get_terminal_size()
 
-                p.date_form(xfmt)
                 p.theme('pro')
                 p.plotsize(ts.columns, ts.lines - 3)
                 
                 for series in response['series']:
                     x = series['x']
                     y = series['y']
-                    dates = p.datetime_to_string(pandas.DatetimeIndex(x))
-                    p.plot(dates, y)
+
+                    if xfmt != None:
+                        p.date_form(xfmt)
+                        x = p.datetime_to_string(pandas.DatetimeIndex(x))
+                    
+                    p.plot(x, y)
 
                 p.title(t)
                 p.xlabel(xl)

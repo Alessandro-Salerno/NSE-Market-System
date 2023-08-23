@@ -105,6 +105,9 @@ class MarketManager:
             else:
                 asset['immediate']['askVolume'] = None
 
+            asset['immediate']['depth']['bids'] = { str(price): sum([order.size for order in orders]) for price, orders in engine.unprocessed_orders.bids.items() }
+            asset['immediate']['depth']['offers'] = { str(price): sum([order.size for order in orders]) for price, orders in engine.unprocessed_orders.offers.items() }
+
             if asset['sessionData']['open'] == None:
                 asset['sessionData']['open'] = asset['immediate']['mid']
 

@@ -245,6 +245,10 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     def daily(self, command: UNetServerCommand, ticker :str):
         return cb.show_chart(ticker.upper(), 'daily', property='close', current_property='mid')
     
+    @unet_command('depth', 'de', 'dp')
+    def depth(self, command: UNetServerCommand, ticker: str):
+        return cb.show_chart(ticker.upper(), 'today', property='__DEPTH__')
+
     @unet_command('selllimit', 'vendilimite', 'slmt', 'sl', 'vl')
     def sell_limit(self, command: UNetServerCommand, ticker: str, qty: str, price: str):
         return cb.place_order(ticker.upper(), command.issuer, Execution.LIMIT, Side.SELL, qty, price)
