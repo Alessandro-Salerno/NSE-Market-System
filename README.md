@@ -21,8 +21,11 @@ In-game financial markets enhance liquidity and reduced overall volatility in th
 ## Features of NSE Market System
 * Market data visualization in tables and charts
 * Limit and Market Orders
+* Order cancelation
+* Real-Time order matching
 * Session management and setlement
 * Asset-short and Cash-short positions
+* JSON API over TCP (Using UNet and MCom)
 
 ## Disclaimer
 This software is meant to be used exclusively with "play money" and may not be compatible with world regulations such as those of the SEC (Securities Exchange Commission) or other regulatory institutions and frameworks. Given its private nature and the short development time, it also lacks many security features which may make it incompatible with privacy and data security regulations such as the GDPR.
