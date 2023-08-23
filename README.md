@@ -25,6 +25,9 @@ In-game financial markets enhance liquidity and reduced overall volatility in th
 * Real-Time order matching
 * Session management and setlement
 * Asset-short and Cash-short positions
+* Easy transfer of assets between accounts
+* Digital payments with in-game currency
+* Periodic E-Mail messages to users with up-to-date market information
 * JSON API over TCP (Using UNet and MCom)
 
 ## Disclaimer
