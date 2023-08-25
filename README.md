@@ -23,7 +23,7 @@ In-game financial markets enhance liquidity and reduced overall volatility in th
 * Limit and Market Orders
 * Order cancelation
 * Real-Time order matching
-* Session management and setlement
+* Session management and settlement
 * Asset-short and Cash-short positions
 * Easy transfer of assets between accounts
 * Digital payments with in-game currency

@@ -21,7 +21,7 @@ import time
 from unet.singleton import UNetSingleton
 
 from exdb import ExchangeDatabase
-from setlement import Marketsetlement
+from settlement import MarketSettlement
 from email_engine import EmailEngine
 import utils
 
@@ -42,18 +42,18 @@ class MarketScheduler(UNetSingleton):
         schedule.every().hour.at(':40').do(self.add_intraday)
         schedule.every().hour.at(':50').do(self.add_intraday)
     
-    def schedule_setlement(self):
+    def schedule_settlement(self):
         if ExchangeDatabase().get_open_date() != utils.today():
-            Marketsetlement().setle()
+            MarketSettlement().setle()
         
-        schedule.every().day.at('00:00', 'Europe/Rome').do(Marketsetlement().setle)
+        schedule.every().day.at('00:00', 'Europe/Rome').do(MarketSettlement().setle)
 
     def schedule_emails(self):
         schedule.every().day.at('12:00', 'Europe/Rome').do(EmailEngine().send)
 
     def start_scheduler(self):
         self.schedule_intraday()
-        self.schedule_setlement()
+        self.schedule_settlement()
 
         while True:
             schedule.run_pending()

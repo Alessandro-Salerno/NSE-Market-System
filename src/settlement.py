@@ -21,19 +21,19 @@ from exdb import ExchangeDatabase
 import utils
 
 
-class Marketsetlement(UNetSingleton):
+class MarketSettlement(UNetSingleton):
     def setle(self):
         fee = 0
         
         for username in ExchangeDatabase().users:
             with ExchangeDatabase().users[username] as user:
                 current_assets = user['immediate']['current']['assets']
-                setled_assets = user['immediate']['setled']['assets']
+                setled_assets = user['immediate']['settled']['assets']
                 history = user['history']
                 asset_history = history['assets']
                 balance_history = history['balance']
 
-                user['immediate']['setled']['balance'] += user['immediate']['current']['balance']
+                user['immediate']['settled']['balance'] += user['immediate']['current']['balance']
                 fee += user['immediate']['current']['balance']
                 user['immediate']['current']['balance'] = 0
 
@@ -53,8 +53,8 @@ class Marketsetlement(UNetSingleton):
                     setled_assets[assetname] += current_assets[assetname]
 
                 user['immediate']['current']['assets'].clear()
-                asset_history.__setitem__(ExchangeDatabase().get_open_date(), dict(user['immediate']['setled']['assets']).copy())
-                balance_history.__setitem__(ExchangeDatabase().get_open_date(), user['immediate']['setled']['balance'])
+                asset_history.__setitem__(ExchangeDatabase().get_open_date(), dict(user['immediate']['settled']['assets']).copy())
+                balance_history.__setitem__(ExchangeDatabase().get_open_date(), user['immediate']['settled']['balance'])
         
         for assetname in ExchangeDatabase().assets:
             with ExchangeDatabase().assets[assetname] as asset:
@@ -79,6 +79,6 @@ class Marketsetlement(UNetSingleton):
                 today.clear()
 
         with ExchangeDatabase().users['admin'] as admin:
-            admin['immediate']['setled']['balance'] += fee
+            admin['immediate']['settled']['balance'] += fee
 
         ExchangeDatabase().set_open_date(utils.today())

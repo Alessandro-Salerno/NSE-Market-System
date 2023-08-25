@@ -42,7 +42,7 @@ class ExchangeDatabase(UNetSingleton):
                     'balance': 0,
                     'assets': {}
                 },
-                'setled': {
+                'settled': {
                     'balance': balance,
                     'assets': assets
                 },

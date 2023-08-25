@@ -32,7 +32,7 @@ from object_lock import ObjectLock
 
 from exdb import ExchangeDatabase
 from global_market import GlobalMarket
-from setlement import Marketsetlement
+from settlement import MarketSettlement
 from email_engine import EmailEngine
 
 import command_backend as cb
@@ -117,7 +117,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
     
     @unet_command('newsession')
     def newsession(self, command: UNetServerCommand):
-        Marketsetlement().setle()
+        MarketSettlement().setle()
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
@@ -170,11 +170,11 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
     @unet_command('balance', 'bal', 'saldo', 'sa')
     def balance(self, command: UNetServerCommand):
-        setled = 0
+        settled = 0
         current = 0
         
         with ExchangeDatabase().users[command.issuer] as user:
-            setled = user['immediate']['setled']['balance']
+            settled = user['immediate']['settled']['balance']
             current = user['immediate']['current']['balance']
     
         return unet_make_multi_message(
@@ -185,7 +185,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
             unet_make_value_message(
                 name='Setled Balance',
-                value=setled
+                value=settled
             )
         )
     
@@ -292,7 +292,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         
         if UNetUserDatabase().has_role(command.issuer, 'centralbank'):
             with ExchangeDatabase().users[who] as receiver:
-                receiver['immediate']['setled']['balance'] += real_amount
+                receiver['immediate']['settled']['balance'] += real_amount
 
             return unet_make_status_message(
                 mode=UNetStatusMode.OK,
@@ -303,7 +303,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             )
 
         with ExchangeDatabase().users[command.issuer] as sender:
-            if sender['immediate']['setled']['balance'] + sender['immediate']['current']['balance'] < real_amount:
+            if sender['immediate']['settled']['balance'] + sender['immediate']['current']['balance'] < real_amount:
                 return unet_make_status_message(
                     mode=UNetStatusMode.ERR,
                     code=UNetStatusCode.DENY,
@@ -312,14 +312,14 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     }
                 )
             
-            if sender['immediate']['setled']['balance'] < real_amount:
+            if sender['immediate']['settled']['balance'] < real_amount:
                 sender['immediate']['current']['balance'] -= real_amount
             else:
-                sender['immediate']['setled']['balance'] -= real_amount
+                sender['immediate']['settled']['balance'] -= real_amount
 
         if not UNetUserDatabase().has_role(who, 'centralbank'):
             with ExchangeDatabase().users[who] as receiver:
-                receiver['immediate']['setled']['balance'] += real_amount
+                receiver['immediate']['settled']['balance'] += real_amount
 
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
@@ -340,9 +340,9 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 ),
 
                 unet_make_table_message(
-                    title='SETLED POSITIONS',
+                    title='SETTLED POSITIONS',
                     columns=['SYM', 'UNITS'],
-                    rows=[[a, user['immediate']['setled']['assets'][a]] for a in user['immediate']['setled']['assets']]
+                    rows=[[a, user['immediate']['settled']['assets'][a]] for a in user['immediate']['settled']['assets']]
                 )
             )
         
@@ -359,7 +359,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 for username in ExchangeDatabase().users:
                     user = ExchangeDatabase().users[username].get_unsafe()
                     uassets = user['immediate']['current']['assets']
-                    sassets = user['immediate']['setled']['assets']
+                    sassets = user['immediate']['settled']['assets']
                     if ExchangeDatabase().user_is_issuer(username, ExchangeDatabase().assets[ticker].get_unsafe()):
                         continue
                     if ticker in uassets and uassets[ticker] < 0:
@@ -548,28 +548,28 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
         with ExchangeDatabase().users[command.issuer] as sender:
             if not ExchangeDatabase().user_is_issuer(command.issuer, ExchangeDatabase().assets[ticker].get_unsafe()):
-                if ticker not in sender['immediate']['setled']['assets'] or sender['immediate']['setled']['assets'][ticker] < qty:
+                if ticker not in sender['immediate']['settled']['assets'] or sender['immediate']['settled']['assets'][ticker] < qty:
                     return unet_make_status_message(
                         mode=UNetStatusMode.ERR,
                         code=UNetStatusCode.DENY,
                         message={
-                            'content': f"The specified amount of {qty} units is higher than your setled portfolio allows"
+                            'content': f"The specified amount of {qty} units is higher than your settled portfolio allows"
                         }
                     )
                 
             else:
-                if ticker not in sender['immediate']['setled']['assets']:
-                    sender['immediate']['setled']['assets'].__setitem__(ticker, 0)
+                if ticker not in sender['immediate']['settled']['assets']:
+                    sender['immediate']['settled']['assets'].__setitem__(ticker, 0)
             
-            sender['immediate']['setled']['assets'][ticker] -= qty
-            if sender['immediate']['setled']['assets'][ticker] == 0:
-                sender['immediate']['setled']['assets'].pop(ticker)
+            sender['immediate']['settled']['assets'][ticker] -= qty
+            if sender['immediate']['settled']['assets'][ticker] == 0:
+                sender['immediate']['settled']['assets'].pop(ticker)
 
         with ExchangeDatabase().users[who] as receiver:
-            if ticker not in receiver['immediate']['setled']['assets']:
-                receiver['immediate']['setled']['assets'].__setitem__(ticker, 0)
+            if ticker not in receiver['immediate']['settled']['assets']:
+                receiver['immediate']['settled']['assets'].__setitem__(ticker, 0)
 
-            receiver['immediate']['setled']['assets'][ticker] += qty
+            receiver['immediate']['settled']['assets'][ticker] += qty
         
         return unet_make_status_message(
             mode=UNetStatusMode.OK,

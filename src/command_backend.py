@@ -26,12 +26,12 @@ import utils
 
 def increment_balance(username: str, qty: int):
     with ExchangeDatabase().users[username] as user:
-        user['immediate']['setled']['balance'] += qty
+        user['immediate']['settled']['balance'] += qty
 
 
 def set_balance(username: str, qty: int):
     with ExchangeDatabase().users[username] as user:
-        user['immediate']['setled']['balance'] = qty
+        user['immediate']['settled']['balance'] = qty
 
 
 def change_balance(changer, username: str, qty: str):
@@ -62,7 +62,7 @@ def change_balance(changer, username: str, qty: str):
         mode=UNetStatusMode.OK,
         code=UNetStatusCode.DONE,
         message={
-            'content': f"setled Balance of user '{username} set to {real_qty}"
+            'content': f"settled Balance of user '{username} set to {real_qty}"
         }
     )
 
