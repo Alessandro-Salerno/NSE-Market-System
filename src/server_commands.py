@@ -336,14 +336,14 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         with ExchangeDatabase().users[command.issuer] as user:
             return unet_make_multi_message(
                 unet_make_table_message(
-                    title='UNSETLED POSITIONS',
-                    columns=['SYM', 'UNITS'],
+                    title='SESSION MOVES',
+                    columns=['TICKER', 'CHANGE'],
                     rows=[[a, user['immediate']['current']['assets'][a]] for a in user['immediate']['current']['assets']]
                 ),
 
                 unet_make_table_message(
                     title='SETTLED POSITIONS',
-                    columns=['SYM', 'UNITS'],
+                    columns=['TICKER', 'UNITS'],
                     rows=[[a, user['immediate']['settled']['assets'][a]] for a in user['immediate']['settled']['assets']]
                 )
             )
@@ -454,8 +454,8 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             rows=rows
         )
     
-    @unet_command('clearoders', 'annullaordini', 'co', 'ao')
-    def clearoders(self, command: UNetServerCommand, ticker: str):
+    @unet_command('clearorders', 'annullaordini', 'co', 'ao')
+    def clearorders(self, command: UNetServerCommand, ticker: str):
         ticker = ticker.upper()
         if ticker not in ExchangeDatabase().assets:
             return unet_make_status_message(
@@ -466,23 +466,21 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 }
             )
         
-        order_ids = []
+        tot_orders = 0
+        successful = 0
         for order_id in ExchangeDatabase().users[command.issuer].get_unsafe()['immediate']['orders']:
             if ExchangeDatabase().orders[order_id].get_unsafe()['ticker'] == ticker:
-                order_ids.append(order_id)
-
-        tot = 0
-        for order_id in order_ids:
-            tot += GlobalMarket().cancel_order(int(order_id), command.issuer) == None
+                tot_orders += 1
+                successful += GlobalMarket().cancel_order(int(order_id), command.issuer) == None
 
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
             message={
-                'total': len(order_ids),
-                'successful': tot,
-                'failed': len(order_ids) - tot,
-                'content': f'{len(order_ids)} orders processed, {tot} successful, {len(order_ids) - tot} failed'
+                'total': tot_orders,
+                'successful': successful,
+                'failed': tot_orders - successful,
+                'content': f'{tot_orders} orders processed, {successful} successful, {tot_orders - successful} failed'
             }
         )
 
@@ -560,7 +558,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     )
                 
             else:
-                if ticker not in sender['immediate']['settled']['assets']:
+                if ticker not in sender['immediate']['settled']['assets'].keys():
                     sender['immediate']['settled']['assets'].__setitem__(ticker, 0)
             
             sender['immediate']['settled']['assets'][ticker] -= qty
@@ -568,7 +566,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 sender['immediate']['settled']['assets'].pop(ticker)
 
         with ExchangeDatabase().users[who] as receiver:
-            if ticker not in receiver['immediate']['settled']['assets']:
+            if ticker not in receiver['immediate']['settled']['assets'].keys():
                 receiver['immediate']['settled']['assets'].__setitem__(ticker, 0)
 
             receiver['immediate']['settled']['assets'][ticker] += qty
