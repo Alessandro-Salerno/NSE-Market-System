@@ -43,33 +43,31 @@ class GlobalMarket(UNetSingleton):
         self.ready = False
         self.order_index = ObjectLock(MarketIndex())
 
-        final_id = 0
-        for order_id in ExchangeDatabase().orders:
-            final_id = int(order_id) if int(order_id) > final_id else final_id
-            self.order_index.get_unsafe().set(int(order_id) - 1)
-            with ExchangeDatabase().orders[order_id] as order:
-                match (order['execution']):
-                    case 'LIMIT':
-                        self.add_limit_order(order['ticker'],
-                                             Side.BUY if order['side'] == 'BUY'
-                                             else Side.SELL,
-                                             order['price'],
-                                             order['size'],
-                                             order['issuer'])
+        if len(ExchangeDatabase().orders.keys()) > 0:
+            self.order_index.get_unsafe().set(int(min(ExchangeDatabase().orders.keys())) - 1)
+            for order_id in ExchangeDatabase().orders:
+                with ExchangeDatabase().orders[order_id] as order:
+                    match (order['execution']):
+                        case 'LIMIT':
+                            self.add_limit_order(order['ticker'],
+                                                Side.BUY if order['side'] == 'BUY'
+                                                else Side.SELL,
+                                                order['price'],
+                                                order['size'],
+                                                order['issuer'])
 
-                    case 'MARKET':
-                        self.add_market_order(order['ticker'],
-                                              Side.BUY if order['side'] == 'BUY'
-                                              else Side.SELL,
-                                              order['size'],
-                                              order['issuer'])
+                        case 'MARKET':
+                            self.add_market_order(order['ticker'],
+                                                Side.BUY if order['side'] == 'BUY'
+                                                else Side.SELL,
+                                                order['size'],
+                                                order['issuer'])
         
         for ticker in ExchangeDatabase().assets:
             if ticker not in self.markets:
                 from market_manager import MarketManager
                 self.markets.__setitem__(ticker, MarketManager(ticker))
 
-        self.order_index.get_unsafe().set(final_id)
         self.ready = True
 
 

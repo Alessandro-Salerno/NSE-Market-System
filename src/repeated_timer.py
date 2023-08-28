@@ -15,7 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from threading import Timer
+from threading import Timer, Thread
 
 
 class RepeatedTimer:
@@ -33,11 +33,14 @@ class RepeatedTimer:
         self.function(*self.args, **self.kwargs)
 
     def start(self):
-        if not self.is_running:
-            self._timer = Timer(self.interval, self._run)
-            self._timer.daemon = True
-            self._timer.start()
-            self.is_running = True
+        def inner():
+            if not self.is_running:
+                self._timer = Timer(self.interval, self._run)
+                self._timer.daemon = True
+                self._timer.start()
+                self.is_running = True
+
+        Thread(target=inner).start()
 
     def stop(self):
         self._timer.cancel()

@@ -27,7 +27,6 @@ class PlatformDB:
     def __init__(self, filename='platformdb.json', schema={}, default={}) -> None:
         self._filename = filename
         self._schema = schema
-        self._free = True
         self._db = self._load()
         
         if self._db == {}:
@@ -81,8 +80,6 @@ class PlatformDB:
         return result
 
     def save(self):
-        self._free = False
-
         new_json = self.to_json()
         if not os.path.exists(self._filename):
             with open(self._filename, 'w') as file:
@@ -104,8 +101,6 @@ class PlatformDB:
             file.write(new_json)
 
         os.remove(self._filename + '.new')
-
-        self._free = True
 
     def to_json(self):
         return json.dumps(PlatformDB.to_dict(self._db), indent=2)
@@ -137,14 +132,7 @@ class PlatformDB:
         return self._filename
     
     @property
-    def free(self):
-        return self._free
-
-    @property
     def db(self):
-        while not self.free:
-            pass
-
         return self._db
     
     @property

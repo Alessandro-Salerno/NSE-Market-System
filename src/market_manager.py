@@ -15,7 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-import pandas
+from datetime import datetime, timedelta
 
 from order_matching.matching_engine import MatchingEngine
 from order_matching.orders import Orders
@@ -40,14 +40,22 @@ class MarketManager:
                                size=int(size),
                                order_id=GlobalMarket().next_order_index(),
                                trader_id=issuer,
-                               timestamp=pandas.Timestamp.now(),
+                               timestamp=datetime.now(),
+                               expiration=datetime.now() + timedelta(days=365),
                                price_number_of_digits=3)
             
             order.left = size # add 'left' attribute to store unprocessed blocks
-            trades = engine.match(timestamp=pandas.Timestamp.now(), orders=Orders([order]))
-            self.update_asset(order, engine)
-            GlobalMarket().add_order(self._ticker, order)
-            self.transact(trades=trades)
+            
+            if engine.unprocessed_orders.matching_order_exists(order):
+                trades = engine.match(timestamp=datetime.now(), orders=Orders([order]))
+                self.update_asset(order, engine)
+                GlobalMarket().add_order(self._ticker, order)
+                self.transact(trades=trades)
+            else:
+                engine.unprocessed_orders.append(order)
+                self.update_asset(order, engine)
+                GlobalMarket().add_order(self._ticker, order)
+            
             return order
 
     def add_market_order(self, side, size, issuer):
@@ -56,13 +64,22 @@ class MarketManager:
                                 size=int(size),
                                 order_id=GlobalMarket().next_order_index(),
                                 trader_id=issuer,
-                                timestamp=pandas.Timestamp.now())
+                                timestamp=datetime.now(),
+                                expiration=datetime.now() + timedelta(days=365))
             
             order.left = size # add 'left' attribute to store unprocessed blocks
-            trades = engine.match(timestamp=pandas.Timestamp.now(), orders=Orders([order]))
-            self.update_asset(order, engine)
-            GlobalMarket().add_order(self._ticker, order)
-            self.transact(trades=trades)
+            
+            if engine.unprocessed_orders.matching_order_exists(order):
+                trades = engine.match(timestamp=datetime.now(), orders=Orders([order]))
+                self.update_asset(order, engine)
+                GlobalMarket().add_order(self._ticker, order)
+                self.transact(trades=trades)
+            else:
+                engine.unprocessed_orders.append(order)
+                self.update_asset(order, engine)
+                GlobalMarket().add_order(self._ticker, order)
+            
+            print(f"{datetime.now() - n} {order.order_id}")
             return order
 
     def cancel_order(self, order):
