@@ -40,17 +40,9 @@ from unet.command_parser import UNetCommandParserFactory, UNetCommandParseExcept
 from unet.protocol import *
 
 
-# program flags
-running = True
-connected = True
-
-
 class MyLocalHandler(UNetCommandHandler):
     @unet_command('exit')
     def exit(self, command: any):
-        self.top._connection.protocol.socket.close()
-        self.top._connection.kill()
-        self.parent.kill()
         os.kill(os.getpid(), signal.SIGINT)
 
     @unet_command('logout')
@@ -58,8 +50,12 @@ class MyLocalHandler(UNetCommandHandler):
         self.top._connection.protocol.socket.close()
         self.top._connection.kill()
         self.parent.kill()
-        global connected
-        connected = False
+
+    @unet_command('ping')
+    def ping(self, command: any):
+        start = datetime.now()
+        self.parent.protocol.ask('whoami')
+        print(f"Ping time: {int((datetime.now().timestamp() - start.timestamp()) * 1000)} ms\n")
 
     @unet_command('clear', 'cls')
     def clear(self, command: any):
@@ -71,27 +67,21 @@ class MyLocalHandler(UNetCommandHandler):
         new = getpass.getpass('New Password: ')
         return f'passwd "{old}" "{new}"'
     
-    @unet_command('che')
-    def che(self, command: any):
+    @unet_command('cem')
+    def cem(self, command: any):
         new = input('New E-Mail Address: ')
         return f'emaddr "{new}"'
 
 
 class MyHandler(MComConnectionHandler):
-    def __init__(self, socket: socket, parent=None) -> None:
-        super().__init__(socket, parent)
-    
     def main(self) -> None:
         _ = Console()
         p.clear_terminal()
 
         login = json.loads(self.protocol.recv())
-        if login['code'] != UNetStatusCode.DONE:
-            self.reply(rtype=login['type'], code=login['code'], message=login['message']['content'])
-
-        now = datetime.now()
-        self.protocol.ask('whoami')
-        print(f"Ping time: {datetime.now() - now}")
+        self.reply(rtype=login['type'], code=login['code'], message=login['message']['content'])
+        if login['code'] == UNetStatusCode.DONE:
+            self.parent.command_orchestrator.call_command(UNetCommandParserFactory().parse('.ping'))
 
         self.schedule(self.my_main)
         self.kill(self.main)
@@ -199,29 +189,39 @@ class MyHandler(MComConnectionHandler):
         print(f'[{rtype}] ({code}) {message}\n')
 
 
+
+def get_int(message, valrange=(0, 0)):
+    val = 0
+    while True:
+        try:
+            val = int(input(message))
+
+            if val == (0, 0) or val not in range(*valrange):
+                return val
+            else:
+                print('Invalid input\n')
+        except ValueError as ve:
+            print('Invalid input\n')
+
+
+
 if __name__ == '__main__':
     # VERY Bad client code
-    while running:
+    while True:
         p.clear_terminal()
         
         server_addr = input('UNet Server IP: ')
-        server_port = input('UNet Server Remote Port: ')
+        server_port = get_int('UNet Server Remote Port: ')
 
-        print('1. Login')
-        print('2. Signup')
+        mode_id = get_int(
+"""
+Connection Modes:
+    1. Sign in
+    2. Sign up
 
-        mode_id = 0
-        while True:
-            try:
-                mode_id = int(input('> '))
-
-                if mode_id > 0 and mode_id <= 2:
-                    break
-                else:
-                    print('Invalid input\n')
-            except:
-                print('Invalid input\n')
-
+Mode: """)
+        
+        print()
         args = []
         match mode_id:
             case 1:
@@ -238,13 +238,6 @@ if __name__ == '__main__':
 
         client = UNetClient(conn_mode=UNetClientConnectionMode(*args),
                             local_command_handler=MyLocalHandler(),
-                            server_address='127.0.0.1',
-                            server_port=19055,
+                            server_address=server_addr if len(server_addr) != 0 else '127.0.0.1',
+                            server_port=server_port,
                             connection_handler_class=MyHandler)
-
-        connected = True
-        while connected:
-            pass
-
-    while True:
-        pass

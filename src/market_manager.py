@@ -79,7 +79,6 @@ class MarketManager:
                 self.update_asset(order, engine)
                 GlobalMarket().add_order(self._ticker, order)
             
-            print(f"{datetime.now() - n} {order.order_id}")
             return order
 
     def cancel_order(self, order):

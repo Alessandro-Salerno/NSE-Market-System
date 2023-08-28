@@ -49,8 +49,11 @@ class GlobalMarket(UNetSingleton):
                 self.create_market(ticker)
 
         if len(ExchangeDatabase().orders.keys()) > 0:
-            self.order_index.get_unsafe().set(int(min(ExchangeDatabase().orders.keys())) - 1)
+            final_id = 0
             for order_id in ExchangeDatabase().orders:
+                final_id = max(final_id, int(order_id))
+                self.order_index.get_unsafe().set(int(order_id) - 1)
+                
                 with ExchangeDatabase().orders[order_id] as order:
                     match (order['execution']):
                         case 'LIMIT':
@@ -67,6 +70,8 @@ class GlobalMarket(UNetSingleton):
                                                 else Side.SELL,
                                                 order['size'],
                                                 order['issuer'])
+
+            self.order_index.get_unsafe().set(final_id)
 
         self.ready = True
 

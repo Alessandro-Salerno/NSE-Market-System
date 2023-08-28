@@ -63,8 +63,9 @@ class UNetClient(MComClient):
         self._local_command_handler._top = self
         super().__init__(server_address, server_port, connection_handler_class)
         self._local_command_handler._parent = self._connection
+        self._connection.join()
 
-    def on_connect(self):
+    def post_connect(self):
         protocol = MComProtocol(self._socket)
         self._command_orchestrator = UNetCommandOrchestrator(self._local_command_handler, protocol)
         

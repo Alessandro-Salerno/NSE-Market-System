@@ -21,19 +21,20 @@ from mcom.protocol import MComProtocol
 
 
 class MComConnectionHandler:
-    def __init__(self, socket: socket.socket, parent=None) -> None:
+    def __init__(self, socket: socket.socket, parent=None, thread_independent=True) -> None:
         self.protocol = MComProtocol(socket)
         self._alive = True
         self._finished = False
         self._parent = parent
+        self._thread_independent = thread_independent
 
         self._scheduled = {}
-        self.schedule(self.main)
+        self.schedule(self.main) if thread_independent else None
 
-    def _loop(self, target) -> None:
+    def _loop(self, target, *args, **kwargs) -> None:
         while self.alive and self._scheduled[target]:
             try:
-                target()
+                target(*args, **kwargs)
             except Exception as e:
                 self.on_exception(e)
 
@@ -45,10 +46,11 @@ class MComConnectionHandler:
     def on_exception(self, exception: Exception) -> None:
         raise exception
     
-    def schedule(self, target=None):
+    def schedule(self, target=None, *args, **kwargs):
         self._scheduled.__setitem__(target, True)
-        _mcom_loop_thread = threading.Thread(target=self._loop, args=(target,), daemon=True)
+        _mcom_loop_thread = threading.Thread(target=self._loop, args=(target, *args), kwargs=kwargs, daemon=self._thread_independent)
         _mcom_loop_thread.start()
+        _mcom_loop_thread.join() if not self._thread_independent else None
 
     def kill(self, target=None) -> None:
         if target == None:
@@ -56,6 +58,12 @@ class MComConnectionHandler:
             return
         
         self._scheduled.__setitem__(target, False)
+
+    def join(self):
+        if self._thread_independent:
+            raise NotImplementedError('Connection handler in thread-independent')
+        
+        self.schedule(self.main)
 
     @property
     def alive(self):

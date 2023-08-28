@@ -28,9 +28,13 @@ class MComClient:
         self._socket.connect((server_address, server_port))
 
         self.on_connect()
-        self._connection = connection_handler_class(socket=self._socket, parent=self)
+        self._connection = connection_handler_class(socket=self._socket, parent=self, thread_independent=False)
+        self.post_connect()
 
     def on_connect(self):
+        pass
+
+    def post_connect(self):
         pass
 
     @property

@@ -1,9 +1,9 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
+# the Free Software Foundation, either version 4 of the License, or
 # (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -26,15 +26,15 @@ class MComProtocol:
     def send(self, message: str) -> None:
         encoded = message.encode('utf-8')
         msgsz = len(encoded)
-        byte_msgsz = msgsz.to_bytes(length=3, byteorder='little', signed=False)
+        byte_msgsz = msgsz.to_bytes(length=4, byteorder='little', signed=False)
         sent = self.socket.send(byte_msgsz)
         sent += self.socket.send(encoded)
 
-        if sent != msgsz + 3:
-            raise MComSendException(msgsz, 3, sent)
+        if sent != msgsz + 4:
+            raise MComSendException(msgsz, 4, sent)
         
     def recv(self) -> str:
-        msgsz = int.from_bytes(self.socket.recv(3), byteorder='little', signed=False)
+        msgsz = int.from_bytes(self.socket.recv(4), byteorder='little', signed=False)
         remaining = msgsz
         buffer = b''
 
