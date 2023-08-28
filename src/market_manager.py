@@ -92,11 +92,13 @@ class MarketManager:
         with ExchangeDatabase().assets[self._ticker] as asset:
             if order.side == Side.SELL:
                 asset['sessionData']['sellVolume'] += order.size
-                asset['immediate']['lastAsk'] = asset['immediate']['ask'] if asset['immediate']['ask'] is not None \
-                    and asset['immediate']['ask'] != engine.unprocessed_orders.min_offer else asset['immediate']['lastAsk']
             else:
                 asset['sessionData']['buyVolume'] += order.size
-                asset['immediate']['lastBid'] = asset['immediate']['bid'] if asset['immediate']['bid'] is not None and \
+
+            asset['immediate']['lastAsk'] = asset['immediate']['ask'] if asset['immediate']['ask'] is not None \
+                    and asset['immediate']['ask'] != engine.unprocessed_orders.min_offer else asset['immediate']['lastAsk']
+
+            asset['immediate']['lastBid'] = asset['immediate']['bid'] if asset['immediate']['bid'] is not None and \
                      asset['immediate']['bid'] != engine.unprocessed_orders.max_bid else asset['immediate']['lastBid']
 
             asset['immediate']['bid'] = engine.unprocessed_orders.max_bid if engine.unprocessed_orders.max_bid > 0 and engine.unprocessed_orders.max_bid != float('inf') else None
