@@ -466,21 +466,23 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 }
             )
         
-        tot_orders = 0
-        successful = 0
+        order_ids = []
         for order_id in ExchangeDatabase().users[command.issuer].get_unsafe()['immediate']['orders']:
             if ExchangeDatabase().orders[order_id].get_unsafe()['ticker'] == ticker:
-                tot_orders += 1
-                successful += GlobalMarket().cancel_order(int(order_id), command.issuer) == None
+                order_ids.append(order_id)
+
+        tot = 0
+        for order_id in order_ids:
+            tot += GlobalMarket().cancel_order(int(order_id), command.issuer) == None
 
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
             message={
-                'total': tot_orders,
-                'successful': successful,
-                'failed': tot_orders - successful,
-                'content': f'{tot_orders} orders processed, {successful} successful, {tot_orders - successful} failed'
+                'total': len(order_ids),
+                'successful': tot,
+                'failed': len(order_ids) - tot,
+                'content': f'{len(order_ids)} orders processed, {tot} successful, {len(order_ids) - tot} failed'
             }
         )
 
