@@ -216,6 +216,10 @@ def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price
     real_price = 0
     try:
         real_price = float(price)
+        if real_price == float('inf') or real_price == float('nan'):
+            raise Exception()
+        if exec != Execution.MARKET and real_price <= 0:
+            raise Exception()
     except:
         return unet_make_status_message(
             mode=UNetStatusMode.ERR,
@@ -228,6 +232,8 @@ def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price
     real_size = 0
     try:
         real_size = int(size)
+        if real_price == float('inf') or real_price == float('nan') or real_size <= 0:
+            raise Exception()
     except:
         return unet_make_status_message(
             mode=UNetStatusMode.ERR,

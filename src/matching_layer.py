@@ -60,17 +60,17 @@ class MatchingLayer:
     
     def delete(self, order: Order):
         self._engine.unprocessed_orders.remove(order)
-        if order.order_id not in self._max_bid_ids and order.order_id not in self._min_offer_ids:
+        if int(order.order_id) not in self._max_bid_ids and int(order.order_id) not in self._min_offer_ids:
             return
 
         match (order.side):
             case Side.SELL:
-                self._min_offer_ids.remove(order.order_id)
+                self._min_offer_ids.remove(int(order.order_id))
                 self._min_offer_size -= order.size
                 self._recompute_offers()
 
             case Side.BUY:
-                self._max_bid_ids.remove(order.order_id)
+                self._max_bid_ids.remove(int(order.order_id))
                 self._max_bid_size -= order.size
                 self._recompute_bids()
 
@@ -87,22 +87,22 @@ class MatchingLayer:
             case Side.SELL:
                 if order.price == self._min_offer:
                     self._min_offer_size += order.size
-                    self._min_offer_ids.append(order.order_id)
+                    self._min_offer_ids.append(int(order.order_id))
 
                 if self._min_offer == None or order.price < self._min_offer:
                     self._min_offer = order.price
                     self._min_offer_size = order.size
-                    self._min_offer_ids = [order.order_id,]
+                    self._min_offer_ids = [int(order.order_id),]
 
             case Side.BUY:
                 if order.price == self._max_bid:
                     self._max_bid_size += order.size
-                    self._max_bid_ids.append(order.order_id)
+                    self._max_bid_ids.append(int(order.order_id))
 
                 if self._max_bid == None or order.price > self._max_bid:
                     self._max_bid = order.price
                     self._max_bid_size = order.size
-                    self._max_bid_ids = [order.order_id,]
+                    self._max_bid_ids = [int(order.order_id),]
     
     def _update_quotes_matched(self, order: Order):
         match (order.side):
@@ -118,8 +118,11 @@ class MatchingLayer:
             if self._max_bid in self._engine.unprocessed_orders.bids:
                 orders = self._engine.unprocessed_orders.bids[self._max_bid]
                 self._max_bid_size = sum([o.size for o in orders])
-            if self._max_bid == float('inf') or self._max_bid <= 0:
-                self._max_bid = None
+                self._max_bid_ids = [int(o.order_id) for o in orders]
+            else:
+                self._max_bid_size = None
+                self._max_bid_ids = []
+            self._fix_quotes()
 
     def _recompute_offers(self):
         if self._min_offer_size <= 0:
@@ -127,5 +130,14 @@ class MatchingLayer:
             if self._min_offer in self._engine.unprocessed_orders.offers:
                 orders = self._engine.unprocessed_orders.offers[self._min_offer]
                 self._min_offer_size = sum([o.size for o in orders])
-            if self._min_offer_size == float('inf') or self._min_offer_size <= 0:
-                self._min_offer = None
+                self._min_offer_ids = [int(o.order_id) for o in orders]
+            else:
+                self._min_offer_size = None
+                self._min_offer_ids = []
+            self._fix_quotes()
+    
+    def _fix_quotes(self):
+        if self._max_bid == float('inf') or self._max_bid == float('nan') or self._max_bid_size == None or self._max_bid_size <= 0:
+            self._max_bid = None
+        if self._min_offer_size == float('inf') or self._min_offer == float('nan') or self._min_offer_size == None or self._min_offer_size <= 0:
+            self._min_offer = None

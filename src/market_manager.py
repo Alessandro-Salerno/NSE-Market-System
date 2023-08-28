@@ -78,28 +78,31 @@ class MarketManager:
 
     def update_asset(self, order: Order, engine: MatchingLayer):
         with ExchangeDatabase().assets[self._ticker] as asset:
+            session_data = asset['sessionData']
+            immediate = asset['immediate']
+
             if order.side == Side.SELL:
-                asset['sessionData']['sellVolume'] += order.size
+                session_data['sellVolume'] += order.size
             else:
-                asset['sessionData']['buyVolume'] += order.size
+                session_data['buyVolume'] += order.size
 
-            asset['immediate']['lastAsk'] = asset['immediate']['ask'] if asset['immediate']['ask'] is not None \
-                    and asset['immediate']['ask'] != engine.min_offer() else asset['immediate']['lastAsk']
+            immediate['lastAsk'] = immediate['ask'] if immediate['ask'] is not None \
+                    and immediate['ask'] != engine.min_offer() else immediate['lastAsk']
 
-            asset['immediate']['lastBid'] = asset['immediate']['bid'] if asset['immediate']['bid'] is not None and \
-                     asset['immediate']['bid'] != engine.max_bid() else asset['immediate']['lastBid']
+            immediate['lastBid'] = immediate['bid'] if immediate['bid'] is not None and \
+                     immediate['bid'] != engine.max_bid() else immediate['lastBid']
 
-            asset['immediate']['bid'] = engine.max_bid()
-            asset['immediate']['ask'] = engine.min_offer()
-            asset['immediate']['mid'] = engine.current_price()
-            asset['immediate']['bidVolume'] = engine.max_bid_size()
-            asset['immediate']['askVolume'] = engine.min_offer_size()
+            immediate['bid'] = engine.max_bid()
+            immediate['ask'] = engine.min_offer()
+            immediate['mid'] = engine.current_price()
+            immediate['bidVolume'] = engine.max_bid_size()
+            immediate['askVolume'] = engine.min_offer_size()
 
-            asset['immediate']['depth']['bids'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() }
-            asset['immediate']['depth']['offers'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
+            immediate['depth']['bids'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() }
+            immediate['depth']['offers'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
 
-            if asset['sessionData']['open'] == None:
-                asset['sessionData']['open'] = asset['immediate']['mid']
+            if session_data['open'] == None:
+                session_data['open'] = immediate['mid']
 
     def transact(self, trades):
         if trades == None:
@@ -167,7 +170,7 @@ class MarketManager:
                     assets.__setitem__(self._ticker, trade.size)
                 if assets[self._ticker] == 0:
                     assets.pop(self._ticker)
-                b['immediate']['current']['balance'] -= round(buy_order.price * trade.size, 3)
+                b['immediate']['current']['balance'] = round(b['immediate']['current']['balance'] - round(buy_order.price * trade.size, 3), 3)
             
             with ExchangeDatabase().users[seller] as s:
                 assets = s['immediate']['current']['assets']
@@ -177,7 +180,7 @@ class MarketManager:
                     assets.__setitem__(self._ticker, trade.size * -1)
                 if assets[self._ticker] == 0:
                     assets.pop(self._ticker)
-                s['immediate']['current']['balance'] += round(sell_order.price * trade.size, 3)
+                s['immediate']['current']['balance'] = round(s['immediate']['current']['balance'] + round(sell_order.price * trade.size, 3), 3)
 
             ExchangeDatabase().update_order(buy_order.order_id, buy_order.size)
             ExchangeDatabase().update_order(sell_order.order_id, sell_order.size)
@@ -196,4 +199,4 @@ class MarketManager:
                 sell_order.price = sell_order_original_price
 
             with ExchangeDatabase().assets[self._ticker] as asset:
-                asset['sessionData']['tradedValue'] += round(trade.price * trade.size, 2)
+                asset['sessionData']['tradedValue'] = round(asset['sessionData']['tradedValue'] + round(trade.price * trade.size, 2), 2)

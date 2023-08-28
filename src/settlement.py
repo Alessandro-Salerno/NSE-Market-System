@@ -33,7 +33,7 @@ class MarketSettlement(UNetSingleton):
                 asset_history = history['assets']
                 balance_history = history['balance']
 
-                user['immediate']['settled']['balance'] += user['immediate']['current']['balance']
+                user['immediate']['settled']['balance'] = round(user['immediate']['settled']['balance'] + user['immediate']['current']['balance'], 3)
                 fee += user['immediate']['current']['balance']
                 user['immediate']['current']['balance'] = 0
 
