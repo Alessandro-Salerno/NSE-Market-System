@@ -29,6 +29,7 @@ In-game financial markets enhance liquidity and reduced overall volatility in th
 * Digital payments with in-game currency
 * Periodic E-Mail messages to users with up-to-date market information
 * JSON API over TCP (Using UNet and MCom)
+* Up to 2250 orders per ticker per second (0.44 ms/order)
 
 ## Disclaimer
 This software is meant to be used exclusively with "play money" and may not be compatible with world regulations such as those of the SEC (Securities Exchange Commission) or other regulatory institutions and frameworks. Given its private nature and the short development time, it also lacks many security features which may make it incompatible with privacy and data security regulations such as the GDPR.
