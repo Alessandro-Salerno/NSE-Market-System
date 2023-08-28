@@ -72,7 +72,6 @@ class ExchangeDatabase(UNetSingleton):
                 'mid': None,
                 'lastBid': None,
                 'lastAsk': None,
-                'imbalance': 0,
                 'depth': {
                     'bids': {},
                     'offers': {}

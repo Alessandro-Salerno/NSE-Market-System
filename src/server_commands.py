@@ -350,7 +350,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         
     @unet_command('marketposition', 'posizionemercato', 'mp', 'pm')
     def market_position(self, command: UNetServerCommand):
-        colums = ['TICKER', 'L BID', 'L ASK', 'BUY V', 'SELL V', 'TRADED', 'SPREAD', 'SHORT', 'IMBALANCE']
+        colums = ['TICKER', 'L BID', 'L ASK', 'BUY V', 'SELL V', 'TRADED', 'SPREAD', 'SHORT']
         tables = []
 
         for aclass in sorted(list(ExchangeDatabase().asset_classes.keys())):
@@ -386,7 +386,6 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                                                         else None))
 
                     rows[index].append(f"{(shortabs / info['outstandingUnits'] * 100):.2f}%")
-                    rows[index].append(round(immediate['imbalance'], 5))
 
             tables.append(unet_make_table_message(
                 title=f'CLASS {aclass} MARKET',
