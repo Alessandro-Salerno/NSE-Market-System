@@ -72,7 +72,6 @@ class GlobalMarket(UNetSingleton):
                                                 order['issuer'])
 
             self.order_index.get_unsafe().set(final_id)
-
         self.ready = True
 
 

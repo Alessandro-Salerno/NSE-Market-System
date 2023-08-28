@@ -84,6 +84,7 @@ class MarketManager:
     def cancel_order(self, order):
         with self._engine_lock as engine:
             engine.unprocessed_orders.remove(order)
+            order.left = 0
             order.size = 0
             self.update_asset(order, engine)
 
@@ -106,7 +107,7 @@ class MarketManager:
             if engine.unprocessed_orders.max_bid in engine.unprocessed_orders.bids.keys():
                 val = sum([o.size for o in engine.unprocessed_orders.bids.get(engine.unprocessed_orders.max_bid).orders])
                 if val <= 0:
-                    engine.unprocessed_orders.offers.pop(engine.unprocessed_orders.max_bid)
+                    engine.unprocessed_orders.bids.pop(engine.unprocessed_orders.max_bid)
                     val = None
                 asset['immediate']['bidVolume'] = val
             else:
