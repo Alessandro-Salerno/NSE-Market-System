@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+from datetime import datetime
 from order_matching.side import Side
 from order_matching.execution import Execution
 
@@ -43,6 +44,10 @@ class GlobalMarket(UNetSingleton):
         self.ready = False
         self.order_index = ObjectLock(MarketIndex())
 
+        for ticker in ExchangeDatabase().assets:
+            if ticker not in self.markets:
+                self.create_market(ticker)
+
         if len(ExchangeDatabase().orders.keys()) > 0:
             self.order_index.get_unsafe().set(int(min(ExchangeDatabase().orders.keys())) - 1)
             for order_id in ExchangeDatabase().orders:
@@ -62,11 +67,6 @@ class GlobalMarket(UNetSingleton):
                                                 else Side.SELL,
                                                 order['size'],
                                                 order['issuer'])
-        
-        for ticker in ExchangeDatabase().assets:
-            if ticker not in self.markets:
-                from market_manager import MarketManager
-                self.markets.__setitem__(ticker, MarketManager(ticker))
 
         self.ready = True
 
@@ -80,16 +80,12 @@ class GlobalMarket(UNetSingleton):
             return oi.next()
 
     def add_limit_order(self, ticker, side, price, size, issuer):
-        from market_manager import MarketManager
-        market: MarketManager = self.markets.setdefault(ticker, MarketManager(ticker))
-        o = market.add_limit_order(side, size, price, issuer)
-        return o
+        market = self.markets[ticker]
+        return market.add_limit_order(side, size, price, issuer)
     
     def add_market_order(self, ticker, side, size, issuer):
-        from market_manager import MarketManager
-        market: MarketManager = self.markets.setdefault(ticker, MarketManager(ticker))
-        o = market.add_market_order(side, size, issuer)
-        return o
+        market = self.markets[ticker]
+        return market.add_market_order(side, size, issuer)
 
     def cancel_order(self, order_id, issuer):
         try:
@@ -125,3 +121,7 @@ class GlobalMarket(UNetSingleton):
         ExchangeDatabase().users[self.orders[order_id].trader_id].get_unsafe()['immediate']['orders'].remove(str(order_id))
         self.orders.pop(order_id)
         ExchangeDatabase().orders.pop(str(order_id))
+
+    def create_market(self, ticker):
+        from market_manager import MarketManager
+        self.markets.__setitem__(ticker, MarketManager(ticker))

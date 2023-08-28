@@ -23,6 +23,7 @@ import rich
 import getpass
 import signal
 import plotext as p
+from datetime import datetime
 
 from rich.table import Table
 from rich.console import Console
@@ -87,6 +88,10 @@ class MyHandler(MComConnectionHandler):
         login = json.loads(self.protocol.recv())
         if login['code'] != UNetStatusCode.DONE:
             self.reply(rtype=login['type'], code=login['code'], message=login['message']['content'])
+
+        now = datetime.now()
+        self.protocol.ask('whoami')
+        print(f"Ping time: {datetime.now() - now}")
 
         self.schedule(self.my_main)
         self.kill(self.main)

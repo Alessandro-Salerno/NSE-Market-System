@@ -67,6 +67,8 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                 }
             )
         
+        GlobalMarket().create_market(ticker)
+
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
