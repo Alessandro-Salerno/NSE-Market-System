@@ -57,6 +57,15 @@ class MyLocalHandler(UNetCommandHandler):
         self.parent.protocol.ask('whoami')
         print(f"Ping time: {int((datetime.now().timestamp() - start.timestamp()) * 1000)} ms\n")
 
+    @unet_command('avgping')
+    def avgping(self, command: any):
+        print('This operation may take a few seconds...')
+        start = datetime.now()
+        for i in range(1000):
+            self.parent.protocol.ask('whoami')
+        diff = datetime.now() - start
+        print(f"Average ping time: {int(diff.microseconds / 1000)} microseconds\n")
+
     @unet_command('clear', 'cls')
     def clear(self, command: any):
         p.clear_terminal()

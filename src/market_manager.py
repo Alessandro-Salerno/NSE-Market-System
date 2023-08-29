@@ -22,6 +22,7 @@ from order_matching.orders import Orders
 from order_matching.side import Side
 from order_matching.order import LimitOrder, MarketOrder, Order
 from order_matching.execution import Execution
+from order_matching.status import Status
 
 from object_lock import ObjectLock
 from global_market import GlobalMarket
@@ -72,8 +73,8 @@ class MarketManager:
     def cancel_order(self, order):
         with self._engine_lock as engine:
             engine.delete(order)
+            order.status = Status.CANCEL
             order.size = 0
-            order.left = 0
             self.update_asset(order, engine)
 
     def update_asset(self, order: Order, engine: MatchingLayer):
@@ -98,8 +99,21 @@ class MarketManager:
             immediate['bidVolume'] = engine.max_bid_size()
             immediate['askVolume'] = engine.min_offer_size()
 
-            immediate['depth']['bids'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() }
-            immediate['depth']['offers'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
+            side = 'bids' if order.side == Side.BUY else 'offers'
+            depth = immediate['depth'][side]
+            opposite = immediate['depth']['bids'] if order.side == Side.SELL else immediate['depth']['offers']
+            level = str(order.price)
+
+            if order.status == Status.CANCEL:
+                depth[level] -= order.left
+                if depth[level] <= 0:
+                    depth.pop(level)
+            else:
+                if order.left == order.size:
+                    depth.__setitem__(level, depth.setdefault(level, 0) + order.size)
+                else:
+                    immediate['depth']['bids'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() }
+                    immediate['depth']['offers'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
 
             if session_data['open'] == None:
                 session_data['open'] = immediate['mid']

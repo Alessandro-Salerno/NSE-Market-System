@@ -39,7 +39,7 @@ class UNetServerCommand(UNetCommand):
     def issuer(self):
         return self._issuer
 
-
+from datetime import datetime
 class UNetAuthenticatedHandler(MComConnectionHandler):
     def __init__(self,
                  socket: socket,
@@ -70,8 +70,9 @@ class UNetAuthenticatedHandler(MComConnectionHandler):
             logging.info(f"Admin '{self._user}' issued priviledged command '{command.command_stirng}'")
             return
         
-        if not command.local and self.parent.user_database.has_role(self._user, 'user'):
-            self.protocol.send(self._user_command_handler.call_command(command=command))
+        if not command.local:
+            ret = self._user_command_handler.call_command(command=command)
+            self.protocol.send(ret) if ret != None else None
             return
         
         logging.warning(f"Unauthorized user '{self._user}' issued priviledged command '{command.command_stirng}'")

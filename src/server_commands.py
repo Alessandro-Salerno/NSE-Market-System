@@ -26,6 +26,7 @@ from unet.command_handler import UNetCommandHandler, unet_command
 from unet.server import UNetServerCommand
 from unet.protocol import * 
 from unet.database import UNetUserDatabase
+from unet.command_parser import UNetCommandParserFactory
 
 from platformdb import PlatformDB
 from object_lock import ObjectLock
@@ -635,4 +636,8 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 }
             )
 
-    
+    @unet_command('lazy')
+    def lazy(self, command: UNetServerCommand, real_command: str):
+        cmd = UNetCommandParserFactory('*').parse(real_command)
+        cmd.issuer = command.issuer
+        self.call_command(cmd)

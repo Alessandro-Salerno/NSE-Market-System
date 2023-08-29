@@ -19,14 +19,13 @@ from unet.command import UNetCommand, NoSuchUNetCommandException, UNetCommandInc
 import inspect
 
 
-def unet_command(name: str, *aliases):
+def unet_command(*names):
     def inner(handler):
         handler._unet_command_handler = True
-        handler._unet_command_name = name
         handler._unet_command_argc = len(inspect.signature(handler).parameters) - 2
-        handler._unet_command_aliases = list()
-        for alias in aliases:
-            handler._unet_command_aliases.append(alias)
+        handler._unet_command_names = list()
+        for name in names:
+            handler._unet_command_names.append(name)
         return handler
     
     return inner
@@ -34,7 +33,6 @@ def unet_command(name: str, *aliases):
 
 class UNetCommandHandler:
     def __init__(self) -> None:
-        self._aliases = dict()
         self._commands = dict()
         self._parent = None
         self._top = None
@@ -42,18 +40,14 @@ class UNetCommandHandler:
         for attr in dir(self):
             concrete = getattr(self, attr)
             if hasattr(concrete, '_unet_command_handler'):
-                self._commands.__setitem__(concrete._unet_command_name, concrete)
-                for alias in concrete._unet_command_aliases:
-                    self._aliases.__setitem__(alias, concrete)
+                for name in concrete._unet_command_names:
+                    self._commands.__setitem__(name, concrete)
 
-    def get_command(self, name: str) -> any:
-        if name in self._commands:
+    def get_command(self, name: str) -> any: 
+        try:
             return self._commands[name]
-        
-        if name in self._aliases:
-            return self._aliases[name]
-        
-        raise NoSuchUNetCommandException(name)
+        except KeyError as ke:
+            raise NoSuchUNetCommandException(name)
     
     def call_command(self, command: UNetCommand) -> any:
         handler = self.get_command(command.command_name)
