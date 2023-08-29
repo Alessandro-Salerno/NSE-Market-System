@@ -29,7 +29,15 @@ In-game financial markets enhance liquidity and reduced overall volatility in th
 * Digital payments with in-game currency
 * Periodic E-Mail messages to users with up-to-date market information
 * JSON API over TCP (Using UNet and MCom)
-* Up to 2250 orders per ticker per second (0.44 ms/order)
+* Up to 8100 orders per ticker per second (0.12 ms/order)
+
+## Performance considerations
+Performance may varry wildly between "maker" orders and "taker" orders. Maker orders provide liquidity to the marketplace, whereas taker orders take away liquidity. Practically, maker orders are limit orders with a price that makes them umnatchable in the moment they're issued, while taker orders are limit/market orders with size and price that allow them to be matched instantly.
+To the user, the process of placing na order is the same regardless of it being "maker" or "taker", but the NSE Market System handles them very differently.
+Maker orders are just checked for price and size, and added to the order book, while taker orders are matched, checked for how much liquidity they take, and partialy cleared. In some cases, taker orders may require the entire market depth map to be recalculated.
+Another factor that can have an effect on performance are "lazy" orders. "Lazy" orders are orders issued with the "lazy" command, which means the client does not need to wait for confirmation before issuing other orders. They're meant for HFTs and program traders, and they take the same time to be processed, but due to their non-blocking behaviour, the rate is mostly determined by connection speed and the speed of the client code.
+### The takeaway
+For these reasons, you can expect taker orders to be much slower than maker orders. Expect somewhere between 50k to 200k lazy maker orders per ticker per second, 4k to 8k syncronous maker orders per ticker per second, and 0.5k to 4k taker orders per ticker per second.
 
 ## Disclaimer
 This software is meant to be used exclusively with "play money" and may not be compatible with world regulations such as those of the SEC (Securities Exchange Commission) or other regulatory institutions and frameworks. Given its private nature and the short development time, it also lacks many security features which may make it incompatible with privacy and data security regulations such as the GDPR.
