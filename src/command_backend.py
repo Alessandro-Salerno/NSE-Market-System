@@ -17,7 +17,7 @@
 
 from order_matching.execution import Execution
 
-from exdb import ExchangeDatabase
+from exdb import EXCHANGE_DATABASE
 from unet.protocol import *
 
 from global_market import GlobalMarket
@@ -25,17 +25,17 @@ import utils
 
 
 def increment_balance(username: str, qty: int):
-    with ExchangeDatabase().users[username] as user:
+    with EXCHANGE_DATABASE.users[username] as user:
         user['immediate']['settled']['balance'] += qty
 
 
 def set_balance(username: str, qty: int):
-    with ExchangeDatabase().users[username] as user:
+    with EXCHANGE_DATABASE.users[username] as user:
         user['immediate']['settled']['balance'] = qty
 
 
 def change_balance(changer, username: str, qty: str):
-    if username not in ExchangeDatabase().users:
+    if username not in EXCHANGE_DATABASE.users:
         return unet_make_status_message(
             mode=UNetStatusMode.ERR,
             code=UNetStatusCode.BAD,
@@ -69,7 +69,7 @@ def change_balance(changer, username: str, qty: str):
 def show_chart(ticker: str, timeframe: str, **kwargs):
     ticker = ticker.upper()
     
-    if ticker not in ExchangeDatabase().assets:
+    if ticker not in EXCHANGE_DATABASE.assets:
         return unet_make_status_message(
             mode=UNetStatusMode.ERR,
             code=UNetStatusCode.BAD,
@@ -111,10 +111,10 @@ def show_chart(ticker: str, timeframe: str, **kwargs):
 
 def _today_chart(ticker: str, property: str):
     if property == '__SPREAD__':
-        x, y, xfmt = _spread_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['today'])
+        x, y, xfmt = _spread_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['today'])
 
-        bid = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['bid']
-        ask = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['ask']
+        bid = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['bid']
+        ask = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['ask']
         
         x.append(utils.now())
         y.append(round((ask - bid) / round((ask + bid) / 2, 3) * 10000, 2)\
@@ -126,8 +126,8 @@ def _today_chart(ticker: str, property: str):
         return x, y, xfmt
     
     if property == '__DEPTH__':
-        bids = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['depth']['bids']
-        offers = ExchangeDatabase().assets[ticker].get_unsafe()['immediate']['depth']['offers']
+        bids = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['depth']['bids']
+        offers = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['depth']['offers']
         
         bidkeys = sorted([float(k) for k in bids])
         offerkeys = sorted([float(k) for k in offers])
@@ -156,25 +156,25 @@ def _today_chart(ticker: str, property: str):
             y.append(offer_qty)
         return x, y, None
 
-    return _now_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['today'],
+    return _now_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['today'],
                        property,
-                       ExchangeDatabase().assets[ticker].get_unsafe()['immediate'][property])
+                       EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate'][property])
 
 
 def _intraday_chart(ticker: str, property: str, day: str):
-    if day not in ExchangeDatabase().assets[ticker].get_unsafe()['history']['intraday']:
+    if day not in EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['intraday']:
         return [], [], None
     
     if property == '__SPREAD__':
-        return _spread_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['intraday']['day'])
+        return _spread_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['intraday']['day'])
     
-    return _intraday_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['intraday']['day'])
+    return _intraday_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['intraday']['day'])
 
 
 def _daily_chart(ticker: str, property: str, current_property: str):
-    return _now_series(ExchangeDatabase().assets[ticker].get_unsafe()['history']['daily'],
+    return _now_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['daily'],
                        property,
-                       ExchangeDatabase().assets[ticker].get_unsafe()['immediate'][current_property])
+                       EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate'][current_property])
 
 
 def _now_series(history: dict, propertY: str, current: float):
@@ -204,7 +204,7 @@ def _spread_series(history: dict):
 
 
 def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price: str):
-    if ticker not in ExchangeDatabase().assets.keys():
+    if ticker not in EXCHANGE_DATABASE.assets.keys():
         return unet_make_status_message(
             mode=UNetStatusMode.ERR,
             code=UNetStatusCode.BAD,

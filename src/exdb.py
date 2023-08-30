@@ -30,6 +30,11 @@ class ExchangeDatabase(UNetSingleton):
             'ordersById': self.order()
         })
 
+        self.users = self.db.db['usersByName']
+        self.assets = self.db.db['assetsByTicker']
+        self.asset_classes = self.db.db['assetsByClass']
+        self.orders = self.db.db['ordersById']
+
         self.db.db.setdefault('openDate', utils.today())
         self.db.timer.start()
 
@@ -114,7 +119,7 @@ class ExchangeDatabase(UNetSingleton):
                  assets={}):
         
         userdb = self.db.db['usersByName']
-        if username in userdb.keys():
+        if username in userdb:
             return False
         
         userdb.__setitem__(username, ObjectLock(self.user(balance=balance,
@@ -147,12 +152,12 @@ class ExchangeDatabase(UNetSingleton):
                   size=None,
                   price=None):
         
-        self.orders.__setitem__(order_id, ObjectLock(self.order(execution,
-                                                                issuer,
-                                                                side,
-                                                                ticker,
-                                                                size,
-                                                                price)))
+        self.orders.__setitem__(order_id, self.order(execution,
+                                                     issuer,
+                                                     side,
+                                                     ticker,
+                                                     size,
+                                                     price))
         
         self.users[issuer].get_unsafe()['immediate']['orders'].append(order_id)
 
@@ -161,10 +166,9 @@ class ExchangeDatabase(UNetSingleton):
     def update_order(self,
                      order_id,
                      size):
-        
-        with self.orders[order_id] as order:
-            order['size'] = size
     
+        self.orders[order_id]['size'] = size
+
     def get_open_date(self):
         return self.db.db['openDate']
     
@@ -173,19 +177,6 @@ class ExchangeDatabase(UNetSingleton):
 
     def user_is_issuer(self, username, asset):
         return asset['info']['issuer'] == username or asset['info']['issuer'] == '*'
-    
-    @property
-    def users(self):
-        return self.db.db['usersByName']
-    
-    @property
-    def assets(self):
-        return self.db.db['assetsByTicker']
-    
-    @property
-    def asset_classes(self):
-        return self.db.db['assetsByClass']
-    
-    @property
-    def orders(self):
-        return self.db.db['ordersById']
+
+
+EXCHANGE_DATABASE = ExchangeDatabase()

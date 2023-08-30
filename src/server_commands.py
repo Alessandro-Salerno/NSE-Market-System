@@ -31,7 +31,7 @@ from unet.command_parser import UNetCommandParserFactory
 from platformdb import PlatformDB
 from object_lock import ObjectLock
 
-from exdb import ExchangeDatabase
+from exdb import EXCHANGE_DATABASE
 from global_market import GlobalMarket
 from settlement import MarketSettlement
 from email_engine import EmailEngine
@@ -45,8 +45,8 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
     def stop(self, command: UNetServerCommand):
         self.top.kill()
         time.sleep(0.500)
-        ExchangeDatabase().db.timer.stop()
-        ExchangeDatabase().db.save()
+        EXCHANGE_DATABASE.db.timer.stop()
+        EXCHANGE_DATABASE.db.save()
         os.kill(os.getpid(), signal.SIGINT)
     
     @unet_command('setbal')
@@ -59,7 +59,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
     
     @unet_command('addticker')
     def addticker(self, command: UNetServerCommand, ticker: str, aclass: str):
-        if not ExchangeDatabase().add_asset(ticker, aclass):
+        if not EXCHANGE_DATABASE.add_asset(ticker, aclass):
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
@@ -80,7 +80,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
     
     @unet_command('setticker')
     def setticker(self, command: UNetServerCommand, ticker: str, section: str, attribute: str, value: str, vtype: str):
-        if ticker not in ExchangeDatabase().assets:
+        if ticker not in EXCHANGE_DATABASE.assets:
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
@@ -89,7 +89,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                 }
             )
         
-        with ExchangeDatabase().assets[ticker] as asset:
+        with EXCHANGE_DATABASE.assets[ticker] as asset:
             if section not in asset.keys():
                 return unet_make_status_message(
                     mode=UNetStatusMode.ERR,
@@ -176,7 +176,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         settled = 0
         current = 0
         
-        with ExchangeDatabase().users[command.issuer] as user:
+        with EXCHANGE_DATABASE.users[command.issuer] as user:
             settled = user['immediate']['settled']['balance']
             current = user['immediate']['current']['balance']
     
@@ -197,12 +197,12 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         colums = ['TICKER', 'BID', 'ASK', 'MID', 'BID V', 'ASK V', 'CHANGE']
         tables = []
 
-        for aclass in sorted(list(ExchangeDatabase().asset_classes.keys())):
+        for aclass in sorted(list(EXCHANGE_DATABASE.asset_classes.keys())):
             rows = []
 
-            for index, ticker in enumerate(sorted(ExchangeDatabase().asset_classes[aclass])):
+            for index, ticker in enumerate(sorted(EXCHANGE_DATABASE.asset_classes[aclass])):
                 rows.append([])
-                with ExchangeDatabase().assets[ticker] as asset:
+                with EXCHANGE_DATABASE.assets[ticker] as asset:
                     info = asset['info']
                     immediate = asset['immediate']
                     session_data = asset['sessionData']
@@ -270,7 +270,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
     @unet_command('pay', 'paga', 'pp', 'pa')
     def pay(self, command: UNetServerCommand, who: str, amount: str):
-        if who not in ExchangeDatabase().users:
+        if who not in EXCHANGE_DATABASE.users:
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
@@ -294,7 +294,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             )
         
         if UNetUserDatabase().has_role(command.issuer, 'centralbank'):
-            with ExchangeDatabase().users[who] as receiver:
+            with EXCHANGE_DATABASE.users[who] as receiver:
                 receiver['immediate']['settled']['balance'] += real_amount
 
             return unet_make_status_message(
@@ -305,7 +305,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 }
             )
 
-        with ExchangeDatabase().users[command.issuer] as sender:
+        with EXCHANGE_DATABASE.users[command.issuer] as sender:
             if sender['immediate']['settled']['balance'] + sender['immediate']['current']['balance'] < real_amount:
                 return unet_make_status_message(
                     mode=UNetStatusMode.ERR,
@@ -321,7 +321,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 sender['immediate']['settled']['balance'] -= real_amount
 
         if not UNetUserDatabase().has_role(who, 'centralbank'):
-            with ExchangeDatabase().users[who] as receiver:
+            with EXCHANGE_DATABASE.users[who] as receiver:
                 receiver['immediate']['settled']['balance'] += real_amount
 
         return unet_make_status_message(
@@ -334,7 +334,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
     @unet_command('positions', 'posizioni', 'ps')
     def positions(self, command: UNetServerCommand):
-        with ExchangeDatabase().users[command.issuer] as user:
+        with EXCHANGE_DATABASE.users[command.issuer] as user:
             return unet_make_multi_message(
                 unet_make_table_message(
                     title='SESSION MOVES',
@@ -354,16 +354,16 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         colums = ['TICKER', 'L BID', 'L ASK', 'BUY V', 'SELL V', 'TRADED', 'SPREAD', 'SHORT']
         tables = []
 
-        for aclass in sorted(list(ExchangeDatabase().asset_classes.keys())):
+        for aclass in sorted(list(EXCHANGE_DATABASE.asset_classes.keys())):
             rows = []
 
-            for index, ticker in enumerate(sorted(ExchangeDatabase().asset_classes[aclass])):
+            for index, ticker in enumerate(sorted(EXCHANGE_DATABASE.asset_classes[aclass])):
                 shortabs = 0
-                for username in ExchangeDatabase().users:
-                    user = ExchangeDatabase().users[username].get_unsafe()
+                for username in EXCHANGE_DATABASE.users:
+                    user = EXCHANGE_DATABASE.users[username].get_unsafe()
                     uassets = user['immediate']['current']['assets']
                     sassets = user['immediate']['settled']['assets']
-                    if ExchangeDatabase().user_is_issuer(username, ExchangeDatabase().assets[ticker].get_unsafe()):
+                    if EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[ticker].get_unsafe()):
                         continue
                     if ticker in uassets and uassets[ticker] < 0:
                         shortabs += abs(uassets[ticker])
@@ -371,7 +371,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                         shortabs += abs(sassets[ticker])
                 
                 rows.append([])
-                with ExchangeDatabase().assets[ticker] as asset:
+                with EXCHANGE_DATABASE.assets[ticker] as asset:
                     info = asset['info']
                     immediate = asset['immediate']
                     session_data = asset['sessionData']
@@ -437,9 +437,9 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         colums = ['TICKER', 'ORDER', 'EXEC', 'SIDE', 'SIZE', 'PRICE']
         rows = []
 
-        with ExchangeDatabase().users[command.issuer] as user:
+        with EXCHANGE_DATABASE.users[command.issuer] as user:
             for index, order_id in enumerate(user['immediate']['orders']):
-                order = ExchangeDatabase().orders[order_id].get_unsafe()
+                order = EXCHANGE_DATABASE.orders[order_id]
                 rows.append([])
                 rows[index].append(order['ticker'])
                 rows[index].append(order_id)
@@ -457,7 +457,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     @unet_command('clearorders', 'annullaordini', 'co', 'ao')
     def clearorders(self, command: UNetServerCommand, ticker: str):
         ticker = ticker.upper()
-        if ticker not in ExchangeDatabase().assets:
+        if ticker not in EXCHANGE_DATABASE.assets:
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
@@ -467,8 +467,8 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             )
         
         order_ids = []
-        for order_id in ExchangeDatabase().users[command.issuer].get_unsafe()['immediate']['orders']:
-            if ExchangeDatabase().orders[order_id].get_unsafe()['ticker'] == ticker:
+        for order_id in EXCHANGE_DATABASE.users[command.issuer].get_unsafe()['immediate']['orders']:
+            if EXCHANGE_DATABASE.orders[order_id]['ticker'] == ticker:
                 order_ids.append(order_id)
 
         tot = 0
@@ -508,7 +508,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     @unet_command('transfer', 'trasferisci', 'tr', 'mv')
     def transfer(self, command: UNetServerCommand, ticker: str, qty: str, who: str):
         ticker = ticker.upper()
-        if ticker not in ExchangeDatabase().assets:
+        if ticker not in EXCHANGE_DATABASE.assets:
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
@@ -528,7 +528,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 }
             )
         
-        if who not in ExchangeDatabase().users:
+        if who not in EXCHANGE_DATABASE.users:
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
                 code=UNetStatusCode.BAD,
@@ -537,8 +537,8 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 }
             )
     
-        with ExchangeDatabase().users[command.issuer] as sender:
-            if not ExchangeDatabase().user_is_issuer(command.issuer, ExchangeDatabase().assets[ticker].get_unsafe()):
+        with EXCHANGE_DATABASE.users[command.issuer] as sender:
+            if not EXCHANGE_DATABASE.user_is_issuer(command.issuer, EXCHANGE_DATABASE.assets[ticker].get_unsafe()):
                 if ticker not in sender['immediate']['settled']['assets'] or sender['immediate']['settled']['assets'][ticker] < qty:
                     return unet_make_status_message(
                         mode=UNetStatusMode.ERR,
@@ -556,7 +556,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             if sender['immediate']['settled']['assets'][ticker] == 0:
                 sender['immediate']['settled']['assets'].pop(ticker)
 
-        with ExchangeDatabase().users[who] as receiver:
+        with EXCHANGE_DATABASE.users[who] as receiver:
             if ticker not in receiver['immediate']['settled']['assets'].keys():
                 receiver['immediate']['settled']['assets'].__setitem__(ticker, 0)
 
@@ -576,7 +576,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         target_key = path_steps.pop(len(path_steps) - 1) if len(path_steps) > 0 and path != '' else 'db'
         if '' in path_steps:
             path_steps.remove('')
-        base = {'db': ExchangeDatabase().db.db}
+        base = {'db': EXCHANGE_DATABASE.db.db}
         locks = []
 
         try:

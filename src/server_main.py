@@ -19,7 +19,7 @@ import json
 
 from server_commands import ExchangePriviledgedCommandHandler, ExchangeUserCommandHandler
 from unet.server import UNetAuthenticatedHandler, UNetAuthenticationHandler, UNetServer
-from exdb import ExchangeDatabase
+from exdb import EXCHANGE_DATABASE
 from scheduler import MarketScheduler
 from global_market import GlobalMarket
 from email_engine import EmailEngine
@@ -43,10 +43,10 @@ class ExchangeAuthenticationHandler(UNetAuthenticationHandler):
         super().__init__(socket, authenticated_handler, parent)
 
     def on_login(self, username: str):
-        ExchangeDatabase().add_user(username=username)
+        EXCHANGE_DATABASE.add_user(username=username)
 
     def on_signup(self, username: str):
-        ExchangeDatabase().add_user(username=username)
+        EXCHANGE_DATABASE.add_user(username=username)
 
 
 if __name__ == '__main__':
@@ -57,7 +57,7 @@ This is free software, and you are welcome to redistribute it
 """)
 
     # Instantiate exchange database
-    exdb = ExchangeDatabase()
+    exdb = EXCHANGE_DATABASE
     ee = EmailEngine()
     
     try:

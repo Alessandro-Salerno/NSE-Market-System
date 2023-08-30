@@ -1,11 +1,7 @@
-from datetime import datetime
-
 from order_matching.matching_engine import MatchingEngine
 from order_matching.side import Side
 from order_matching.order import Order
 from order_matching.orders import Orders
-
-from exdb import ExchangeDatabase
 
 
 class MatchingLayer:
@@ -78,7 +74,7 @@ class MatchingLayer:
             case Side.BUY:
                 self._min_offer_size -= order.size
 
-        trades = self._engine.match(datetime.now(), Orders([order]))
+        trades = self._engine.match(order.timestamp, Orders([order]))
         self._update_quotes_matched(order)
 
         if order.size > 0:

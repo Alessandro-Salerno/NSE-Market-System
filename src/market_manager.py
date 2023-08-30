@@ -18,8 +18,6 @@
 from datetime import datetime, timedelta
 from gmpy2 import mpz, mpfr
 
-from order_matching.matching_engine import MatchingEngine
-from order_matching.orders import Orders
 from order_matching.side import Side
 from order_matching.order import LimitOrder, MarketOrder, Order
 from order_matching.execution import Execution
@@ -27,7 +25,7 @@ from order_matching.status import Status
 
 from object_lock import ObjectLock
 from global_market import GlobalMarket
-from exdb import ExchangeDatabase
+from exdb import EXCHANGE_DATABASE
 
 from matching_layer import MatchingLayer
 
@@ -38,60 +36,59 @@ class MarketManager:
         self._engine_lock = ObjectLock(MatchingLayer(sum([ord(c) for c in ticker])))
 
     def add_limit_order(self, side, size, price, issuer):
+        order = LimitOrder(side=side,
+                           price=price,
+                           size=size,
+                           order_id=GlobalMarket().next_order_index(),
+                           trader_id=issuer,
+                           timestamp=datetime.now(),
+                           expiration=datetime.now() + timedelta(days=365),
+                           price_number_of_digits=3)
+
         with self._engine_lock as engine:
-            order = LimitOrder(side=side,
-                               price=price,
-                               size=int(size),
-                               order_id=GlobalMarket().next_order_index(),
-                               trader_id=issuer,
-                               timestamp=datetime.now(),
-                               expiration=datetime.now() + timedelta(days=365),
-                               price_number_of_digits=3)
-            
             trades = engine.place(order)
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
             self.transact(trades=trades, engine=engine)
 
-            return order
+        return order
 
     def add_market_order(self, side, size, issuer):
+        order = MarketOrder(side=side,
+                            size=size,
+                            order_id=GlobalMarket().next_order_index(),
+                            trader_id=issuer,
+                            timestamp=datetime.now(),
+                            expiration=datetime.now() + timedelta(days=365))
+
         with self._engine_lock as engine:
-            order = MarketOrder(side=side,
-                                size=int(size),
-                                order_id=GlobalMarket().next_order_index(),
-                                trader_id=issuer,
-                                timestamp=datetime.now(),
-                                expiration=datetime.now() + timedelta(days=365))
-            
             trades = engine.place(order)
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
             self.transact(trades=trades, engine=engine)
-            
-            return order
+        
+        return order
 
-    def cancel_order(self, order):
+    def cancel_order(self, order, issuer):
+        if order.trader_id != issuer:
+            return -2
+        
         with self._engine_lock as engine:
-            engine.delete(order)
-            order.status = Status.CANCEL
-            order.size = 0
-            self.update_asset(order, engine)
+            try:
+                    engine.delete(order)
+                    order.status = Status.CANCEL
+                    order.size = 0
+                    self.update_asset(order, engine)
+                    GlobalMarket().remove_order(order.order_id)
+            except KeyError as ke:
+                return -1
 
     def update_asset(self, order: Order, engine: MatchingLayer):
         # Assignign variables outside to save on lock time
         side = 'bids' if order.side == Side.BUY else 'offers'
         level = str(order.price)
-        recalculated_depth = None
-        
-        # Small thread-lock optimization
-        if order.status != Status.CANCEL and order.left != order.size:
-            recalculated_depth = {
-                'bids': { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() },
-                'offers': { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
-            }
 
-        with ExchangeDatabase().assets[self._ticker] as asset:
+        with EXCHANGE_DATABASE.assets[self._ticker] as asset:
             session_data = asset['sessionData']
             immediate = asset['immediate']
 
@@ -116,8 +113,6 @@ class MarketManager:
                     depth.pop(level)
             elif order.left == order.size:
                 depth.__setitem__(level, depth.setdefault(level, 0) + order.size)
-            else:
-                immediate['depth'] = recalculated_depth
 
             if session_data['open'] == None:
                 session_data['open'] = immediate['mid']
@@ -130,14 +125,19 @@ class MarketManager:
             sell_order_id = None
             buy_order_id = None
 
+            depth_side = None
+            level = str(trade.price)
+
             match (trade.side):
                 case Side.SELL:
                     sell_order_id = trade.incoming_order_id
                     buy_order_id = trade.book_order_id
+                    depth_side = 'bids'
 
                 case Side.BUY:
                     sell_order_id = trade.book_order_id
                     buy_order_id = trade.incoming_order_id
+                    depth_side = 'offers'
 
             sell_order: Order = GlobalMarket().orders[sell_order_id]
             buy_order: Order = GlobalMarket().orders[buy_order_id]
@@ -153,11 +153,23 @@ class MarketManager:
                     buy_order.price = sell_order.price
                     sell_order.price = bp
                 trade.price = buy_order.price
-                
+            else:
+                with EXCHANGE_DATABASE.assets[self._ticker] as asset:
+                    asset['sessionData']['tradedValue'] = round(asset['sessionData']['tradedValue'] + round(trade.price * trade.size, 2), 2)
+                    d = asset['immediate']['depth'][depth_side]
+                    d[level] -= trade.size
+                    if d[level] <= 0:
+                        d.pop(level)
+            
             seller = sell_order.trader_id
             buyer = buy_order.trader_id
 
-            with ExchangeDatabase().users[buyer] as b:
+            if sell_order.price <= 0:
+                sell_order.price = buy_order.price
+            if buy_order.price == float('inf'):
+                buy_order.price = sell_order.price
+
+            with EXCHANGE_DATABASE.users[buyer] as b:
                 assets = b['immediate']['current']['assets']
                 if self._ticker in assets:
                     assets[self._ticker] += trade.size
@@ -167,7 +179,7 @@ class MarketManager:
                     assets.pop(self._ticker)
                 b['immediate']['current']['balance'] = round(b['immediate']['current']['balance'] - round(buy_order.price * trade.size, 3), 3)
             
-            with ExchangeDatabase().users[seller] as s:
+            with EXCHANGE_DATABASE.users[seller] as s:
                 assets = s['immediate']['current']['assets']
                 if self._ticker in assets:
                     assets[self._ticker] -= trade.size
@@ -177,8 +189,8 @@ class MarketManager:
                     assets.pop(self._ticker)
                 s['immediate']['current']['balance'] = round(s['immediate']['current']['balance'] + round(sell_order.price * trade.size, 3), 3)
 
-            ExchangeDatabase().update_order(buy_order.order_id, buy_order.size)
-            ExchangeDatabase().update_order(sell_order.order_id, sell_order.size)
+            EXCHANGE_DATABASE.update_order(buy_order.order_id, buy_order.size)
+            EXCHANGE_DATABASE.update_order(sell_order.order_id, sell_order.size)
 
             buy_order.left -= trade.size
             sell_order.left -= trade.size
@@ -193,5 +205,3 @@ class MarketManager:
             else:
                 sell_order.price = sell_order_original_price
 
-            with ExchangeDatabase().assets[self._ticker] as asset:
-                asset['sessionData']['tradedValue'] = round(asset['sessionData']['tradedValue'] + round(trade.price * trade.size, 2), 2)

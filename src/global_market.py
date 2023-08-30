@@ -15,15 +15,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from datetime import datetime
 from gmpy2 import mpz
 from order_matching.side import Side
 from order_matching.execution import Execution
 
 from unet.singleton import UNetSingleton
 
-from exdb import ExchangeDatabase
-from object_lock import ObjectLock
+from exdb import EXCHANGE_DATABASE
 
 
 class MarketIndex:
@@ -45,32 +43,31 @@ class GlobalMarket(UNetSingleton):
         self.ready = False
         self.order_index = MarketIndex()
 
-        for ticker in ExchangeDatabase().assets:
+        for ticker in EXCHANGE_DATABASE.assets:
             if ticker not in self.markets:
+                EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['depth'] = EXCHANGE_DATABASE.asset()['immediate']['depth']
                 self.create_market(ticker)
 
-        if len(ExchangeDatabase().orders.keys()) > 0:
+        if len(EXCHANGE_DATABASE.orders.keys()) > 0:
             final_id = 0
-            for order_id in ExchangeDatabase().orders:
+            for order_id, order in EXCHANGE_DATABASE.orders.items():
                 final_id = max(final_id, int(order_id))
                 self.order_index.set(int(order_id) - 1)
-                
-                with ExchangeDatabase().orders[order_id] as order:
-                    match (order['execution']):
-                        case 'LIMIT':
-                            self.add_limit_order(order['ticker'],
-                                                Side.BUY if order['side'] == 'BUY'
-                                                else Side.SELL,
-                                                order['price'],
-                                                order['size'],
-                                                order['issuer'])
+                match (order['execution']):
+                    case 'LIMIT':
+                        self.add_limit_order(order['ticker'],
+                                             Side.BUY if order['side'] == 'BUY'
+                                             else Side.SELL,
+                                             order['price'],
+                                             order['size'],
+                                             order['issuer'])
 
-                        case 'MARKET':
-                            self.add_market_order(order['ticker'],
-                                                Side.BUY if order['side'] == 'BUY'
-                                                else Side.SELL,
-                                                order['size'],
-                                                order['issuer'])
+                    case 'MARKET':
+                        self.add_market_order(order['ticker'],
+                                              Side.BUY if order['side'] == 'BUY'
+                                              else Side.SELL,
+                                              order['size'],
+                                              order['issuer'])
 
             self.order_index.set(final_id)
         self.ready = True
@@ -87,23 +84,14 @@ class GlobalMarket(UNetSingleton):
         return market.add_market_order(side, size, issuer)
 
     def cancel_order(self, order_id, issuer):
-        try:
-            with ExchangeDatabase().orders[order_id] as order:
-                if self.orders[order_id].trader_id != issuer:
-                    return -2
-                
-                self.markets[order['ticker']].cancel_order(self.orders[order_id])
-                self.remove_order(order_id)
-        except KeyError as ke:
-            return -1
-        except Exception as e:
-            raise e
+        return self.markets[EXCHANGE_DATABASE.orders[order_id]['ticker']].cancel_order(self.orders[order_id],
+                                                                                                     issuer)
     
     def add_order(self, ticker: str, order):
         self.orders.__setitem__(order.order_id, order)
 
         if self.ready:
-            ExchangeDatabase().add_order(order.order_id,
+            EXCHANGE_DATABASE.add_order(order.order_id,
                                         'LIMIT' if order.execution == Execution.LIMIT
                                         else 'MARKET',
                                         order.trader_id,
@@ -114,9 +102,9 @@ class GlobalMarket(UNetSingleton):
                                         order.price)
 
     def remove_order(self, order_id):
-        ExchangeDatabase().users[self.orders[order_id].trader_id].get_unsafe()['immediate']['orders'].remove(order_id)
+        EXCHANGE_DATABASE.users[self.orders[order_id].trader_id].get_unsafe()['immediate']['orders'].remove(order_id)
         self.orders.pop(order_id)
-        ExchangeDatabase().orders.pop(order_id)
+        EXCHANGE_DATABASE.orders.pop(order_id)
 
     def create_market(self, ticker):
         from market_manager import MarketManager

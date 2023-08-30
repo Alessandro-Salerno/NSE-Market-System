@@ -22,7 +22,7 @@ from email.mime.text import MIMEText
 from texttable import Texttable
 
 from unet.singleton import UNetSingleton
-from exdb import ExchangeDatabase
+from exdb import EXCHANGE_DATABASE
 from unet.database import UNetUserDatabase
 
 import utils
@@ -39,10 +39,10 @@ class EmailEngine(UNetSingleton):
         table.set_cols_dtype(['t', 'f', 't'])
         table.add_row(['SYMBOL', 'PRICE', 'CHANGE'])
 
-        for aclass in sorted(list(ExchangeDatabase().asset_classes.keys())):
-            assets = ExchangeDatabase().asset_classes[aclass]
+        for aclass in sorted(list(EXCHANGE_DATABASE.asset_classes.keys())):
+            assets = EXCHANGE_DATABASE.asset_classes[aclass]
             for assetname in sorted(assets):
-                with ExchangeDatabase().assets[assetname] as asset:
+                with EXCHANGE_DATABASE.assets[assetname] as asset:
                     price = utils.value_fmt(asset['immediate']['mid'])
                     symbol = f'{assetname}={aclass}'
                     change = (f"{((asset['immediate']['mid'] - asset['sessionData']['previousClose']) / asset['sessionData']['previousClose'] * 100):+.2f}%"

@@ -17,7 +17,7 @@
 
 from unet.singleton import UNetSingleton
 
-from exdb import ExchangeDatabase
+from exdb import EXCHANGE_DATABASE
 import utils
 
 
@@ -25,8 +25,8 @@ class MarketSettlement(UNetSingleton):
     def settle(self):
         fee = 0
         
-        for username in ExchangeDatabase().users:
-            with ExchangeDatabase().users[username] as user:
+        for username in EXCHANGE_DATABASE.users:
+            with EXCHANGE_DATABASE.users[username] as user:
                 current_assets = user['immediate']['current']['assets']
                 settled_assets = user['immediate']['settled']['assets']
                 history = user['history']
@@ -38,8 +38,8 @@ class MarketSettlement(UNetSingleton):
                 user['immediate']['current']['balance'] = 0
 
                 for assetname in current_assets:
-                    if ExchangeDatabase().user_is_issuer(username, ExchangeDatabase().assets[assetname].get_unsafe()):
-                        with ExchangeDatabase().assets[assetname] as asset:
+                    if EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[assetname].get_unsafe()):
+                        with EXCHANGE_DATABASE.assets[assetname] as asset:
                             if asset['info']['outstandingUnits'] == 1:
                                 asset['info']['outstandingUnits'] = abs(current_assets[assetname])
                                 continue
@@ -53,11 +53,11 @@ class MarketSettlement(UNetSingleton):
                     settled_assets[assetname] += current_assets[assetname]
 
                 user['immediate']['current']['assets'].clear()
-                asset_history.__setitem__(ExchangeDatabase().get_open_date(), dict(user['immediate']['settled']['assets']).copy())
-                balance_history.__setitem__(ExchangeDatabase().get_open_date(), user['immediate']['settled']['balance'])
+                asset_history.__setitem__(EXCHANGE_DATABASE.get_open_date(), dict(user['immediate']['settled']['assets']).copy())
+                balance_history.__setitem__(EXCHANGE_DATABASE.get_open_date(), user['immediate']['settled']['balance'])
         
-        for assetname in ExchangeDatabase().assets:
-            with ExchangeDatabase().assets[assetname] as asset:
+        for assetname in EXCHANGE_DATABASE.assets:
+            with EXCHANGE_DATABASE.assets[assetname] as asset:
                 immediate = asset['immediate']
                 session_data = asset['sessionData']
                 history = asset['history']
@@ -66,7 +66,7 @@ class MarketSettlement(UNetSingleton):
                 daily = history['daily']
 
                 session_data['close'] = immediate['mid']
-                daily.__setitem__(ExchangeDatabase().get_open_date(), dict(session_data).copy())
+                daily.__setitem__(EXCHANGE_DATABASE.get_open_date(), dict(session_data).copy())
 
                 session_data['sellVolume'] = 0
                 session_data['buyVolume'] = 0
@@ -75,10 +75,10 @@ class MarketSettlement(UNetSingleton):
                 session_data['previousClose'] = session_data['close']
                 session_data['close'] = None
 
-                intraday.__setitem__(ExchangeDatabase().get_open_date(), dict(today).copy())
+                intraday.__setitem__(EXCHANGE_DATABASE.get_open_date(), dict(today).copy())
                 today.clear()
 
-        with ExchangeDatabase().users['admin'] as admin:
+        with EXCHANGE_DATABASE.users['admin'] as admin:
             admin['immediate']['settled']['balance'] += fee
 
-        ExchangeDatabase().set_open_date(utils.today())
+        EXCHANGE_DATABASE.set_open_date(utils.today())
