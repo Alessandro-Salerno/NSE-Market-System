@@ -46,7 +46,7 @@ class MarketScheduler(UNetSingleton):
         if ExchangeDatabase().get_open_date() != utils.today():
             MarketSettlement().settle()
         
-        schedule.every().day.at('00:00', 'Europe/Rome').do(MarketSettlement().setle)
+        schedule.every().day.at('00:00', 'Europe/Rome').do(MarketSettlement().settle)
 
     def schedule_emails(self):
         schedule.every().day.at('12:00', 'Europe/Rome').do(EmailEngine().send)

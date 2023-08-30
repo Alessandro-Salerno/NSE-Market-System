@@ -28,7 +28,7 @@ class MarketSettlement(UNetSingleton):
         for username in ExchangeDatabase().users:
             with ExchangeDatabase().users[username] as user:
                 current_assets = user['immediate']['current']['assets']
-                setled_assets = user['immediate']['settled']['assets']
+                settled_assets = user['immediate']['settled']['assets']
                 history = user['history']
                 asset_history = history['assets']
                 balance_history = history['balance']
@@ -46,11 +46,11 @@ class MarketSettlement(UNetSingleton):
                             asset['info']['outstandingUnits'] += abs(current_assets[assetname])
                         continue
                     
-                    if assetname not in setled_assets:
-                        setled_assets.__setitem__(assetname, current_assets[assetname])
+                    if assetname not in settled_assets:
+                        settled_assets.__setitem__(assetname, current_assets[assetname])
                         continue
                     
-                    setled_assets[assetname] += current_assets[assetname]
+                    settled_assets[assetname] += current_assets[assetname]
 
                 user['immediate']['current']['assets'].clear()
                 asset_history.__setitem__(ExchangeDatabase().get_open_date(), dict(user['immediate']['settled']['assets']).copy())

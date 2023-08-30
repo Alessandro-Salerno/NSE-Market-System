@@ -16,6 +16,7 @@
 
 
 from datetime import datetime
+from gmpy2 import mpz
 from order_matching.side import Side
 from order_matching.execution import Execution
 
@@ -27,14 +28,14 @@ from object_lock import ObjectLock
 
 class MarketIndex:
     def __init__(self, index=0) -> None:
-        self.index = index
+        self.index = mpz(index)
 
     def next(self):
         self.index += 1
         return self.index
     
     def set(self, index):
-        self.index = index
+        self.index = mpz(index)
 
 
 class GlobalMarket(UNetSingleton):
@@ -42,7 +43,7 @@ class GlobalMarket(UNetSingleton):
         self.markets = {}
         self.orders = {}
         self.ready = False
-        self.order_index = ObjectLock(MarketIndex())
+        self.order_index = MarketIndex()
 
         for ticker in ExchangeDatabase().assets:
             if ticker not in self.markets:
@@ -52,7 +53,7 @@ class GlobalMarket(UNetSingleton):
             final_id = 0
             for order_id in ExchangeDatabase().orders:
                 final_id = max(final_id, int(order_id))
-                self.order_index.get_unsafe().set(int(order_id) - 1)
+                self.order_index.set(int(order_id) - 1)
                 
                 with ExchangeDatabase().orders[order_id] as order:
                     match (order['execution']):
@@ -71,17 +72,11 @@ class GlobalMarket(UNetSingleton):
                                                 order['size'],
                                                 order['issuer'])
 
-            self.order_index.get_unsafe().set(final_id)
+            self.order_index.set(final_id)
         self.ready = True
 
-
-    def get_order_index(self):
-        with self.order_index as oi:
-            return oi.index
-        
     def next_order_index(self):
-        with self.order_index as oi:
-            return oi.next()
+        return self.order_index.next().digits()
 
     def add_limit_order(self, ticker, side, price, size, issuer):
         market = self.markets[ticker]
@@ -93,10 +88,7 @@ class GlobalMarket(UNetSingleton):
 
     def cancel_order(self, order_id, issuer):
         try:
-            if order_id not in self.orders.keys():
-                return -1
-            
-            with ExchangeDatabase().orders[str(order_id)] as order:
+            with ExchangeDatabase().orders[order_id] as order:
                 if self.orders[order_id].trader_id != issuer:
                     return -2
                 
@@ -122,9 +114,9 @@ class GlobalMarket(UNetSingleton):
                                         order.price)
 
     def remove_order(self, order_id):
-        ExchangeDatabase().users[self.orders[order_id].trader_id].get_unsafe()['immediate']['orders'].remove(str(order_id))
+        ExchangeDatabase().users[self.orders[order_id].trader_id].get_unsafe()['immediate']['orders'].remove(order_id)
         self.orders.pop(order_id)
-        ExchangeDatabase().orders.pop(str(order_id))
+        ExchangeDatabase().orders.pop(order_id)
 
     def create_market(self, ticker):
         from market_manager import MarketManager

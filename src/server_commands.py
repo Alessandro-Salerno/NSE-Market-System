@@ -182,12 +182,12 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
         return unet_make_multi_message(
             unet_make_value_message(
-                name='Unsetled Profit & Loss',
+                name='Unsettled Profit & Loss',
                 value=current
             ),
 
             unet_make_value_message(
-                name='Setled Balance',
+                name='settled Balance',
                 value=settled
             )
         )
@@ -473,7 +473,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
         tot = 0
         for order_id in order_ids:
-            tot += GlobalMarket().cancel_order(int(order_id), command.issuer) == None
+            tot += GlobalMarket().cancel_order(order_id, command.issuer) == None
 
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
@@ -488,18 +488,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
     @unet_command('deleteorder', 'cancellaordine', 'do')
     def deleteorder(self, command: UNetServerCommand, order_id: int):
-        try:
-            order_id = int(order_id)
-        except:
-            return unet_make_status_message(
-                mode=UNetStatusMode.ERR,
-                code=UNetStatusCode.BAD,
-                message={
-                    'content': f"Invalid value '{order_id}' for Order ID"
-                }
-            )
-        
-        r = GlobalMarket().cancel_order(int(order_id), command.issuer)
+        r = GlobalMarket().cancel_order(order_id, command.issuer)
 
         message = {
             -1: f"No such Order ID '{order_id}'",

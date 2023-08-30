@@ -147,17 +147,14 @@ class ExchangeDatabase(UNetSingleton):
                   size=None,
                   price=None):
         
-        if str(order_id) in self.orders.keys():
-            return False
-
-        self.orders.__setitem__(str(order_id), ObjectLock(self.order(execution,
+        self.orders.__setitem__(order_id, ObjectLock(self.order(execution,
                                                                 issuer,
                                                                 side,
                                                                 ticker,
                                                                 size,
                                                                 price)))
         
-        self.users[issuer].get_unsafe()['immediate']['orders'].append(str(order_id))
+        self.users[issuer].get_unsafe()['immediate']['orders'].append(order_id)
 
         return True
         
@@ -165,7 +162,7 @@ class ExchangeDatabase(UNetSingleton):
                      order_id,
                      size):
         
-        with self.orders[str(order_id)] as order:
+        with self.orders[order_id] as order:
             order['size'] = size
     
     def get_open_date(self):

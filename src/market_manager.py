@@ -16,6 +16,7 @@
 
 
 from datetime import datetime, timedelta
+from gmpy2 import mpz, mpfr
 
 from order_matching.matching_engine import MatchingEngine
 from order_matching.orders import Orders
@@ -50,7 +51,7 @@ class MarketManager:
             trades = engine.place(order)
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
-            self.transact(trades=trades)
+            self.transact(trades=trades, engine=engine)
 
             return order
 
@@ -66,7 +67,7 @@ class MarketManager:
             trades = engine.place(order)
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
-            self.transact(trades=trades)
+            self.transact(trades=trades, engine=engine)
             
             return order
 
@@ -84,7 +85,7 @@ class MarketManager:
         recalculated_depth = None
         
         # Small thread-lock optimization
-        if order.status != Status.CANCEL and order.left  != order.size:
+        if order.status != Status.CANCEL and order.left != order.size:
             recalculated_depth = {
                 'bids': { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() },
                 'offers': { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
