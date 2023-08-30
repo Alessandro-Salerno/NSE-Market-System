@@ -120,7 +120,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
     
     @unet_command('newsession')
     def newsession(self, command: UNetServerCommand):
-        MarketSettlement().setle()
+        MarketSettlement().settle()
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
@@ -164,7 +164,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
 
 
 class ExchangeUserCommandHandler(UNetCommandHandler):
-    @unet_command('whoami', 'account', 'chisono', 'wai', 'wa', 'acc', 'cs', 'chi', 'me', 'io')
+    @unet_command('whoami', 'chisono')
     def whoami(self, command: UNetServerCommand):
         return unet_make_value_message(
             name='User',
@@ -192,7 +192,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             )
         )
     
-    @unet_command('market', 'mercato', 'mark', 'mkt', 'mer', 'mm', 'mk')
+    @unet_command('market', 'mercato', 'mm')
     def market(self, command: UNetServerCommand):
         colums = ['TICKER', 'BID', 'ASK', 'MID', 'BID V', 'ASK V', 'CHANGE']
         tables = []
@@ -252,23 +252,23 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     def depth(self, command: UNetServerCommand, ticker: str):
         return cb.show_chart(ticker.upper(), 'today', property='__DEPTH__')
 
-    @unet_command('selllimit', 'vendilimite', 'slmt', 'sl', 'vl')
+    @unet_command('selllimit', 'vendilimite', 'sl', 'vl')
     def sell_limit(self, command: UNetServerCommand, ticker: str, qty: str, price: str):
         return cb.place_order(ticker.upper(), command.issuer, Execution.LIMIT, Side.SELL, qty, price)
 
-    @unet_command('sellmarket', 'vendimercato', 'smkt', 'sm', 'vm')
+    @unet_command('sellmarket', 'vendimercato', 'sm', 'vm')
     def sell_market(self, command: UNetServerCommand, ticker: str, qty: str):
         return cb.place_order(ticker.upper(), command.issuer, Execution.MARKET, Side.SELL, qty, 0)
 
-    @unet_command('buyliimt', 'compralimite', 'blmt', 'bl', 'cl')
+    @unet_command('buyliimt', 'compralimite', 'bl', 'cl')
     def buy_limit(self, command: UNetServerCommand, ticker: str, qty: str, price: str):
         return cb.place_order(ticker.upper(), command.issuer, Execution.LIMIT, Side.BUY, qty, price)
 
-    @unet_command('buymarket', 'compramercato', 'bmkt', 'bm', 'bm')
+    @unet_command('buymarket', 'compramercato', 'bm', 'cm')
     def buy_market(self, command: UNetServerCommand, ticker: str, qty: str):
         return cb.place_order(ticker.upper(), command.issuer, Execution.MARKET, Side.BUY, qty, 0)
 
-    @unet_command('pay', 'paga', 'wire', 'pp', 'pa', 'ww')
+    @unet_command('pay', 'paga', 'pp', 'pa')
     def pay(self, command: UNetServerCommand, who: str, amount: str):
         if who not in ExchangeDatabase().users:
             return unet_make_status_message(
@@ -432,7 +432,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             }
         )
     
-    @unet_command('pendingorders', 'orders', 'ordini', 'or', 'po', 'op')
+    @unet_command('orders', 'ordini', 'op', 'po')
     def pendingorders(self, command: UNetServerCommand):
         colums = ['TICKER', 'ORDER', 'EXEC', 'SIDE', 'SIZE', 'PRICE']
         rows = []

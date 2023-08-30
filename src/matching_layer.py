@@ -5,6 +5,8 @@ from order_matching.side import Side
 from order_matching.order import Order
 from order_matching.orders import Orders
 
+from exdb import ExchangeDatabase
+
 
 class MatchingLayer:
     def __init__(self, seed: int) -> None:
@@ -13,6 +15,8 @@ class MatchingLayer:
         self._min_offer = None
         self._max_bid_size = None
         self._min_offer_size = None
+        self._last_bid = None
+        self._last_offer = None
         self._max_bid_ids = []
         self._min_offer_ids = []
 
@@ -28,12 +32,36 @@ class MatchingLayer:
     def min_offer_size(self):
         return self._min_offer_size
     
+    def last_bid(self):
+        return self._last_bid
+    
+    def last_offer(self):
+        return self._last_offer
+
     def current_price(self):
         return round((self._max_bid + self._min_offer) / 2, 3) \
                         if self._max_bid != None and self._min_offer != None else None
     
     def imbalance(self):
         return self._engine.unprocessed_orders.get_imbalance()
+    
+    def last_available_bid(self):
+        if self._max_bid != None and self._min_offer != None:
+            return self._max_bid
+        
+        if self._last_bid != None and self._last_offer != None:
+            return self._last_bid
+        
+        return 0
+    
+    def last_available_ask(self):
+        if self._max_bid != None and self._min_offer != None:
+            return self._min_offer
+        
+        if self._last_bid != None and self._last_offer != None:
+            return self._last_offer
+        
+        return 0
 
     def place(self, order: Order):
         order.left = order.size
@@ -90,6 +118,7 @@ class MatchingLayer:
                     self._min_offer_ids.append(int(order.order_id))
 
                 if self._min_offer == None or order.price < self._min_offer:
+                    self._last_offer = self._min_offer
                     self._min_offer = order.price
                     self._min_offer_size = order.size
                     self._min_offer_ids = [int(order.order_id),]
@@ -100,6 +129,7 @@ class MatchingLayer:
                     self._max_bid_ids.append(int(order.order_id))
 
                 if self._max_bid == None or order.price > self._max_bid:
+                    self._last_bid = self._max_bid
                     self._max_bid = order.price
                     self._max_bid_size = order.size
                     self._max_bid_ids = [int(order.order_id),]
@@ -114,6 +144,7 @@ class MatchingLayer:
 
     def _recompute_bids(self):
         if self._max_bid_size <= 0:
+            self._last_bid = self._max_bid
             self._max_bid = self._engine.unprocessed_orders.max_bid
             if self._max_bid in self._engine.unprocessed_orders.bids:
                 orders = self._engine.unprocessed_orders.bids[self._max_bid]
@@ -126,6 +157,7 @@ class MatchingLayer:
 
     def _recompute_offers(self):
         if self._min_offer_size <= 0:
+            self._last_offer = self._min_offer
             self._min_offer = self._engine.unprocessed_orders.min_offer
             if self._min_offer in self._engine.unprocessed_orders.offers:
                 orders = self._engine.unprocessed_orders.offers[self._min_offer]

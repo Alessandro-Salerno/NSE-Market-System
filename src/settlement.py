@@ -22,7 +22,7 @@ import utils
 
 
 class MarketSettlement(UNetSingleton):
-    def setle(self):
+    def settle(self):
         fee = 0
         
         for username in ExchangeDatabase().users:

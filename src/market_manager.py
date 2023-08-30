@@ -78,6 +78,18 @@ class MarketManager:
             self.update_asset(order, engine)
 
     def update_asset(self, order: Order, engine: MatchingLayer):
+        # Assignign variables outside to save on lock time
+        side = 'bids' if order.side == Side.BUY else 'offers'
+        level = str(order.price)
+        recalculated_depth = None
+        
+        # Small thread-lock optimization
+        if order.status != Status.CANCEL and order.left  != order.size:
+            recalculated_depth = {
+                'bids': { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() },
+                'offers': { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
+            }
+
         with ExchangeDatabase().assets[self._ticker] as asset:
             session_data = asset['sessionData']
             immediate = asset['immediate']
@@ -87,38 +99,29 @@ class MarketManager:
             else:
                 session_data['buyVolume'] += order.size
 
-            immediate['lastAsk'] = immediate['ask'] if immediate['ask'] is not None \
-                    and immediate['ask'] != engine.min_offer() else immediate['lastAsk']
-
-            immediate['lastBid'] = immediate['bid'] if immediate['bid'] is not None and \
-                     immediate['bid'] != engine.max_bid() else immediate['lastBid']
-
             immediate['bid'] = engine.max_bid()
             immediate['ask'] = engine.min_offer()
             immediate['mid'] = engine.current_price()
+            immediate['lastBid'] = engine.last_bid()
+            immediate['lastAsk'] = engine.last_offer()
             immediate['bidVolume'] = engine.max_bid_size()
             immediate['askVolume'] = engine.min_offer_size()
 
-            side = 'bids' if order.side == Side.BUY else 'offers'
             depth = immediate['depth'][side]
-            opposite = immediate['depth']['bids'] if order.side == Side.SELL else immediate['depth']['offers']
-            level = str(order.price)
 
             if order.status == Status.CANCEL:
                 depth[level] -= order.left
                 if depth[level] <= 0:
                     depth.pop(level)
+            elif order.left == order.size:
+                depth.__setitem__(level, depth.setdefault(level, 0) + order.size)
             else:
-                if order.left == order.size:
-                    depth.__setitem__(level, depth.setdefault(level, 0) + order.size)
-                else:
-                    immediate['depth']['bids'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.bids.items() }
-                    immediate['depth']['offers'] = { str(price): sum([order.size for order in orders]) for price, orders in engine._engine.unprocessed_orders.offers.items() }
+                immediate['depth'] = recalculated_depth
 
             if session_data['open'] == None:
                 session_data['open'] = immediate['mid']
 
-    def transact(self, trades):
+    def transact(self, trades, engine: MatchingLayer):
         if trades == None:
             return
 
@@ -126,13 +129,14 @@ class MarketManager:
             sell_order_id = None
             buy_order_id = None
 
-            if trade.side == Side.SELL:
-                sell_order_id = trade.incoming_order_id
-                buy_order_id = trade.book_order_id
+            match (trade.side):
+                case Side.SELL:
+                    sell_order_id = trade.incoming_order_id
+                    buy_order_id = trade.book_order_id
 
-            if trade.side == Side.BUY:
-                sell_order_id = trade.book_order_id
-                buy_order_id = trade.incoming_order_id
+                case Side.BUY:
+                    sell_order_id = trade.book_order_id
+                    buy_order_id = trade.incoming_order_id
 
             sell_order: Order = GlobalMarket().orders[sell_order_id]
             buy_order: Order = GlobalMarket().orders[buy_order_id]
@@ -140,39 +144,15 @@ class MarketManager:
             sell_order_original_price = sell_order.price
             buy_order_original_price = buy_order.price
 
-            # Very ugly code to be refactored
-            # I saw this bug too late sorry
-            # Hope comments help
             if sell_order.execution == Execution.MARKET and buy_order.execution == Execution.MARKET:
-                with ExchangeDatabase().assets[self._ticker] as asset:
-                    # If there's no market
-                    if asset['immediate']['bid'] == None or asset['immediate']['ask'] == None:
-                        # If there was no market before
-                        if asset['immediate']['lastBid'] == None or asset['immediate']['lastAsk'] == None:
-                            # And if there has never been a market
-                            if asset['sessionData']['previousClose'] == None:
-                                # Transaction happens at price 0 on both sides
-                                sell_order.price = 0
-                                buy_order.price = 0
-                            else:
-                                # if there is a reference for last clsoe the transaction happens at that price on both sides
-                                sell_order.price = asset['sessionData']['previousClose']
-                                buy_order.price = asset['sessionData']['previousClose']
-                        else:
-                            # If, instead, there was a merket, then the transaction happens at inverted prices
-                            sell_order.price = min(asset['immediate']['lastAsk'], asset['immediate']['lastBid'])
-                            buy_order.price = max(asset['immediate']['lastAsk'], asset['immediate']['lastBid'])
-                    else:
-                        # Finally, if there was a price all along and the engine just didn't catch it, the transaction happens at inverted prices
-                        sell_order.price = min(asset['immediate']['ask'], asset['immediate']['bid'])
-                        buy_order.price = max(asset['immediate']['ask'], asset['immediate']['bid'])
-
-            if sell_order.price <= 0:
-                sell_order.price = buy_order.price
-
-            if buy_order.price == float('inf'):
-                buy_order.price = sell_order.price
-
+                sell_order.price = engine.last_available_bid()
+                buy_order.price = engine.last_available_ask()
+                if buy_order.price < sell_order.price:
+                    bp = buy_order.price
+                    buy_order.price = sell_order.price
+                    sell_order.price = bp
+                trade.price = buy_order.price
+                
             seller = sell_order.trader_id
             buyer = buy_order.trader_id
 
