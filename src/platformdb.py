@@ -84,7 +84,6 @@ class PlatformDB:
         if not os.path.exists(self._filename):
             with open(self._filename, 'w') as file:
                 file.write(new_json)
-            self._free = True
             return
 
         with open(self._filename + '.new', 'w') as new_file:
@@ -103,7 +102,7 @@ class PlatformDB:
         os.remove(self._filename + '.new')
 
     def to_json(self):
-        return json.dumps(PlatformDB.to_dict(self._db), indent=2)
+        return json.dumps(PlatformDB.to_dict(self._db.copy()), indent=2)
 
     @staticmethod
     def to_dict(target: dict, lock=False):
@@ -111,10 +110,10 @@ class PlatformDB:
 
         for key in target.keys():
             if isinstance(target[key], ObjectLock):
-                with target[key] as i:
-                    if isinstance(i, dict):
-                        d.__setitem__(key, PlatformDB.to_dict(i, lock=True))
-                        continue
+                i = target[key].get_unsafe()
+                if isinstance(i, dict):
+                    d.__setitem__(key, PlatformDB.to_dict(i, lock=True))
+                    continue
 
             if isinstance(target[key], dict):
                 d.__setitem__(key, PlatformDB.to_dict(target[key]))
