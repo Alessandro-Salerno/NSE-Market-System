@@ -18,6 +18,7 @@
 import time
 import os
 import signal
+from collections import defaultdict
 
 from order_matching.side import Side
 from order_matching.execution import Execution
@@ -44,6 +45,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
     @unet_command('stop')
     def stop(self, command: UNetServerCommand):
         self.top.kill()
+        GlobalMarket().close_markets()
         time.sleep(0.500)
         EXCHANGE_DATABASE.db.timer.stop()
         EXCHANGE_DATABASE.db.save()
@@ -160,6 +162,42 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
             message={
                 'content': 'News sent'
             }
+        )
+    
+    @unet_command('rmticker')
+    def rmticker(self, command: UNetServerCommand, ticker: str):
+        if ticker not in EXCHANGE_DATABASE.assets:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': f"No such ticker '{ticker}'"
+                }
+            )
+        
+        units = defaultdict(lambda: 0)
+        for username in EXCHANGE_DATABASE.users:
+            with EXCHANGE_DATABASE.users[username] as user:
+                if ticker in user['immediate']['current']['assets']:
+                    units[username] += user['immediate']['current']['assets'].pop(ticker)
+                if ticker in user['immediate']['settled']['assets']:
+                    if not EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[ticker].get_unsafe()):
+                        units[username] += user['immediate']['settled']['assets'].pop(ticker)
+                    else:
+                        user['immediate']['settled']['assets'].pop(ticker)
+        
+        GlobalMarket().remove_market(ticker)
+
+        return unet_make_multi_message(
+            unet_make_status_message(
+                mode=UNetStatusMode.OK,
+                code=UNetStatusCode.DONE,
+                message={
+                    'content': 'Ticker deleted'
+                }
+            ),
+
+            *[unet_make_value_message(name=name, value=num) for name, num in units.items()]
         )
 
 

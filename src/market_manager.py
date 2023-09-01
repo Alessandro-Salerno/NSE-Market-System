@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+import json
 from datetime import datetime, timedelta
 from gmpy2 import mpz, mpfr
 
@@ -25,6 +26,7 @@ from order_matching.status import Status
 
 from object_lock import ObjectLock
 from global_market import GlobalMarket
+from platformdb import PlatformDB
 from exdb import EXCHANGE_DATABASE
 
 from matching_layer import MatchingLayer
@@ -33,6 +35,7 @@ from matching_layer import MatchingLayer
 class MarketManager:
     def __init__(self, ticker: str):
         self._ticker = ticker
+        self._tradable = True
         self._engine_lock = ObjectLock(MatchingLayer(sum([ord(c) for c in ticker])))
 
     def add_limit_order(self, side, size, price, issuer):
@@ -46,6 +49,9 @@ class MarketManager:
                            price_number_of_digits=3)
 
         with self._engine_lock as engine:
+            if not self._tradable:
+                return
+            
             trades = engine.place(order)
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
@@ -62,6 +68,9 @@ class MarketManager:
                             expiration=datetime.now() + timedelta(days=365))
 
         with self._engine_lock as engine:
+            if not self._tradable:
+                return
+            
             trades = engine.place(order)
             self.update_asset(order, engine)
             GlobalMarket().add_order(self._ticker, order)
@@ -155,7 +164,9 @@ class MarketManager:
                 trade.price = buy_order.price
             else:
                 with EXCHANGE_DATABASE.assets[self._ticker] as asset:
-                    asset['sessionData']['tradedValue'] = round(asset['sessionData']['tradedValue'] + round(trade.price * trade.size, 2), 2)
+                    sz = round(trade.price * trade.size, 3)
+                    GlobalMarket().orders[trade.incoming_order_id].fill_cost += sz
+                    asset['sessionData']['tradedValue'] = round(asset['sessionData']['tradedValue'] + sz, 2)
                     d = asset['immediate']['depth'][depth_side]
                     d[level] -= trade.size
                     if d[level] <= 0:
@@ -205,3 +216,23 @@ class MarketManager:
             else:
                 sell_order.price = sell_order_original_price
 
+    def close(self, delete=False):
+        if delete:
+            for order_id in EXCHANGE_DATABASE.orders.copy():
+                self.cancel_order(GlobalMarket().orders[order_id], GlobalMarket().orders[order_id].trader_id)
+
+        self._engine_lock._lock.acquire()
+
+        # I know... i know
+        if delete:
+            with EXCHANGE_DATABASE.assets[self._ticker] as asset:
+                with open(f'{self._ticker}.save.json', 'w') as file:
+                    file.write(json.dumps(PlatformDB.to_dict(asset)))
+                EXCHANGE_DATABASE.assets.pop(self._ticker)
+                EXCHANGE_DATABASE.asset_classes[asset['info']['class']].remove(self._ticker)
+        self._tradable = False
+        return self._engine_lock._lock
+
+    def open(self):
+        with self._engine_lock as _:
+            self._tradable = True

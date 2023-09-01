@@ -204,15 +204,6 @@ def _spread_series(history: dict):
 
 
 def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price: str):
-    if ticker not in EXCHANGE_DATABASE.assets.keys():
-        return unet_make_status_message(
-            mode=UNetStatusMode.ERR,
-            code=UNetStatusCode.BAD,
-            message={
-                'content': f"No such ticker '{ticker}'"
-            }
-        )
-    
     real_price = 0
     try:
         real_price = float(price)
@@ -225,6 +216,9 @@ def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price
             mode=UNetStatusMode.ERR,
             code=UNetStatusCode.BAD,
             message={
+                'filled': 0,
+                'price': 0,
+                'id': None,
                 'content': f"Invalid value '{price}' for order price"
             }
         )
@@ -239,29 +233,60 @@ def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price
             mode=UNetStatusMode.ERR,
             code=UNetStatusCode.BAD,
             message={
+                'filled': 0,
+                'price': 0,
+                'id': None,
                 'content': f"Invalid value '{size}' for order size"
             }
         )
     
     order_id = 0
+    order = None
     order_fill = real_size
-    if exec == Execution.LIMIT:
-        order = GlobalMarket().add_limit_order(ticker, side, real_price, real_size, issuer)
-        order_id = order.order_id
-        order_fill -= order.size
+    fill_price = 0
+    try:
+        if exec == Execution.LIMIT:
+            order = GlobalMarket().add_limit_order(ticker, side, real_price, real_size, issuer)
+            order_id = order.order_id
+            order_fill -= order.left
 
-    if exec == Execution.MARKET:
-        order = GlobalMarket().add_market_order(ticker, side, real_size, issuer)
-        order_id = order.order_id
-        order_fill -= order.size
+        if exec == Execution.MARKET:
+            order = GlobalMarket().add_market_order(ticker, side, real_size, issuer)
+            order_id = order.order_id
+            order_fill -= order.left
+
+        if order == None:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.DENY,
+                message={
+                    'filled': 0,
+                    'price': 0,
+                    'id': None,
+                    'content': 'Sorry, market service on this ticker is not available'
+                }
+            )
+        
+        fill_price = round(order.fill_cost / order_fill, 3) if order_fill > 0 else 0
+    except KeyError as ke:
+        return unet_make_status_message(
+            mode=UNetStatusMode.ERR,
+            code=UNetStatusCode.BAD,
+            message={
+                'filled': 0,
+                'price': 0,
+                'id': None,
+                'content': f"No such ticker '{ticker}'"
+            }
+        )
 
     return unet_make_status_message(
         mode=UNetStatusMode.OK,
         code=UNetStatusCode.DONE,
         message={
             'filled': order_fill,
-            'price': order.price,
+            'price': fill_price,
             'id': order_id,
-            'content': f"Order placed with ID={order_id}. {order_fill} Already filled at price '{order.price}'"
+            'content': f"Order placed with ID={order_id}. {order_fill} Already filled at price '{fill_price}'"
         }
     )

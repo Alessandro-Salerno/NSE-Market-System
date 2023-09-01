@@ -61,6 +61,8 @@ class MatchingLayer:
 
     def place(self, order: Order):
         order.left = order.size
+        order.original_size = order.size
+        order.fill_cost = 0
 
         if not self._matching_order_exists(order):
             self._engine.unprocessed_orders.append(order)
@@ -144,14 +146,9 @@ class MatchingLayer:
                 self._last_bid = self._max_bid
                 self._last_offer = self._min_offer
             self._max_bid = self._engine.unprocessed_orders.max_bid
-            if self._max_bid in self._engine.unprocessed_orders.bids:
-                orders = self._engine.unprocessed_orders.bids[self._max_bid]
-                self._max_bid_size = sum([o.size for o in orders])
-                self._max_bid_ids = [int(o.order_id) for o in orders]
-            else:
-                self._max_bid_size = None
-                self._max_bid_ids = []
-            self._fix_quotes()
+            orders = self._engine.unprocessed_orders.bids[self._max_bid]
+            self._max_bid_size = sum([o.size for o in orders])
+            self._max_bid_ids = [int(o.order_id) for o in orders]
 
     def _recompute_offers(self, cancel=False):
         if self._min_offer_size <= 0:
@@ -159,17 +156,6 @@ class MatchingLayer:
                 self._last_bid = self._max_bid
                 self._last_offer = self._min_offer
             self._min_offer = self._engine.unprocessed_orders.min_offer
-            if self._min_offer in self._engine.unprocessed_orders.offers:
-                orders = self._engine.unprocessed_orders.offers[self._min_offer]
-                self._min_offer_size = sum([o.size for o in orders])
-                self._min_offer_ids = [int(o.order_id) for o in orders]
-            else:
-                self._min_offer_size = None
-                self._min_offer_ids = []
-            self._fix_quotes()
-    
-    def _fix_quotes(self):
-        if self._max_bid == float('inf') or self._max_bid == float('nan') or self._max_bid_size == None or self._max_bid_size <= 0:
-            self._max_bid = None
-        if self._min_offer_size == float('inf') or self._min_offer == float('nan') or self._min_offer_size == None or self._min_offer_size <= 0:
-            self._min_offer = None
+            orders = self._engine.unprocessed_orders.offers[self._min_offer]
+            self._min_offer_size = sum([o.size for o in orders])
+            self._min_offer_ids = [int(o.order_id) for o in orders]

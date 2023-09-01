@@ -109,3 +109,22 @@ class GlobalMarket(UNetSingleton):
     def create_market(self, ticker):
         from market_manager import MarketManager
         self.markets.__setitem__(ticker, MarketManager(ticker))
+
+    def remove_market(self, ticker):
+        l = self.markets[ticker].close(delete=True)
+        l.release()
+
+    def close_market(self, ticker):
+        l = self.markets[ticker].close(delete=False)
+        l.release()
+
+    def close_markets(self):
+        for market in self.markets:
+            self.close_market(market)
+
+    def open_market(self, ticker):
+        self.markets[ticker].open()
+    
+    def open_markets(self):
+        for market in self.markets:
+            self.open_market(market)
