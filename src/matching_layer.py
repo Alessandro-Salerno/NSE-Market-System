@@ -61,7 +61,6 @@ class MatchingLayer:
 
     def place(self, order: Order):
         order.left = order.size
-        order.original_size = order.size
         order.fill_cost = 0
 
         if not self._matching_order_exists(order):
