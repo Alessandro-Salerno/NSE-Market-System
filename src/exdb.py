@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
+from collections import defaultdict
 from platformdb import PlatformDB
 from unet.singleton import UNetSingleton
 from object_lock import ObjectLock
@@ -45,11 +46,11 @@ class ExchangeDatabase(UNetSingleton):
             'immediate': {
                 'current': {
                     'balance': 0,
-                    'assets': {}
+                    'assets': defaultdict(lambda: 0)
                 },
                 'settled': {
                     'balance': balance,
-                    'assets': assets
+                    'assets': defaultdict(lambda: 0)
                 },
                 'orders': []
             },

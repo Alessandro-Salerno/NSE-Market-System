@@ -151,17 +151,17 @@ class MarketManager:
             sell_order: Order = GlobalMarket().orders[sell_order_id]
             buy_order: Order = GlobalMarket().orders[buy_order_id]
 
-            sell_order_original_price = sell_order.price
-            buy_order_original_price = buy_order.price
+            sell_price = sell_order.price
+            buy_price = buy_order.price
 
             if sell_order.execution == Execution.MARKET and buy_order.execution == Execution.MARKET:
-                sell_order.price = engine.last_available_bid()
-                buy_order.price = engine.last_available_ask()
-                if buy_order.price < sell_order.price:
-                    bp = buy_order.price
-                    buy_order.price = sell_order.price
-                    sell_order.price = bp
-                trade.price = buy_order.price
+                sell_price = engine.last_available_bid()
+                buy_price = engine.last_available_ask()
+                if buy_price < sell_price:
+                    bp = buy_price
+                    buy_price = sell_price
+                    sell_price = bp
+                trade.price = buy_price
             else:
                 with EXCHANGE_DATABASE.assets[self._ticker] as asset:
                     sz = round(trade.price * trade.size, 3)
@@ -175,30 +175,24 @@ class MarketManager:
             seller = sell_order.trader_id
             buyer = buy_order.trader_id
 
-            if sell_order.price <= 0:
-                sell_order.price = buy_order.price
-            if buy_order.price == float('inf'):
-                buy_order.price = sell_order.price
+            if sell_price <= 0:
+                sell_price = buy_price
+            if buy_price == float('inf'):
+                buy_price = sell_price
 
             with EXCHANGE_DATABASE.users[buyer] as b:
                 assets = b['immediate']['current']['assets']
-                if self._ticker in assets:
-                    assets[self._ticker] += trade.size
-                else:
-                    assets.__setitem__(self._ticker, trade.size)
+                assets[self._ticker] += trade.size
                 if assets[self._ticker] == 0:
                     assets.pop(self._ticker)
-                b['immediate']['current']['balance'] = round(b['immediate']['current']['balance'] - round(buy_order.price * trade.size, 3), 3)
+                b['immediate']['current']['balance'] = round(b['immediate']['current']['balance'] - round(buy_price * trade.size, 3), 3)
             
             with EXCHANGE_DATABASE.users[seller] as s:
                 assets = s['immediate']['current']['assets']
-                if self._ticker in assets:
-                    assets[self._ticker] -= trade.size
-                else:
-                    assets.__setitem__(self._ticker, trade.size * -1)
+                assets[self._ticker] -= trade.size
                 if assets[self._ticker] == 0:
                     assets.pop(self._ticker)
-                s['immediate']['current']['balance'] = round(s['immediate']['current']['balance'] + round(sell_order.price * trade.size, 3), 3)
+                s['immediate']['current']['balance'] = round(s['immediate']['current']['balance'] + round(sell_price * trade.size, 3), 3)
 
             EXCHANGE_DATABASE.update_order(buy_order.order_id, buy_order.size)
             EXCHANGE_DATABASE.update_order(sell_order.order_id, sell_order.size)
@@ -206,15 +200,10 @@ class MarketManager:
             buy_order.left -= trade.size
             sell_order.left -= trade.size
 
-            if not buy_order.left > 0:
+            if buy_order.left == 0:
                 GlobalMarket().remove_order(buy_order_id)
-            else:
-                buy_order.price = buy_order_original_price
-
-            if not sell_order.left > 0:
+            if sell_order.left == 0:
                 GlobalMarket().remove_order(sell_order_id)
-            else:
-                sell_order.price = sell_order_original_price
 
     def close(self, delete=False):
         if delete:

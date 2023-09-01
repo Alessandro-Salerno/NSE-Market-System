@@ -64,7 +64,7 @@ class PlatformDB:
         
     def _get_items(self, loaded: dict, schema=None, depth=0):
         sc = self._schema if schema is None else schema
-        result = dict(sc).copy() if depth > 1 else {}
+        result = sc.copy() if depth > 1 else {}
 
         for key in loaded.keys():
             if isinstance(loaded[key], dict):

@@ -46,10 +46,6 @@ class MarketSettlement(UNetSingleton):
                             asset['info']['outstandingUnits'] += abs(current_assets[assetname])
                         continue
                     
-                    if assetname not in settled_assets:
-                        settled_assets.__setitem__(assetname, current_assets[assetname])
-                        continue
-                    
                     settled_assets[assetname] += current_assets[assetname]
 
                 user['immediate']['current']['assets'].clear()
