@@ -27,7 +27,7 @@ class MComServer:
         self._alive = True
         
         self._server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._server_socket.bind(('127.0.0.1', port))
+        self._server_socket.bind(('', port))
 
         self._listen_thread = threading.Thread(target=self._listen, daemon=True)
         self._listen_thread.start()
