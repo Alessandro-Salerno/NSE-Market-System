@@ -404,7 +404,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     if EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[ticker].get_unsafe()):
                         continue
                     stl = 0
-                    if ticker in sassets
+                    if ticker in sassets:
                         stl += sassets[ticker]
                     if ticker in uassets and uassets[ticker] < 0:
                         stl += uassets[ticker]
