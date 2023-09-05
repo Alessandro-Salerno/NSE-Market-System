@@ -175,8 +175,6 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                 }
             )
         
-        GlobalMarket().remove_market(ticker)
-        
         units = defaultdict(lambda: 0)
         for username in EXCHANGE_DATABASE.users:
             with EXCHANGE_DATABASE.users[username] as user:
@@ -187,6 +185,8 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                         units[username] += user['immediate']['settled']['assets'].pop(ticker)
                     else:
                         user['immediate']['settled']['assets'].pop(ticker)
+
+        GlobalMarket().remove_market(ticker)
 
         return unet_make_multi_message(
             unet_make_status_message(
