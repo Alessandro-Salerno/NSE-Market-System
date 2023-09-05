@@ -46,7 +46,7 @@ class MarketSettlement(UNetSingleton):
                         with EXCHANGE_DATABASE.assets[assetname] as asset:
                             asset['info']['outstandingUnits'] = abs(settled_assets[assetname])
 
-                for assetname, qty in settled_assets.items():
+                for assetname, qty in settled_assets.copy().items():
                     if qty == 0:
                         settled_assets.pop(assetname)
                     # Remove this to disable "margin call"
