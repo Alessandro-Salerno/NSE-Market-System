@@ -16,7 +16,10 @@
 
 
 from unet.singleton import UNetSingleton
+from order_matching.execution import Execution
+from order_matching.side import Side
 
+import command_backend as cb
 from exdb import EXCHANGE_DATABASE
 import utils
 
@@ -38,15 +41,23 @@ class MarketSettlement(UNetSingleton):
                 user['immediate']['current']['balance'] = 0
 
                 for assetname in current_assets:
+                    settled_assets[assetname] += current_assets[assetname]
                     if EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[assetname].get_unsafe()):
                         with EXCHANGE_DATABASE.assets[assetname] as asset:
-                            if asset['info']['outstandingUnits'] == 1:
-                                asset['info']['outstandingUnits'] = abs(current_assets[assetname])
-                                continue
-                            asset['info']['outstandingUnits'] += abs(current_assets[assetname])
-                        continue
-                    
-                    settled_assets[assetname] += current_assets[assetname]
+                            asset['info']['outstandingUnits'] = abs(settled_assets[assetname])
+
+                for assetname, qty in settled_assets.items():
+                    if qty == 0:
+                        settled_assets.pop(assetname)
+                    # Remove this to disable "margin call"
+                    elif qty < 0 \
+                        and not EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[assetname].get_unsafe()):
+                        cb.place_order(assetname, 
+                                       EXCHANGE_DATABASE.assets[assetname].get_unsafe()['info']['issuer'],
+                                       Execution.MARKET,
+                                       Side.BUY,
+                                       abs(qty),
+                                       0)
 
                 user['immediate']['current']['assets'].clear()
                 asset_history.__setitem__(EXCHANGE_DATABASE.get_open_date(), dict(user['immediate']['settled']['assets']).copy())

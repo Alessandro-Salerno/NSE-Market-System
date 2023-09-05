@@ -36,7 +36,14 @@ class MarketManager:
     def __init__(self, ticker: str):
         self._ticker = ticker
         self._tradable = True
-        self._engine_lock = ObjectLock(MatchingLayer(sum([ord(c) for c in ticker])))
+
+        ml = None
+        with EXCHANGE_DATABASE.assets[ticker] as asset:
+            ml = MatchingLayer(sum([ord(c) for c in ticker]),
+                               last_bid=asset['immediate']['lastBid'],
+                               last_offer=asset['immediate']['lastAsk'])
+
+        self._engine_lock = ObjectLock(ml)
 
     def add_limit_order(self, side, size, price, issuer):
         order = LimitOrder(side=side,
@@ -102,9 +109,9 @@ class MarketManager:
             immediate = asset['immediate']
 
             if order.side == Side.SELL:
-                session_data['sellVolume'] += order.size
+                session_data['sellVolume'] = int(session_data['sellVolume'] + order.size)
             else:
-                session_data['buyVolume'] += order.size
+                session_data['buyVolume'] = int(session_data['buyVolume'] + order.size)
 
             immediate['bid'] = engine.max_bid()
             immediate['ask'] = engine.min_offer()

@@ -175,6 +175,8 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                 }
             )
         
+        GlobalMarket().remove_market(ticker)
+        
         units = defaultdict(lambda: 0)
         for username in EXCHANGE_DATABASE.users:
             with EXCHANGE_DATABASE.users[username] as user:
@@ -185,8 +187,6 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                         units[username] += user['immediate']['settled']['assets'].pop(ticker)
                     else:
                         user['immediate']['settled']['assets'].pop(ticker)
-        
-        GlobalMarket().remove_market(ticker)
 
         return unet_make_multi_message(
             unet_make_status_message(
@@ -377,13 +377,13 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 unet_make_table_message(
                     title='SESSION MOVES',
                     columns=['TICKER', 'CHANGE'],
-                    rows=[[a, user['immediate']['current']['assets'][a]] for a in user['immediate']['current']['assets']]
+                    rows=[[a, b] for a, b in sorted(user['immediate']['current']['assets'].items(), key=lambda item: item[1])]
                 ),
 
                 unet_make_table_message(
                     title='SETTLED POSITIONS',
                     columns=['TICKER', 'UNITS'],
-                    rows=[[a, user['immediate']['settled']['assets'][a]] for a in user['immediate']['settled']['assets']]
+                    rows=[[a, b] for a, b in sorted(user['immediate']['settled']['assets'].items(), key=lambda item: item[1])]
                 )
             )
         
@@ -403,10 +403,13 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     sassets = user['immediate']['settled']['assets']
                     if EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[ticker].get_unsafe()):
                         continue
+                    stl = 0
+                    if ticker in sassets
+                        stl += sassets[ticker]
                     if ticker in uassets and uassets[ticker] < 0:
-                        shortabs += abs(uassets[ticker])
-                    if ticker in sassets and sassets[ticker] < 0:
-                        shortabs += abs(sassets[ticker])
+                        stl += uassets[ticker]
+                    if stl < 0:
+                        shortabs += abs(stl)
                 
                 rows.append([])
                 with EXCHANGE_DATABASE.assets[ticker] as asset:
@@ -431,7 +434,6 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 columns=colums,
                 rows=rows
             ))
-
 
         return unet_make_multi_message(
             *tables
@@ -557,6 +559,8 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         
         try:
             qty = int(qty)
+            if qty <= 0:
+                raise Exception()
         except:
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
@@ -585,20 +589,15 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                             'content': f"The specified amount of {qty} units is higher than your settled portfolio allows"
                         }
                     )
-                
-            else:
-                if ticker not in sender['immediate']['settled']['assets'].keys():
-                    sender['immediate']['settled']['assets'].__setitem__(ticker, 0)
             
             sender['immediate']['settled']['assets'][ticker] -= qty
             if sender['immediate']['settled']['assets'][ticker] == 0:
                 sender['immediate']['settled']['assets'].pop(ticker)
 
         with EXCHANGE_DATABASE.users[who] as receiver:
-            if ticker not in receiver['immediate']['settled']['assets'].keys():
-                receiver['immediate']['settled']['assets'].__setitem__(ticker, 0)
-
             receiver['immediate']['settled']['assets'][ticker] += qty
+            if receiver['immediate']['settled']['assets'][ticker] == 0:
+                receiver['immediate']['settled']['assets'].pop(ticker)
         
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
