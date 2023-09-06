@@ -80,7 +80,7 @@ class PlatformDB:
         return result
 
     def save(self):
-        new_json = self.to_json()
+        new_json = json.dumps(PlatformDB.to_dict(self._db.copy()))
         if not os.path.exists(self._filename):
             with open(self._filename, 'w') as file:
                 file.write(new_json)
@@ -95,7 +95,7 @@ class PlatformDB:
 
         with open(self._filename + '.old', 'w') as old_file:
             old_file.write(old_json)
-        
+
         with open(self._filename, 'w') as file:
             file.write(new_json)
 
