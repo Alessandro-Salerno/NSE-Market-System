@@ -18,6 +18,7 @@
 from gmpy2 import mpz
 from order_matching.side import Side
 from order_matching.execution import Execution
+from object_lock import ObjectLock
 
 from unet.singleton import UNetSingleton
 
@@ -26,7 +27,7 @@ from exdb import EXCHANGE_DATABASE
 
 class MarketIndex:
     def __init__(self, index=0) -> None:
-        self.index = mpz(index)
+        self.index = index
 
     def next(self):
         self.index += 1
@@ -41,7 +42,7 @@ class GlobalMarket(UNetSingleton):
         self.markets = {}
         self.orders = {}
         self.ready = False
-        self.order_index = MarketIndex()
+        self.order_index = ObjectLock(MarketIndex())
 
         for ticker in EXCHANGE_DATABASE.assets:
             if ticker not in self.markets:
@@ -52,7 +53,7 @@ class GlobalMarket(UNetSingleton):
             final_id = 0
             for order_id, order in EXCHANGE_DATABASE.orders.items():
                 final_id = max(final_id, int(order_id))
-                self.order_index.set(int(order_id) - 1)
+                self.order_index.get_unsafe().set(int(order_id) - 1)
                 match (order['execution']):
                     case 'LIMIT':
                         self.add_limit_order(order['ticker'],
@@ -69,11 +70,12 @@ class GlobalMarket(UNetSingleton):
                                               order['size'],
                                               order['issuer'])
 
-            self.order_index.set(final_id)
+            self.order_index.get_unsafe().set(final_id)
         self.ready = True
 
     def next_order_index(self):
-        return self.order_index.next().digits()
+        with self.order_index as oi:
+            return str(oi.next())
 
     def add_limit_order(self, ticker, side, price, size, issuer):
         market = self.markets[ticker]
