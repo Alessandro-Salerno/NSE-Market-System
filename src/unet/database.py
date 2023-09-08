@@ -128,6 +128,9 @@ class UNetUserDatabase(UNetSingleton):
     def get_users(self) -> list:
         return self.db.query('SELECT username, email FROM unet_user_credentials')
 
+    def change_user_username(self, old_name: str, new_name: str):
+        return self.db.run('UPDATE unet_user_credentials SET username = ? WHERE username = ?', new_name, old_name)
+
     @property
     def db(self):
         return self._db

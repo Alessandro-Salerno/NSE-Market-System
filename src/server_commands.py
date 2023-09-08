@@ -199,6 +199,46 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
 
             *[unet_make_value_message(name=name, value=num) for name, num in units.items()]
         )
+    
+    @unet_command('chticker')
+    def chticker(self, command: UNetServerCommand, ticker: str, new_ticker: str):
+        if ticker not in EXCHANGE_DATABASE.assets:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': f"No such ticker '{ticker}'"
+                }
+            )
+        
+        with EXCHANGE_DATABASE.assets[ticker] as asset:
+            market = GlobalMarket().markets.pop(ticker)
+            market._engine_lock._lock.acquire()
+            market._ticker = new_ticker
+            GlobalMarket().markets.__setitem__(new_ticker, market)
+            
+            EXCHANGE_DATABASE.assets.__setitem__(new_ticker, EXCHANGE_DATABASE.assets.pop(ticker))
+            EXCHANGE_DATABASE.asset_classes[asset['info']['class']].remove(ticker)
+            EXCHANGE_DATABASE.asset_classes[asset['info']['class']].append(new_ticker)
+
+            for username in EXCHANGE_DATABASE.users:
+                with EXCHANGE_DATABASE.users[username] as user:
+                    if ticker in user['immediate']['current']['assets']:
+                        user['immediate']['current']['assets'][new_ticker] = user['immediate']['current']['assets'].pop(ticker)
+                    if ticker in user['immediate']['settled']['assets']:
+                        user['immediate']['settled']['assets'][new_ticker] = user['immediate']['settled']['assets'].pop(ticker)
+                    for day, assets in user['history']['assets'].items():
+                        if ticker in assets:
+                            assets.__setitem__(new_ticker, assets.pop(ticker))
+
+            market._engine_lock._lock.release()
+            return unet_make_status_message(
+                mode=UNetStatusMode.OK,
+                code=UNetStatusCode.DONE,
+                message={
+                    'content': 'Ticker changed'
+                }
+            )
 
 
 class ExchangeUserCommandHandler(UNetCommandHandler):
@@ -667,3 +707,27 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         cmd = UNetCommandParserFactory('*').parse(real_command)
         cmd.issuer = command.issuer
         self.call_command(cmd)
+
+    @unet_command('chname')
+    def chname(self, command: UNetServerCommand, new_name: str):
+        if new_name in EXCHANGE_DATABASE.users:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.DENY,
+                message={
+                    'content': 'Username already taken'
+                }
+            )
+
+        with EXCHANGE_DATABASE.users[command.issuer] as user:
+            EXCHANGE_DATABASE.users.__setitem__(new_name, EXCHANGE_DATABASE.users.pop(command.issuer))
+            UNetUserDatabase().change_user_username(command.issuer, new_name)
+            self.parent._user = new_name
+        
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK,
+            code=UNetStatusCode.DONE,
+            message={
+                'content': 'Username updated'
+            }
+        )
