@@ -86,8 +86,11 @@ class GlobalMarket(UNetSingleton):
         return market.add_market_order(side, size, issuer)
 
     def cancel_order(self, order_id, issuer):
-        return self.markets[EXCHANGE_DATABASE.orders[order_id]['ticker']].cancel_order(self.orders[order_id],
-                                                                                                     issuer)
+        try:
+            return self.markets[EXCHANGE_DATABASE.orders[order_id]['ticker']].cancel_order(self.orders[order_id],
+                                                                                            issuer)
+        except KeyError as ke:
+            return -1
     
     def add_order(self, ticker: str, order):
         self.orders.__setitem__(order.order_id, order)

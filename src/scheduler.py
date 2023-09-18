@@ -53,6 +53,7 @@ class MarketScheduler(UNetSingleton):
 
     def start_scheduler(self):
         self.schedule_intraday()
+        self.schedule_emails()
         self.schedule_settlement()
 
         while True:

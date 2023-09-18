@@ -90,14 +90,11 @@ class MarketManager:
             return -2
         
         with self._engine_lock as engine:
-            try:
-                    engine.delete(order)
-                    order.status = Status.CANCEL
-                    order.size = 0
-                    self.update_asset(order, engine)
-                    GlobalMarket().remove_order(order.order_id)
-            except KeyError as ke:
-                return -1
+            engine.delete(order)
+            order.status = Status.CANCEL
+            order.size = 0
+            self.update_asset(order, engine)
+            GlobalMarket().remove_order(order.order_id)
 
     def update_asset(self, order: Order, engine: MatchingLayer):
         # Assignign variables outside to save on lock time
