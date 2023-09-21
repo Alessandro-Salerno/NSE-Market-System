@@ -79,8 +79,8 @@ class ExchangeDatabase(UNetSingleton):
                 'lastBid': None,
                 'lastAsk': None,
                 'depth': {
-                    'bids': {},
-                    'offers': {}
+                    'bids': defaultdict(lambda: 0),
+                    'offers': defaultdict(lambda: 0)
                 }
             },
             'sessionData': {
