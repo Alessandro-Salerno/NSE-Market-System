@@ -51,7 +51,7 @@ class GlobalMarket(UNetSingleton):
 
         if len(EXCHANGE_DATABASE.orders.keys()) > 0:
             final_id = 0
-            for order_id, order in EXCHANGE_DATABASE.orders.items():
+            for order_id, order in EXCHANGE_DATABASE.orders.copy().items():
                 final_id = max(final_id, int(order_id))
                 self.order_index.get_unsafe().set(int(order_id) - 1)
                 match (order['execution']):
