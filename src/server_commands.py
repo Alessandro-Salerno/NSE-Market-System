@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ from exdb import EXCHANGE_DATABASE
 from global_market import GlobalMarket
 from settlement import MarketSettlement
 from email_engine import EmailEngine
+from historydb import HistoryDB
 
 import command_backend as cb
 import utils
@@ -227,9 +228,8 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                         user['immediate']['current']['assets'][new_ticker] = user['immediate']['current']['assets'].pop(ticker)
                     if ticker in user['immediate']['settled']['assets']:
                         user['immediate']['settled']['assets'][new_ticker] = user['immediate']['settled']['assets'].pop(ticker)
-                    for day, assets in user['history']['assets'].items():
-                        if ticker in assets:
-                            assets.__setitem__(new_ticker, assets.pop(ticker))
+                    HistoryDB().update_ticker(ticker, new_ticker)
+                    
 
             market._engine_lock._lock.release()
             return unet_make_status_message(
@@ -316,11 +316,11 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
     @unet_command('intraday', 'intragiornaliero', 'ii', 'ig')
     def intraday(self, command: UNetServerCommand, ticker: str, day: str, month: str, year: str):
-        return cb.show_chart(ticker, 'intraday', property='mid', day=f'{year}-{day}-{month}')
+        return cb.show_chart(ticker, 'intraday', property='mid', day=f'{year}-{month}-{day}')
 
     @unet_command('intradayspread', 'spreadintragiornaliero', 'isp', 'spig')
     def intraday_spread(self, command: UNetServerCommand, ticker: str, day: str, month: str, year: str):
-        return cb.show_chart(ticker, 'intraday', property='__SPREAD__', day=f'{year}-{day}-{month}')
+        return cb.show_chart(ticker, 'intraday', property='__SPREAD__', day=f'{year}-{month}-{day}')
 
     @unet_command('daily', 'dd', 'giornaliero', 'gr')
     def daily(self, command: UNetServerCommand, ticker :str):
@@ -375,6 +375,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             with EXCHANGE_DATABASE.users[who] as receiver:
                 receiver['immediate']['settled']['balance'] += real_amount
 
+            HistoryDB().add_payment(command.issuer, who, real_amount)
             return unet_make_status_message(
                 mode=UNetStatusMode.OK,
                 code=UNetStatusCode.DONE,
@@ -389,7 +390,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     mode=UNetStatusMode.ERR,
                     code=UNetStatusCode.DENY,
                     message={
-                        'content': f'Insufficient capital'
+                        'content': f'Insufficient funds'
                     }
                 )
             
@@ -402,6 +403,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             with EXCHANGE_DATABASE.users[who] as receiver:
                 receiver['immediate']['settled']['balance'] += real_amount
 
+        HistoryDB().add_payment(command.issuer, who, real_amount)
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
@@ -413,19 +415,45 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     @unet_command('positions', 'posizioni', 'ps')
     def positions(self, command: UNetServerCommand):
         with EXCHANGE_DATABASE.users[command.issuer] as user:
-            return unet_make_multi_message(
-                unet_make_table_message(
-                    title='SESSION MOVES',
-                    columns=['TICKER', 'CHANGE'],
-                    rows=[[a, b] for a, b in sorted(user['immediate']['current']['assets'].items(), key=lambda item: item[1])]
-                ),
+            # return unet_make_multi_message(
+            #     unet_make_table_message(
+            #         title='SESSION MOVES',
+            #         columns=['TICKER', 'CHANGE'],
+            #         rows=[[a, b] for a, b in sorted(user['immediate']['current']['assets'].items(), key=lambda item: item[1])]
+            #     ),
+            #
+            #     unet_make_table_message(
+            #         title='SETTLED POSITIONS',
+            #         columns=['TICKER', 'UNITS'],
+            #         rows=[[a, b] for a, b in sorted(user['immediate']['settled']['assets'].items(), key=lambda item: item[1])]
+            #     )
+            # )
 
-                unet_make_table_message(
-                    title='SETTLED POSITIONS',
-                    columns=['TICKER', 'UNITS'],
-                    rows=[[a, b] for a, b in sorted(user['immediate']['settled']['assets'].items(), key=lambda item: item[1])]
-                )
+            current = user['immediate']['current']['assets']
+            settled = user['immediate']['settled']['assets']
+
+            rows = {}
+            cols = ['TICKER', 'SETTLED', 'UNSETTLED', 'VALUE']
+
+            for ticker, qty in settled.items():
+                rows[ticker] = [qty, 0]
+
+            for ticker, qty in current.items():
+                rows.setdefault(ticker, [0, 0])[1] = qty
+                
+            final_rows = []
+
+            for ticker, row in rows.items():
+                price = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['bid']
+                val = round((row[0] + row[1]) * price if price != None else 0)
+                final_rows.append([ticker, row[0], f'{row[1]:+}', val])
+
+            return unet_make_table_message(
+                title='YOUR POSITIONS',
+                columns=cols,
+                rows=sorted(final_rows, key=lambda item: item[3])
             )
+
         
     @unet_command('marketposition', 'posizionemercato', 'mp', 'pm')
     def market_position(self, command: UNetServerCommand):
@@ -621,7 +649,12 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
     
         with EXCHANGE_DATABASE.users[command.issuer] as sender:
             if not EXCHANGE_DATABASE.user_is_issuer(command.issuer, EXCHANGE_DATABASE.assets[ticker].get_unsafe()):
-                if ticker not in sender['immediate']['settled']['assets'] or sender['immediate']['settled']['assets'][ticker] < qty:
+                asset_qty = 0
+                if ticker in sender['immediate']['settled']['assets']:
+                    asset_qty += sender['immediate']['settled']['assets'][ticker]
+                if ticker in sender['immediate']['current']['assets']:
+                    asset_qty += sender['immediate']['current']['assets'][ticker]
+                if asset_qty < qty:
                     return unet_make_status_message(
                         mode=UNetStatusMode.ERR,
                         code=UNetStatusCode.DENY,
@@ -639,6 +672,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             if receiver['immediate']['settled']['assets'][ticker] == 0:
                 receiver['immediate']['settled']['assets'].pop(ticker)
         
+        HistoryDB().add_payment(command.issuer, who, qty, ticker)
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
@@ -691,7 +725,8 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 value=target
             )
         except KeyError as ke:
-            (lock.release() for lock in locks)
+            for lock in locks:
+                lock.release()
             
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
@@ -730,4 +765,54 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             message={
                 'content': 'Username updated'
             }
+        )
+
+    @unet_command('query')
+    def query(self, command: UNetServerCommand, table: str, target: str, subtable: str, flt: str, dates: str):
+        tree = {
+            'user': {
+                'info': {
+                    'on': lambda t, d: HistoryDB().get_user_on(t, d),
+                    'between': lambda t, d: HistoryDB().get_user_between(t, *d.split(' '))
+                }
+            },
+            'asset': {
+                'intraday': {
+                    'on': lambda t, d: HistoryDB().get_asset_intraday_of(t, d),
+                    'between': lambda t, d: HistoryDB().get_asset_intraday_between(t, *d.split(' '))
+                },
+                'close': {
+                    'on': lambda t, d: HistoryDB().get_asset_between(t, d, d),
+                    'between': lambda t, d: HistoryDB().get_asset_between(t, *d.split(' '))
+                }
+            }
+        }
+
+        try:
+            rows = tree[table][subtable][flt](target, dates)
+            columns = []
+
+            match (table):
+                case 'user':
+                    columns = ['USERNAME', 'DATE', 'BALANCE', 'ASSETS']
+
+                case 'asset':
+                    match (subtable):
+                        case 'close':
+                            columns = ['TICKER', 'DATE', 'BUY VOLUME', 'SELL VOLUME', 'TRADED', 'OPEN', 'CLOSE']
+                        case 'intraday':
+                            columns = ['TICKER', 'DATE', 'TIME', 'BID', 'ASK', 'MID']
+
+            return unet_make_table_message(
+                title='RESULT',
+                columns=columns,
+                rows=rows
+            )
+        except KeyError as e:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': 'Invalid syntax'
+                }
         )

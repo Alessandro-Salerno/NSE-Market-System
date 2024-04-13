@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,31 +21,20 @@ from order_matching.side import Side
 
 import command_backend as cb
 from exdb import EXCHANGE_DATABASE
+from historydb import HistoryDB
 import utils
 
 
 class MarketSettlement(UNetSingleton):
     def settle(self):
-        fee = 0
-        
         for username in EXCHANGE_DATABASE.users:
             with EXCHANGE_DATABASE.users[username] as user:
                 current_assets = user['immediate']['current']['assets']
                 settled_assets = user['immediate']['settled']['assets']
-                history = user['history']
-                asset_history = history['assets']
-                balance_history = history['balance']
-
-                user['immediate']['settled']['balance'] = round(user['immediate']['settled']['balance'] + user['immediate']['current']['balance'], 3)
-                fee += user['immediate']['current']['balance']
-                user['immediate']['current']['balance'] = 0
 
                 for assetname in current_assets:
                     settled_assets[assetname] += current_assets[assetname]
-                    if EXCHANGE_DATABASE.user_is_issuer(username, EXCHANGE_DATABASE.assets[assetname].get_unsafe()):
-                        with EXCHANGE_DATABASE.assets[assetname] as asset:
-                            asset['info']['outstandingUnits'] = abs(settled_assets[assetname])
-
+                    
                 for assetname, qty in settled_assets.copy().items():
                     if qty == 0:
                         settled_assets.pop(assetname)
@@ -59,21 +48,20 @@ class MarketSettlement(UNetSingleton):
                                        abs(qty),
                                        0)
 
+                user['immediate']['settled']['balance'] = round(user['immediate']['settled']['balance'] + user['immediate']['current']['balance'], 3)
+                user['immediate']['current']['balance'] = 0
                 user['immediate']['current']['assets'].clear()
-                asset_history.__setitem__(EXCHANGE_DATABASE.get_open_date(), dict(user['immediate']['settled']['assets']).copy())
-                balance_history.__setitem__(EXCHANGE_DATABASE.get_open_date(), user['immediate']['settled']['balance'])
+
+                HistoryDB().add_user_daily(username, EXCHANGE_DATABASE.get_open_date(), user['immediate']['settled']['balance'], user['immediate']['settled']['assets'])
         
         for assetname in EXCHANGE_DATABASE.assets:
             with EXCHANGE_DATABASE.assets[assetname] as asset:
                 immediate = asset['immediate']
                 session_data = asset['sessionData']
-                history = asset['history']
-                today = history['today']
-                intraday = history['intraday']
-                daily = history['daily']
-
+        
                 session_data['close'] = immediate['mid']
-                daily.__setitem__(EXCHANGE_DATABASE.get_open_date(), dict(session_data).copy())
+
+                HistoryDB().add_asset_daily(assetname, EXCHANGE_DATABASE.get_open_date(), session_data['buyVolume'], session_data['sellVolume'], session_data['tradedValue'], session_data['open'], session_data['close'])
 
                 session_data['sellVolume'] = 0
                 session_data['buyVolume'] = 0
@@ -81,11 +69,5 @@ class MarketSettlement(UNetSingleton):
                 session_data['open'] = immediate['mid']
                 session_data['previousClose'] = session_data['close']
                 session_data['close'] = None
-
-                intraday.__setitem__(EXCHANGE_DATABASE.get_open_date(), dict(today).copy())
-                today.clear()
-
-        with EXCHANGE_DATABASE.users['admin'] as admin:
-            admin['immediate']['settled']['balance'] += fee
 
         EXCHANGE_DATABASE.set_open_date(utils.today())

@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,25 +16,71 @@
 
 
 import sqlite3
+import threading
 
 from unet.singleton import UNetSingleton
+
+class UNetQueryMode:
+    QUERY = 0
+    EXEC = 1
+
+class UNetQuery:
+    def __init__(self, query, args, mode):
+        self.query = query
+        self.args = args
+        self.mode = mode
+        self.result = None
+        self._condition = threading.Condition()
 
 
 class UNetDatabase:
     def __init__(self, filepath: str) -> None:
         self._filepath = filepath
+
+        self._query_queue = []
+        self._query_submit = threading.Condition()
+        self._db_thread = threading.Thread(target=self._db_main, args=(), daemon=True)
+        self._db_thread.start()
     
     def query(self, qstring: str, *args) -> any:
-        conn = sqlite3.connect(self._filepath)
-        cur = conn.cursor()
-        cur.execute(qstring, args)
-        return cur.fetchall()
-    
+        query = UNetQuery(qstring, args, UNetQueryMode.QUERY)
+        with query._condition:
+            with self._query_submit:
+                self._query_queue.append(query)
+                self._query_submit.notify()
+            query._condition.wait()
+        return query.result
+
     def run(self, qstring: str, *args) -> any:
+        query = UNetQuery(qstring, args, UNetQueryMode.EXEC)
+        with query._condition:
+            with self._query_submit:
+                self._query_queue.append(query)
+                self._query_submit.notify()
+            query._condition.wait()
+        return query.result
+
+    def _db_main(self):
         conn = sqlite3.connect(self._filepath)
         cur = conn.cursor()
-        cur.execute(qstring, args)
-        return conn.commit()
+        
+        while True:
+            with self._query_submit:
+                while len(self._query_queue) == 0:
+                    self._query_submit.wait()
+
+                query = self._query_queue.pop(0)
+                cur.execute(query.query, query.args)
+
+                match query.mode:
+                    case UNetQueryMode.QUERY:
+                        query.result = cur.fetchall()
+
+                    case UNetQueryMode.EXEC:
+                        query.result = conn.commit()
+
+                with query._condition:
+                    query._condition.notify()
 
 
 class UNetLazyDatabase:

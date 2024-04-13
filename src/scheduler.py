@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ from unet.singleton import UNetSingleton
 from exdb import EXCHANGE_DATABASE
 from settlement import MarketSettlement
 from email_engine import EmailEngine
+from historydb import HistoryDB
 import utils
 
 
@@ -30,13 +31,13 @@ class MarketScheduler(UNetSingleton):
     def add_intraday(self):
         for assetname in EXCHANGE_DATABASE.assets:
             with EXCHANGE_DATABASE.assets[assetname] as asset:
-                today = asset['history']['today']
-                today.__setitem__(utils.now(), asset['immediate'].copy())
+                immediate = asset['immediate']
+                HistoryDB().add_asset_intraday(assetname, utils.today(), utils.nowtime(), immediate['bid'], immediate['ask'], immediate['mid'])
 
     def schedule_intraday(self):
         # Warning: bad code, gotta refactor
         schedule.every().hour.at(':00').do(self.add_intraday)
-        schedule.every().hour.at(':13').do(self.add_intraday)
+        schedule.every().hour.at(':10').do(self.add_intraday)
         schedule.every().hour.at(':20').do(self.add_intraday)
         schedule.every().hour.at(':30').do(self.add_intraday)
         schedule.every().hour.at(':40').do(self.add_intraday)

@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ from exdb import EXCHANGE_DATABASE
 from unet.protocol import *
 
 from global_market import GlobalMarket
+from historydb import HistoryDB
 import utils
 
 
@@ -111,7 +112,8 @@ def show_chart(ticker: str, timeframe: str, **kwargs):
 
 def _today_chart(ticker: str, property: str):
     if property == '__SPREAD__':
-        x, y, xfmt = _spread_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['today'])
+        data = HistoryDB().get_asset_intraday_of(ticker, EXCHANGE_DATABASE.get_open_date())
+        x, y, xfmt = _spread_series(data)
 
         bid = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['bid']
         ask = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['ask']
@@ -156,31 +158,37 @@ def _today_chart(ticker: str, property: str):
             y.append(offer_qty)
         return x, y, None
 
-    return _now_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['today'],
-                       property,
+
+    data = HistoryDB().get_asset_intraday_of(ticker, EXCHANGE_DATABASE.get_open_date())
+    return _now_series(data,
                        EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate'][property])
 
 
 def _intraday_chart(ticker: str, property: str, day: str):
-    if day not in EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['intraday']:
-        return [], [], None
-    
+    data = HistoryDB().get_asset_intraday_of(ticker, day)
     if property == '__SPREAD__':
-        return _spread_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['intraday']['day'])
+        return _spread_series(data)
     
-    return _intraday_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['intraday']['day'])
+    return _intraday_series(data)
 
 
-def _daily_chart(ticker: str, property: str, current_property: str):
-    return _now_series(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['history']['daily'],
-                       property,
-                       EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate'][current_property])
+def _daily_chart(ticker: str, *args, **kwargs):
+    data = HistoryDB().get_asset_between(ticker, '0000-00-00', EXCHANGE_DATABASE.get_open_date())
 
+    x = []
+    y = []
 
-def _now_series(history: dict, propertY: str, current: float):
-    x = [date for date in history.keys()]
-    y = [history[key][propertY]
-            for key in history]
+    for day in data:
+        x.append(day[1])
+        y.append(day[6])
+
+    x.append(utils.now())
+    y.append(EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['mid'])
+
+    return x, y, 'd/m/Y H:M'
+
+def _now_series(data: list, current: float):
+    x, y, fmt = _intraday_series(data)
 
     x.append(utils.now())
     y.append(current)
@@ -188,20 +196,38 @@ def _now_series(history: dict, propertY: str, current: float):
     x.append(f'{utils.tomorrow()} 00:00:00')
     y.append(None)
 
+    return x, y, fmt
+
+
+def _intraday_series(data: list):
+    x = []
+    y = []
+
+    for day in data:
+        x.append(f'{day[1]} {day[2]}')
+        y.append(day[5])
+
     return x, y, 'd/m/Y H:M'
 
 
-def _intraday_series(ticks: dict, propertY: str):
-    pass
+def _spread_series(data: list):
+    x = []
+    y = []
 
-def _spread_series(history: dict):
-    return list(history.keys()), \
-            [(round((history[e]['ask'] - history[e]['bid']) / round((history[e]['ask'] + history[e]['bid']) / 2, 3) * 10000, 2)
-             if history[e]['bid'] != None and history[e]['ask'] != None
-             else None)
-              for e in history], \
-            'd/m/Y H:M'
+    for tick in data:
+        bid = tick[3]
+        ask = tick[4]
+        mid = tick[5]
+        
+        x.append(f'{tick[1]} {tick[2]}')
+        
+        if bid == None or ask == None:
+            y.append(None)
+            continue
 
+        y.append(round((ask - bid) / round((ask + bid) / 2, 3) * 10000, 2))
+
+    return x, y, 'd/m/Y H:M'
 
 def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price: str):
     real_price = 0

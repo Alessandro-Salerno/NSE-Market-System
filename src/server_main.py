@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
 
 
 import json
+import logging
 
 from server_commands import ExchangePriviledgedCommandHandler, ExchangeUserCommandHandler
 from unet.server import UNetAuthenticatedHandler, UNetAuthenticationHandler, UNetServer
@@ -23,6 +24,7 @@ from exdb import EXCHANGE_DATABASE
 from scheduler import MarketScheduler
 from global_market import GlobalMarket
 from email_engine import EmailEngine
+from historydb import HistoryDB
 
 
 class ExchangeAuthenticatedHandler(UNetAuthenticatedHandler):
@@ -51,13 +53,17 @@ class ExchangeAuthenticationHandler(UNetAuthenticationHandler):
 
 if __name__ == '__main__':
     print(
-"""MC-UMSR-NSE-Market-System Copyright (C) 2023 Alessandro Salerno
+"""MC-UMSR-NSE-Market-System Copyright (C) 2023 - 2024 Alessandro Salerno
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
 """)
 
     # Instantiate exchange database
+    logging.basicConfig(format='[%(process)d]    [%(asctime)s  %(levelname)s]\t%(message)s', level=logging.INFO)
+    logging.info("Loading data...")
     exdb = EXCHANGE_DATABASE
+    history = HistoryDB()
+    logging.info("All loaded! Starting components...")
     ee = EmailEngine()
     
     try:
@@ -71,7 +77,14 @@ This is free software, and you are welcome to redistribute it
             }, indent=4))
             exit()
 
+    logging.info("E-Mail Engine started!")
+
     mkt = GlobalMarket()
+    logging.info("Order Matching Engine started!")
+
     server = UNetServer(connection_handler_class=ExchangeAuthenticationHandler)
+    logging.info("MCom/UNet TCP Server started!")
+
     s = MarketScheduler()
+    logging.info("Starting event loop...")
     s.start_scheduler()

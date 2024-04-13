@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -53,10 +53,6 @@ class ExchangeDatabase(UNetSingleton):
                     'assets': defaultdict(lambda: 0)
                 },
                 'orders': []
-            },
-            'history': {
-                'assets': {},
-                'balance': {}
             }
         }
     
@@ -67,8 +63,7 @@ class ExchangeDatabase(UNetSingleton):
         return {
             'info': {
                 'class': aclass,
-                'issuer': issuer,
-                'outstandingUnits': 1
+                'issuer': issuer
             },
             'immediate': {
                 'bid': None,
@@ -90,11 +85,6 @@ class ExchangeDatabase(UNetSingleton):
                 'previousClose': None,
                 'open': None,
                 'close': None,
-            },
-            'history': {
-                'today': {},
-                'intraday': {},
-                'daily': {}
             }
         }
     

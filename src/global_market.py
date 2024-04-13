@@ -1,5 +1,5 @@
 # MC-UMSR-NSE Market System
-# Copyright (C) 2023 Alessandro Salerno
+# Copyright (C) 2023 - 2024 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from gmpy2 import mpz
 from order_matching.side import Side
 from order_matching.execution import Execution
 from object_lock import ObjectLock
@@ -34,7 +33,7 @@ class MarketIndex:
         return self.index
     
     def set(self, index):
-        self.index = mpz(index)
+        self.index = index
 
 
 class GlobalMarket(UNetSingleton):
