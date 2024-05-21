@@ -1,5 +1,5 @@
 <p align="center">
-    <h1 align="center">MC-UMSR-NSE-Market-System</h1>
+    <h1 align="center">NSE Market System</h1>
     <p align="center">
         The NSE Market System is an exchange management system developed by members of the UMSR Minecraft Server.
         It's used among server members to trade in in-game financial markets dealing in equities, derivatives and commodities.
