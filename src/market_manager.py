@@ -117,6 +117,12 @@ class MarketManager:
             immediate['bidVolume'] = engine.max_bid_size()
             immediate['askVolume'] = engine.min_offer_size()
 
+            if not immediate['mid']:
+                immediate['mid'] = immediate['ask']
+
+            if not immediate['mid']:
+                immediate['mid'] = immediate['bid']
+
             depth = immediate['depth'][side]
 
             if order.status == Status.CANCEL:
