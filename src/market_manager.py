@@ -60,6 +60,7 @@ class MarketManager:
             
             trades = engine.place(order)
             self.update_asset(order, engine)
+            self.update_issuer(order, trades)
             GlobalMarket().add_order(self._ticker, order)
             self.transact(trades=trades, engine=engine)
 
@@ -79,6 +80,7 @@ class MarketManager:
             
             trades = engine.place(order)
             self.update_asset(order, engine)
+            self.update_issuer(order, trades)
             GlobalMarket().add_order(self._ticker, order)
             self.transact(trades=trades, engine=engine)
         
@@ -134,6 +136,16 @@ class MarketManager:
 
             if session_data['open'] == None:
                 session_data['open'] = immediate['mid']
+
+    def update_issuer(self, order, trades):
+        if trades != None: # or not GlobalMarket().ready
+            return
+        
+        issuer_name = order.trader_id
+        
+        with EXCHANGE_DATABASE.users[issuer_name] as issuer:
+            sign = 1 if order.side == Side.BUY else -1
+            issuer['immediate']['pending'][self._ticker] += order.size * sign
 
     def transact(self, trades, engine: MatchingLayer):
         if trades == None:

@@ -52,7 +52,8 @@ class ExchangeDatabase(UNetSingleton):
                     'balance': balance,
                     'assets': defaultdict(lambda: 0)
                 },
-                'orders': []
+                'orders': [],
+                'pending': defaultdict(lambda: 0)
             }
         }
     

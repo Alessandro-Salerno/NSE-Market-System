@@ -23,13 +23,19 @@ from unet.singleton import UNetSingleton
 class UNetQueryMode:
     QUERY = 0
     EXEC = 1
+    RAW_QUERY = 2
+    FETCH_NEXT = 3
+    EXEC_SCRIPT = 4
 
 class UNetQuery:
     def __init__(self, query, args, mode):
         self.query = query
         self.args = args
         self.mode = mode
+        self.cursor = None
         self.result = None
+        self.error = False
+        self.sync = True
         self._condition = threading.Condition()
 
 
@@ -51,6 +57,25 @@ class UNetDatabase:
             query._condition.wait()
         return query.result
 
+    def raw_query(self, qstring: str, *args) -> any:
+        query = UNetQuery(qstring, args, UNetQueryMode.RAW_QUERY)
+        with query._condition:
+            with self._query_submit:
+                self._query_queue.append(query)
+                self._query_submit.notify()
+            query._condition.wait()
+        return query.result
+
+    def fetch_next(self, cursor):
+        query = UNetQuery(None, None, UNetQueryMode.FETCH_NEXT)
+        query.cursor = cursor
+        with query._condition:
+            with self._query_submit:
+                self._query_queue.append(query)
+                self._query_submit.notify()
+            query._condition.wait()
+        return query.result
+
     def run(self, qstring: str, *args) -> any:
         query = UNetQuery(qstring, args, UNetQueryMode.EXEC)
         with query._condition:
@@ -59,6 +84,29 @@ class UNetDatabase:
                 self._query_submit.notify()
             query._condition.wait()
         return query.result
+
+    def run_script(self, qstring: str, *args) -> any:
+        query = UNetQuery(qstring, args, UNetQueryMode.EXEC_SCRIPT)
+        with query._condition:
+            with self._query_submit:
+                self._query_queue.append(query)
+                self._query_submit.notify()
+            query._condition.wait()
+        return query.result
+
+    def run_async(self, qstring: str, *args) -> any:
+        query = UNetQuery(qstring, args, UNetQueryMode.EXEC)
+        query.sync = False
+        with self._query_submit:
+            self._query_queue.append(query)
+            self._query_submit.notify()
+
+    def run_script_async(self, qstring: str, *args) -> any:
+        query = UNetQuery(qstring, args, UNetQueryMode.EXEC_SCRIPT)
+        query.sync = False
+        with self._query_submit:
+            self._query_queue.append(query)
+            self._query_submit.notify()
 
     def _db_main(self):
         conn = sqlite3.connect(self._filepath)
@@ -70,17 +118,35 @@ class UNetDatabase:
                     self._query_submit.wait()
 
                 query = self._query_queue.pop(0)
-                cur.execute(query.query, query.args)
 
-                match query.mode:
-                    case UNetQueryMode.QUERY:
-                        query.result = cur.fetchall()
+                try:
+                    match query.mode:
+                        case UNetQueryMode.QUERY:
+                            cur.execute(query.query, query.args)
+                            query.result = cur.fetchall()
 
-                    case UNetQueryMode.EXEC:
-                        query.result = conn.commit()
+                        case UNetQueryMode.EXEC:
+                            cur.execute(query.query, query.args)
+                            query.result = conn.commit()
 
-                with query._condition:
-                    query._condition.notify()
+                        case UNetQueryMode.RAW_QUERY:
+                            query.result = conn.cursor()
+                            query.result.execute(query.query, query.args)
+
+                        case UNetQueryMode.FETCH_NEXT:
+                            cur = query.cursor
+                            query.result = cur.fetchone()
+
+                        case UNetQueryMode.EXEC_SCRIPT:
+                            cur.executescript(query.query)
+                            query.result = conn.commit()
+                except conn.Error as error:
+                    query.error = error
+                    conn.rollback()
+
+                if query.sync:
+                    with query._condition:
+                        query._condition.notify()
 
 
 class UNetLazyDatabase:
