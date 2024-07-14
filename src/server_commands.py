@@ -545,7 +545,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                                                         if immediate['bid'] != None and immediate['ask'] != None
                                                         else None))
 
-                    rows[index].append(f"{(shortabs / info['outstandingUnits'] * 100):.2f}%")
+                    rows[index].append(shortabs)
 
             tables.append(unet_make_table_message(
                 title=f'CLASS {aclass} MARKET',
