@@ -22,6 +22,7 @@ from order_matching.side import Side
 import command_backend as cb
 from exdb import EXCHANGE_DATABASE
 from historydb import HistoryDB
+from creditdb import CreditDB, CreditState
 import utils
 
 
@@ -71,3 +72,63 @@ class MarketSettlement(UNetSingleton):
                 session_data['close'] = None
 
         EXCHANGE_DATABASE.set_open_date(utils.today())
+
+        CreditDB().update_matured_days()
+
+        intrest_due = CreditDB().get_all_intrest_due()
+
+        for credit in intrest_due:
+            creditor = credit[1]
+            debtor = credit[2]
+            amount = credit[3]
+            frequency = credit[8]
+            spread = credit[9]
+            base = credit[len(credit) - 1]
+            rate_due = (float(base + spread) / 7 * frequency) / 10000
+            amount_due = round(amount * rate_due, 3)
+            success = True
+
+            with EXCHANGE_DATABASE.users[debtor] as debtor_user:
+                if debtor_user['immediate']['settled']['balance'] >= amount_due:
+                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
+                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
+                elif CreditDB().collateral_call(credit[0], amount_due):
+                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_COLLATERAL)
+                else:
+                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
+                    CreditDB().rollback_advancement(credit[0])
+                    success = False
+
+            if success:
+                with EXCHANGE_DATABASE.users[creditor] as creditor_user:
+                    creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+
+        maturities = CreditDB().get_all_mature()
+
+        for credit in maturities:
+            creditor = credit[1]
+            debtor = credit[2]
+            amount_due = credit[4]
+            success = True
+            refund = credit[10]
+
+            with EXCHANGE_DATABASE.users[debtor] as debtor_user:
+                if debtor_user['immediate']['settled']['balance'] >= amount_due:
+                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
+                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
+                elif CreditDB().collateral_call(credit[0], amount_due):
+                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_COLLATERAL)
+                    refund -= amount_due
+                else:
+                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
+                    CreditDB().rollback_advancement(credit[0])
+                    success = False
+                    refund = 0
+
+                if success:
+                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] + refund, 3)
+            
+            if success:
+                with EXCHANGE_DATABASE.users[creditor] as creditor_user:
+                    creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+

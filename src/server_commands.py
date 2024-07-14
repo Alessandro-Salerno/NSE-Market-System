@@ -37,6 +37,7 @@ from global_market import GlobalMarket
 from settlement import MarketSettlement
 from email_engine import EmailEngine
 from historydb import HistoryDB
+from creditdb import CreditDB
 
 import command_backend as cb
 import utils
@@ -239,6 +240,55 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                     'content': 'Ticker changed'
                 }
             )
+
+    @unet_command('newcredit')
+    def newcredit(self, command: UNetServerCommand, creditor: str, debtor: str, amount: str, amount_due: str, duration: str, frequency: str, collateral: str, spread: str, id_benchmark: str):
+        real_amount = 0
+        real_amount_due = 0
+        real_duration = 0
+        real_frequency = 0
+        real_collateral = 0
+        real_spread = 0
+        real_benchmark = 0
+
+        try:
+            real_amount = int(amount)
+            real_amount_due = int(amount_due)
+            real_duration = int(duration)
+            real_frequency = int(frequency)
+            real_collateral = int(collateral)
+            real_spread = int(spread)
+            real_benchmark = int(id_benchmark)
+        except:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': 'Invalid values'
+                }
+            )
+
+        with EXCHANGE_DATABASE.users[debtor] as debtor_user:
+            if debtor_user['immediate']['settled']['balance'] < real_collateral:
+                return unet_make_status_message(
+                    mode=UNetStatusMode.ERR,
+                    code=UNetStatusCode.BAD,
+                    message={
+                        'content': 'Insufficient funds for collateral'
+                    }
+                )
+
+            debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - real_collateral, 3)
+
+        CreditDB().add_credit(creditor, debtor, real_amount, real_amount_due, real_duration, real_frequency, real_collateral, real_spread, real_benchmark)
+
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK,
+            code=UNetStatusCode.DONE,
+            message={
+                'content': 'Credit created'
+            }
+        )
 
 
 class ExchangeUserCommandHandler(UNetCommandHandler):
@@ -815,4 +865,41 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 message={
                     'content': 'Invalid syntax'
                 }
+            )
+
+    @unet_command('newbenchmark')
+    def newbenchmark(self, command: UNetServerCommand, name: str):
+        CreditDB().add_benchmark(name, command.issuer, 0)
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK,
+            code=UNetStatusCode.DONE,
+            message={
+                'content': 'Credit benchmark created'
+            }
+        )
+
+    @unet_command('setbenchmark')
+    def setbenchmark(self, command: UNetServerCommand, id_credit: str, value: str):
+        real_value = 0
+        real_id = 0
+        try:
+            real_value = int(real_value)
+            real_id = int(id_credit)
+        except:
+            return unet_make_status_message(
+                mode=UNetStatusMode.ERR,
+                code=UNetStatusCode.BAD,
+                message={
+                    'content': 'Invalid value'
+                }
+            )
+
+        CreditDB().update_benchmark(real_id, real_value)
+
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK,
+            code=UNetStatusCode.DONE,
+            message={
+                'content': 'Benchmark updated'
+            }
         )
