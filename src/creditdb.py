@@ -167,7 +167,7 @@ WHERE issuer =?
 SELECT a.*, b.value
 FROM Credits a
 INNER JOIN Benchmarks b ON a.id_benchmark = b.id_benchmark
-WHERE (matured % frequency) = 0
+WHERE (matured % frequency) = 0 AND matured <= duration
 """)
     
     def get_all_mature(self):
