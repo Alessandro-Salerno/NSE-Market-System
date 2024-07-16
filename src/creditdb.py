@@ -164,8 +164,9 @@ WHERE issuer =?
     def get_all_intrest_due(self):
         return self._db.query(
 """
-SELECT *
-FROM Credits
+SELECT a.*, b.value
+FROM Credits a
+INNER JOIN Benchmarks b ON a.id_benchmark = b.id_benchmark
 WHERE (matured % frequency) = 0
 """)
     
