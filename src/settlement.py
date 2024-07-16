@@ -88,20 +88,34 @@ class MarketSettlement(UNetSingleton):
             amount_due = round(amount * rate_due, 3)
             success = True
 
-            with EXCHANGE_DATABASE.users[debtor] as debtor_user:
-                if debtor_user['immediate']['settled']['balance'] >= amount_due:
-                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
-                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
-                elif CreditDB().collateral_call(credit[0], amount_due):
-                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_COLLATERAL)
-                else:
-                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
-                    CreditDB().rollback_advancement(credit[0])
-                    success = False
+            if rate_due >= 0:
+                with EXCHANGE_DATABASE.users[debtor] as debtor_user:
+                    if debtor_user['immediate']['settled']['balance'] >= amount_due:
+                        debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
+                        CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
+                    elif CreditDB().collateral_call(credit[0], amount_due):
+                        CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_COLLATERAL)
+                    else:
+                        CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
+                        CreditDB().rollback_advancement(credit[0])
+                        success = False
 
-            if success:
+                if success:
+                    with EXCHANGE_DATABASE.users[creditor] as creditor_user:
+                        creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+            else:
                 with EXCHANGE_DATABASE.users[creditor] as creditor_user:
-                    creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+                    if creditor_user['immediate']['settled']['balance'] >= amount_due:
+                        creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+                        CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
+                    else:
+                        CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
+                        CreditDB().rollback_advancement(credit[0])
+                        success = False
+                
+                if success:
+                    with EXCHANGE_DATABASE.users[debtor] as debtor_user:
+                        debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
 
         maturities = CreditDB().get_all_mature()
 
@@ -113,12 +127,9 @@ class MarketSettlement(UNetSingleton):
             refund = credit[10]
 
             with EXCHANGE_DATABASE.users[debtor] as debtor_user:
-                if debtor_user['immediate']['settled']['balance'] >= amount_due:
+                if debtor_user['immediate']['settled']['balance'] + refund >= amount_due:
                     debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
                     CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
-                elif CreditDB().collateral_call(credit[0], amount_due):
-                    CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_COLLATERAL)
-                    refund -= amount_due
                 else:
                     CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
                     CreditDB().rollback_advancement(credit[0])
@@ -131,4 +142,3 @@ class MarketSettlement(UNetSingleton):
             if success:
                 with EXCHANGE_DATABASE.users[creditor] as creditor_user:
                     creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
-

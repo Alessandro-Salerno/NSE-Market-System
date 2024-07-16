@@ -242,7 +242,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
             )
 
     @unet_command('newcredit')
-    def newcredit(self, command: UNetServerCommand, creditor: str, debtor: str, amount: str, amount_due: str, duration: str, frequency: str, collateral: str, spread: str, id_benchmark: str):
+    def newcredit(self, command: UNetServerCommand, creditor: str, debtor: str, amount: str, amount_due: str, duration: str, frequency: str, collateral: str, spread: str, id_benchmark: str, note: str):
         real_amount = 0
         real_amount_due = 0
         real_duration = 0
@@ -268,19 +268,32 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                 }
             )
 
+        with EXCHANGE_DATABASE.users[creditor] as creditor_user:
+            if creditor_user['immediate']['settled']['balance'] < real_amount:
+                return unet_make_status_message(
+                    mode=UNetStatusMode.ERR,
+                    code=UNetStatusCode.DENY,
+                    message={
+                        'content': 'Creditor has insufficient funds'
+                    }
+                )
+
+            creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] - real_amount, 3)
+
         with EXCHANGE_DATABASE.users[debtor] as debtor_user:
             if debtor_user['immediate']['settled']['balance'] < real_collateral:
                 return unet_make_status_message(
                     mode=UNetStatusMode.ERR,
-                    code=UNetStatusCode.BAD,
+                    code=UNetStatusCode.DENY,
                     message={
-                        'content': 'Insufficient funds for collateral'
+                        'content': 'Debtor has insufficient collateral'
                     }
                 )
 
             debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - real_collateral, 3)
+            debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] + real_amount, 3)
 
-        CreditDB().add_credit(creditor, debtor, real_amount, real_amount_due, real_duration, real_frequency, real_collateral, real_spread, real_benchmark)
+        CreditDB().add_credit(creditor, debtor, real_amount, real_amount_due, real_duration, real_frequency, real_collateral, real_spread, real_benchmark, note)
 
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
@@ -807,6 +820,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         with EXCHANGE_DATABASE.users[command.issuer] as user:
             EXCHANGE_DATABASE.users.__setitem__(new_name, EXCHANGE_DATABASE.users.pop(command.issuer))
             UNetUserDatabase().change_user_username(command.issuer, new_name)
+            CreditDB().update_names(command.issuer, new_name))
             self.parent._user = new_name
         
         return unet_make_status_message(
@@ -883,7 +897,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         real_value = 0
         real_id = 0
         try:
-            real_value = int(real_value)
+            real_value = int(value)
             real_id = int(id_credit)
         except:
             return unet_make_status_message(
@@ -894,6 +908,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                 }
             )
 
+        # add identity check
         CreditDB().update_benchmark(real_id, real_value)
 
         return unet_make_status_message(
@@ -902,4 +917,12 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             message={
                 'content': 'Benchmark updated'
             }
+        )
+
+    @unet_command('flows', 'ff')
+    def setbenchmark(self, command: UNetServerCommand):
+        return unet_make_table_message(
+            title='ACTIVE CASHFLOWS',
+            columns=['ID', 'CTR', 'DTR', 'AMOUNT', 'FINAL', 'DATE', 'LEN (DD)', 'MTR (DD)', 'FREQ (DD)', 'SPREAD (BP)', 'COLLATERAL', 'NOTE', 'BKID', 'BENCH', 'BASE'],
+            rows=CreditDB().list_credits(command.issuer)
         )

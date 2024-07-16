@@ -35,7 +35,7 @@ class CreditDB(UNetSingleton):
 """
 CREATE TABLE IF NOT EXISTS Benchmarks(
     id_benchmark INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(16) NOT NULL,
+    name VARCHAR(16) NOT NULL UNIQUE,
     issuer TEXT NOT NULL,
     value INTEGER
 )
@@ -53,8 +53,9 @@ CREATE TABLE IF NOT EXISTS Credits (
     duration INTEGER NOT NULL,
     matured INTEGER NOT NULL DEFAULT 0,
     frequency INTEGER NOT NULL DEFAULT 7,
-    spread INTEGER NOT NULL DEFAULT 0,
+    spread INTEGER NOT NULL DEFAULT 1,
     collateral INTEGER NOT NULL,
+    note VARCHAR(255) NOT NULL,
     id_benchmark INTEGER NOT NULL,
 
     FOREIGN KEY (id_benchmark) REFERENCES Benchmarks(id_benchmark)
@@ -74,13 +75,13 @@ CREATE TABLE IF NOT EXISTS CreditHistory (
 )
 """)
 
-    def add_credit(self, creditor, debtor, amount, amount_due, duration, frequency, collateral, spread, id_benchmark):
+    def add_credit(self, creditor, debtor, amount, amount_due, duration, frequency, collateral, spread, id_benchmark, note):
         self._db.run(
 """
-INSERT INTO Credits (creditor, debtor, amount, amount_due, start_date, duration, frequency, spread, collateral, id_benchmark)
+INSERT INTO Credits (creditor, debtor, amount, amount_due, start_date, duration, frequency, spread, collateral, id_benchmark, note)
 VALUES
-(?, ?, ?, ?, DATE("now"), ?, ?, ?, ?, ?)
-""", creditor, debtor, amount, amount_due, duration, frequency, spread, collateral, id_benchmark)
+(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+""", creditor, debtor, amount, amount_due, utils.today(), duration, frequency, spread, collateral, id_benchmark, note)
 
     def remove_credit(self, id_credit):
         self._db.run(
@@ -115,10 +116,10 @@ WHERE id_benchmark = ?
     def list_credits(self, username):
         return self._db.query(
 """
-SELECT a.*, b.name, b.id_benchmark, b.value
+SELECT a.*, b.name, b.value
 FROM Credits a
 INNER JOIN Benchmarks b ON a.id_benchmark = b.id_benchmark
-WHERE creditor = ? OR debtor = ?
+WHERE (creditor = ? OR debtor = ?) AND matured <= duration
 ORDER BY (debtor)
 """, username, username)
 
@@ -165,7 +166,7 @@ WHERE issuer =?
 """
 SELECT *
 FROM Credits
-WHERE (matured % frequency) = 0 AND matured != duration
+WHERE (matured % frequency) = 0
 """)
     
     def get_all_mature(self):
@@ -201,8 +202,8 @@ WHERE id_credit = ?
 """
 INSERT INTO CreditHistory (id_credit, amount_due, state, day)
 VALUES
-(?, ?, ?, DATE("now"))
-""", id_credit, amount_due, state)
+(?, ?, ?, ?)
+""", id_credit, amount_due, state, utils.today())
 
     def rollback_advancement(self, id_credit):
         self._db.run(
