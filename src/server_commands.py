@@ -820,7 +820,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         with EXCHANGE_DATABASE.users[command.issuer] as user:
             EXCHANGE_DATABASE.users.__setitem__(new_name, EXCHANGE_DATABASE.users.pop(command.issuer))
             UNetUserDatabase().change_user_username(command.issuer, new_name)
-            CreditDB().update_names(command.issuer, new_name))
+            CreditDB().update_names(command.issuer, new_name)
             self.parent._user = new_name
         
         return unet_make_status_message(
