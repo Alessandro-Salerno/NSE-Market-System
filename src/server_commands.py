@@ -920,7 +920,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         )
 
     @unet_command('flows', 'ff')
-    def setbenchmark(self, command: UNetServerCommand):
+    def flows(self, command: UNetServerCommand):
         return unet_make_table_message(
             title='ACTIVE CASHFLOWS',
             columns=['ID', 'CTR', 'DTR', 'AMOUNT', 'FINAL', 'DATE', 'LEN (DD)', 'MTR (DD)', 'FREQ (DD)', 'SPREAD (BP)', 'COLLATERAL', 'NOTE', 'BKID', 'BENCH', 'BASE'],
