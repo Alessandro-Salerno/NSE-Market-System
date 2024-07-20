@@ -186,7 +186,21 @@ class MyHandler(MComConnectionHandler):
                 for ci, column in enumerate(columns):
                     table.add_column(f'[blue]{column}[/blue]', justify=('left' if ci == 0 else 'right'))
                 for row in rows:
-                    table.add_row(*[str(e) for e in row])
+                    final_row = []
+                    color = '#FFFFFF'
+                    for e in row:
+                        if isinstance(e, float):
+                            final_row.append(f'{e:.3f}')
+                        else:
+                            final_row.append(str(e))
+                        
+                        if isinstance(e, str):
+                            if '+' in e and '%' in e and e != "+0.00%":
+                                color = "#90EE90"
+                            elif '-' in e and '%' in e:
+                                color = "#FF7F7F"
+                        
+                    table.add_row(*final_row, style=color)
                 
                 console.print(table, justify='center')
                 print()
