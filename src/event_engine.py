@@ -71,8 +71,8 @@ class EventEngine(UNetSingleton):
                     if username not in self.user_events:
                         continue
 
+                    user = self.user_events[username]
                     username_count += 1
-                    usernames.remove(username)
 
                     if notification.event_name not in user:
                         continue
