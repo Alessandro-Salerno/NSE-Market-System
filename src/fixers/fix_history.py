@@ -5,7 +5,7 @@ from datetime import datetime, date
 his = HistoryDB()
 
 file = None 
-with open("exchange.json", 'r') as f:
+with open("db/exchange.json", 'r') as f:
     file = json.loads(f.read())
 
 for name, user in file['usersByName'].items():
@@ -40,7 +40,7 @@ for ticker, asset in file['assetsByTicker'].items():
     for date, info in d_his.items():
         his.add_asset_daily(ticker, date, info['buyVolume'], info['sellVolume'], info['tradedValue'], info['open'], info['close'])
 
-with open('exchange.json', 'w') as f:
+with open('db/exchange.json', 'w') as f:
     f.write(json.dumps(file))
 
 

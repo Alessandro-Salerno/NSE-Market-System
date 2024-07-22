@@ -24,7 +24,7 @@ import utils
 
 class ExchangeDatabase(UNetSingleton):
     def __setup__(self) -> None:
-        self.db = PlatformDB(filename='exchange.json', schema={
+        self.db = PlatformDB(filename='db/exchange.json', schema={
             'usersByName': self.user(),
             'assetsByTicker': self.asset(),
             'assetsByClass': {},

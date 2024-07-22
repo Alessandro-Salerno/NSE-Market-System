@@ -2,7 +2,7 @@ import json
 
 
 file = None 
-with open("exchange.json", 'r') as f:
+with open("db/exchange.json", 'r') as f:
     file = json.loads(f.read())
 
 m1 = 0

@@ -29,7 +29,7 @@ class CreditState:
 
 class CreditDB(UNetSingleton):
     def __setup__(self):
-        self._db = UNetDatabase('credit.db')
+        self._db = UNetDatabase('db/credit.db')
 
         self._db.run(
 """

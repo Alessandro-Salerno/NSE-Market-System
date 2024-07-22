@@ -3,7 +3,7 @@ from types import NoneType
 
 
 file = None 
-with open("exchange.json", 'r') as f:
+with open("db/exchange.json", 'r') as f:
     file = json.loads(f.read())
 
 for name, user in file['usersByName'].items():
@@ -13,6 +13,6 @@ file['ordersById'] = {}
 if 'ordrsById' in file:
     file.pop('ordrsById')
 
-with open('exchange.json', 'w') as f:
+with open('db/exchange.json', 'w') as f:
     f.write(json.dumps(file))
 

@@ -23,7 +23,7 @@ import json
 
 class HistoryDB(UNetSingleton):
     def __setup__(self):
-        self._db = UNetDatabase('history.db')
+        self._db = UNetDatabase('db/history.db')
 
         self._db.run(
 """
