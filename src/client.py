@@ -250,7 +250,7 @@ class MyHandler(MComConnectionHandler):
                     table.add_row(*final_row, style=color)
                 
                 ts = os.get_terminal_size()
-                table.width = max(ts.columns / 3, min(ts.columns, 80))
+                table.min_width = int(round(max(ts.columns / 3, min(ts.columns, 80))))
                 console.print(table, justify='center', width=ts.columns)
                 print()
             
