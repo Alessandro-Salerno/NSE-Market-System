@@ -114,7 +114,7 @@ class UNetLazyDatabase:
 
 class UNetUserDatabase(UNetSingleton):
     def __init__(self) -> None:
-        self._db = UNetDatabase('unet_users.db')
+        self._db = UNetDatabase('db/unet_users.db')
 
         self.db.run('CREATE TABLE IF NOT EXISTS unet_user_credentials(username text, email str, password text)')
         self.db.run('CREATE TABLE IF NOT EXISTS unet_user_roles(username text, role text)')
