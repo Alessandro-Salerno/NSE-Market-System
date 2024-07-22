@@ -38,6 +38,7 @@ from settlement import MarketSettlement
 from email_engine import EmailEngine
 from historydb import HistoryDB
 from creditdb import CreditDB
+from event_engine import EventEngine, ExchangeEvent
 
 import command_backend as cb
 import utils
@@ -925,4 +926,15 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             title='ACTIVE CASHFLOWS',
             columns=['ID', 'CTR', 'DTR', 'AMOUNT', 'FINAL', 'DATE', 'LEN (DD)', 'MTR (DD)', 'FREQ (DD)', 'SPREAD (BP)', 'COLLATERAL', 'NOTE', 'BKID', 'BENCH', 'BASE'],
             rows=CreditDB().list_credits(command.issuer)
+        )
+
+    @unet_command('event')
+    def event(self, command: UNetServerCommand, event_name: str):
+        EventEngine().subscribe(command.issuer, event_name)
+        return unet_make_status_message(
+            mode=UNetStatusMode.OK,
+            code=UNetStatusCode.DONE,
+            message={
+                'content': 'Event triggered'
+            }
         )

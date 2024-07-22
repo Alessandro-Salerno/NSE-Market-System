@@ -29,6 +29,7 @@ from platformdb import PlatformDB
 from exdb import EXCHANGE_DATABASE
 
 from matching_layer import MatchingLayer
+from event_engine import EventEngine, ExchangeEvent
 
 
 class MarketManager:
@@ -139,6 +140,8 @@ class MarketManager:
         if trades == None:
             return
 
+        users_to_notify = set()
+
         for trade in trades:
             sell_order_id = None
             buy_order_id = None
@@ -159,6 +162,7 @@ class MarketManager:
 
             sell_order: Order = GlobalMarket().orders[sell_order_id]
             buy_order: Order = GlobalMarket().orders[buy_order_id]
+            book_order: Order = GlobalMarket().orders[trade.book_order_id]
 
             sell_price = sell_order.price
             buy_price = buy_order.price
@@ -213,6 +217,11 @@ class MarketManager:
                 GlobalMarket().remove_order(buy_order_id)
             if sell_order.left == 0:
                 GlobalMarket().remove_order(sell_order_id)
+
+            if book_order.left == 0:
+                users_to_notify.add(book_order.trader_id)
+
+        EventEngine().notify_async(users_to_notify, ExchangeEvent.ORDER_FILLED)
 
     def close(self, delete=False):
         if delete:

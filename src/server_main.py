@@ -25,6 +25,7 @@ from scheduler import MarketScheduler
 from global_market import GlobalMarket
 from email_engine import EmailEngine
 from historydb import HistoryDB
+from event_engine import EventEngine
 
 
 class ExchangeAuthenticatedHandler(UNetAuthenticatedHandler):
@@ -87,4 +88,5 @@ This is free software, and you are welcome to redistribute it
 
     s = MarketScheduler()
     logging.info("Starting event loop...")
+    events = EventEngine()
     s.start_scheduler()
