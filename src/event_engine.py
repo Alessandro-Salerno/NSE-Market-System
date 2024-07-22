@@ -65,11 +65,13 @@ class EventEngine(UNetSingleton):
                 if isinstance(notification.username, str):
                     usernames = [notification.username,]
 
+                username_count = 0
+
                 for username in usernames:
                     if username not in self.user_events:
                         continue
 
-                    user = self.user_events[username]
+                    username_count += 1
                     usernames.remove(username)
 
                     if notification.event_name not in user:
@@ -79,5 +81,5 @@ class EventEngine(UNetSingleton):
                     with cond:
                         cond.notify()
 
-                if len(usernames) == 0:
+                if len(usernames) == username_count:
                     self._notifications.pop(0)
