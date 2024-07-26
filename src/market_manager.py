@@ -218,8 +218,9 @@ class MarketManager:
             if sell_order.left == 0:
                 GlobalMarket().remove_order(sell_order_id)
 
-            if book_order.left == 0:
+            if book_order.left < 1:
                 users_to_notify.add(book_order.trader_id)
+
 
         EventEngine().notify_async(users_to_notify, ExchangeEvent.ORDER_FILLED)
 
