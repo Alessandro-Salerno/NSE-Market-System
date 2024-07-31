@@ -50,9 +50,6 @@ class EventEngine(UNetSingleton):
             c.wait()
     
     def notify_async(self, username, event_name):
-        if username not in self.user_events:
-            return
-        
         n = EventNotification(username, event_name)
         with self._submit_condition:
             self._notifications.append(n)
@@ -64,26 +61,28 @@ class EventEngine(UNetSingleton):
                 while len(self._notifications) == 0:
                     self._submit_condition.wait()
 
-                notification = self._notifications[0]
-                usernames = notification.username
-                if isinstance(notification.username, str):
-                    usernames = [notification.username,]
+                for notification in self._notifications.copy():
+                    usernames = notification.username
+                    if isinstance(notification.username, str):
+                        usernames = [notification.username,]
 
-                username_count = 0
+                    username_count = 0
 
-                for username in usernames:
-                    if username not in self.user_events:
-                        continue
+                    for username in usernames.copy():
+                        if username not in self.user_events:
+                            usernames.remove(username)
+                            continue
 
-                    user = self.user_events[username]
-                    username_count += 1
+                        user = self.user_events[username]
+                        username_count += 1
 
-                    if notification.event_name not in user:
-                        continue
+                        if notification.event_name not in user:
+                            usernames.remove(username)
+                            continue
 
-                    cond = user.pop(notification.event_name)
-                    with cond:
-                        cond.notify()
+                        cond = user.pop(notification.event_name)
+                        with cond:
+                            cond.notify()
 
-                if len(usernames) == username_count:
-                    self._notifications.pop(0)
+                    if len(usernames) == username_count:
+                        self._notifications.remove(notification)
