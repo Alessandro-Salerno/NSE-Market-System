@@ -50,6 +50,9 @@ class EventEngine(UNetSingleton):
             c.wait()
     
     def notify_async(self, username, event_name):
+        if username not in self.user_events:
+            return
+        
         n = EventNotification(username, event_name)
         with self._submit_condition:
             self._notifications.append(n)
@@ -58,7 +61,8 @@ class EventEngine(UNetSingleton):
     def _engine_loop(self):
         while True:
             with self._submit_condition:
-                self._submit_condition.wait()
+                while len(self._notifications) == 0:
+                    self._submit_condition.wait()
 
                 notification = self._notifications[0]
                 usernames = notification.username

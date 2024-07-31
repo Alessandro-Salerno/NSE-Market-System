@@ -221,7 +221,6 @@ class MarketManager:
             if book_order.left < 1:
                 users_to_notify.add(book_order.trader_id)
 
-
         EventEngine().notify_async(users_to_notify, ExchangeEvent.ORDER_FILLED)
 
     def close(self, delete=False):
