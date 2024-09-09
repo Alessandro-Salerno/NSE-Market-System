@@ -49,7 +49,7 @@ class MarketSettlement(UNetSingleton):
                                        abs(qty),
                                        0)
 
-                user['immediate']['settled']['balance'] = round(user['immediate']['settled']['balance'] + user['immediate']['current']['balance'], 3)
+                user['immediate']['settled']['balance'] = round(user['immediate']['settled']['balance'] + user['immediate']['current']['balance'], 2)
                 user['immediate']['current']['balance'] = 0
                 user['immediate']['current']['assets'].clear()
 
@@ -85,13 +85,13 @@ class MarketSettlement(UNetSingleton):
             spread = credit[9]
             base = credit[len(credit) - 1]
             rate_due = (float(base + spread) / 7 * frequency) / 10000
-            amount_due = round(amount * rate_due, 3)
+            amount_due = round(amount * rate_due, 2)
             success = True
 
             if amount_due >= 0:
                 with EXCHANGE_DATABASE.users[debtor] as debtor_user:
                     if debtor_user['immediate']['settled']['balance'] >= amount_due:
-                        debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
+                        debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 2)
                         CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
                     elif CreditDB().collateral_call(credit[0], amount_due):
                         CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_COLLATERAL)
@@ -102,11 +102,11 @@ class MarketSettlement(UNetSingleton):
 
                 if success:
                     with EXCHANGE_DATABASE.users[creditor] as creditor_user:
-                        creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+                        creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 2)
             else:
                 with EXCHANGE_DATABASE.users[creditor] as creditor_user:
                     if creditor_user['immediate']['settled']['balance'] >= amount_due:
-                        creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+                        creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 2)
                         CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
                     else:
                         CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
@@ -115,7 +115,7 @@ class MarketSettlement(UNetSingleton):
                 
                 if success:
                     with EXCHANGE_DATABASE.users[debtor] as debtor_user:
-                        debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
+                        debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 2)
 
         maturities = CreditDB().get_all_mature()
 
@@ -128,7 +128,7 @@ class MarketSettlement(UNetSingleton):
 
             with EXCHANGE_DATABASE.users[debtor] as debtor_user:
                 if debtor_user['immediate']['settled']['balance'] + refund >= amount_due:
-                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 3)
+                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - amount_due, 2)
                     CreditDB().add_history_instance(credit[0], amount_due, CreditState.PAID_CASH)
                 else:
                     CreditDB().add_history_instance(credit[0], amount_due, CreditState.DEFAULT)
@@ -137,8 +137,8 @@ class MarketSettlement(UNetSingleton):
                     refund = 0
 
                 if success:
-                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] + refund, 3)
+                    debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] + refund, 2)
             
             if success:
                 with EXCHANGE_DATABASE.users[creditor] as creditor_user:
-                    creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 3)
+                    creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] + amount_due, 2)

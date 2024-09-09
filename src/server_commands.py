@@ -279,7 +279,7 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                     }
                 )
 
-            creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] - real_amount, 3)
+            creditor_user['immediate']['settled']['balance'] = round(creditor_user['immediate']['settled']['balance'] - real_amount, 2)
 
         with EXCHANGE_DATABASE.users[debtor] as debtor_user:
             if debtor_user['immediate']['settled']['balance'] < real_collateral:
@@ -291,8 +291,8 @@ class ExchangePriviledgedCommandHandler(UNetCommandHandler):
                     }
                 )
 
-            debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - real_collateral, 3)
-            debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] + real_amount, 3)
+            debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] - real_collateral, 2)
+            debtor_user['immediate']['settled']['balance'] = round(debtor_user['immediate']['settled']['balance'] + real_amount, 2)
 
         CreditDB().add_credit(creditor, debtor, real_amount, real_amount_due, real_duration, real_frequency, real_collateral, real_spread, real_benchmark, note)
 
@@ -423,7 +423,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         
         real_amount = 0
         try:
-            real_amount = round(float(amount), 3)
+            real_amount = round(float(amount), 2)
             if real_amount < 0:
                 raise Exception()
         except:
@@ -555,7 +555,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     rows[index].append(utils.value_fmt(session_data['buyVolume']))
                     rows[index].append(utils.value_fmt(session_data['sellVolume']))
                     rows[index].append(utils.value_fmt(session_data['tradedValue']))
-                    rows[index].append(utils.value_fmt(round((immediate['ask'] - immediate['bid']) / round(immediate['mid'], 3) * 10000, 2)\
+                    rows[index].append(utils.value_fmt(round((immediate['ask'] - immediate['bid']) / round(immediate['mid'], 2) * 10000, 2)\
                                                         if immediate['bid'] != None and immediate['ask'] != None
                                                         else None))
 

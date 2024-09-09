@@ -119,7 +119,7 @@ def _today_chart(ticker: str, property: str):
         ask = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['ask']
         
         x.append(utils.now())
-        y.append(round((ask - bid) / round((ask + bid) / 2, 3) * 10000, 2)\
+        y.append(round((ask - bid) / round((ask + bid) / 2, 2) * 10000, 2)\
                  if bid != None and ask != None
                  else None)
 
@@ -225,7 +225,7 @@ def _spread_series(data: list):
             y.append(None)
             continue
 
-        y.append(round((ask - bid) / round((ask + bid) / 2, 3) * 10000, 2))
+        y.append(round((ask - bid) / round((ask + bid) / 2, 2) * 10000, 2))
 
     return x, y, 'd/m/Y H:M'
 
@@ -293,7 +293,7 @@ def place_order(ticker: str, issuer: str, exec: any, side: any, size: str, price
                 }
             )
         
-        fill_price = round(order.fill_cost / order_fill, 3) if order_fill > 0 else 0
+        fill_price = round(order.fill_cost / order_fill, 2) if order_fill > 0 else 0
     except KeyError as ke:
         return unet_make_status_message(
             mode=UNetStatusMode.ERR,

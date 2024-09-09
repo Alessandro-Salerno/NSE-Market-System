@@ -53,7 +53,7 @@ class MarketManager:
                            trader_id=issuer,
                            timestamp=datetime.now(),
                            expiration=datetime.now() + timedelta(days=365),
-                           price_number_of_digits=3)
+                           price_number_of_digits=2)
 
         with self._engine_lock as engine:
             if not self._tradable:
@@ -177,7 +177,7 @@ class MarketManager:
                 trade.price = buy_price
             else:
                 with EXCHANGE_DATABASE.assets[self._ticker] as asset:
-                    sz = round(trade.price * trade.size, 3)
+                    sz = round(trade.price * trade.size, 2)
                     GlobalMarket().orders[trade.incoming_order_id].fill_cost += sz
                     asset['sessionData']['tradedValue'] = round(asset['sessionData']['tradedValue'] + sz, 2)
                     d = asset['immediate']['depth'][depth_side]
@@ -198,14 +198,14 @@ class MarketManager:
                 assets[self._ticker] += trade.size
                 if assets[self._ticker] == 0:
                     assets.pop(self._ticker)
-                b['immediate']['current']['balance'] = round(b['immediate']['current']['balance'] - round(buy_price * trade.size, 3), 3)
+                b['immediate']['current']['balance'] = round(b['immediate']['current']['balance'] - round(buy_price * trade.size, 2), 2)
             
             with EXCHANGE_DATABASE.users[seller] as s:
                 assets = s['immediate']['current']['assets']
                 assets[self._ticker] -= trade.size
                 if assets[self._ticker] == 0:
                     assets.pop(self._ticker)
-                s['immediate']['current']['balance'] = round(s['immediate']['current']['balance'] + round(sell_price * trade.size, 3), 3)
+                s['immediate']['current']['balance'] = round(s['immediate']['current']['balance'] + round(sell_price * trade.size, 2), 2)
 
             EXCHANGE_DATABASE.update_order(buy_order.order_id, buy_order.size)
             EXCHANGE_DATABASE.update_order(sell_order.order_id, sell_order.size)

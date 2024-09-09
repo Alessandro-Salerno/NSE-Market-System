@@ -237,7 +237,9 @@ class MyHandler(MComConnectionHandler):
                     color = '#FFFFFF'
                     for e in row:
                         if isinstance(e, float):
-                            final_row.append(f'{e:.3f}')
+                            final_row.append(f'{e:_.2f}'.replace('.', ',').replace('_', '.'))
+                        elif isinstance(e, int):
+                            final_row.append(f'{e:_}'.replace('_', '.'))
                         else:
                             final_row.append(str(e))
                         

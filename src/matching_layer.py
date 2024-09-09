@@ -35,7 +35,7 @@ class MatchingLayer:
         return self._last_offer
 
     def current_price(self):
-        return round((self._max_bid + self._min_offer) / 2, 3) \
+        return round((self._max_bid + self._min_offer) / 2, 2) \
                         if self._max_bid != None and self._min_offer != None else None
     
     def imbalance(self):
