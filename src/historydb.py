@@ -69,7 +69,8 @@ CREATE TABLE IF NOT EXISTS Payments (
     amount REAL NOT NULL,
     currency VARCHAR(32) NOT NULL,
     day TEXT NOT NULL,
-    time TEXT NOT NULL
+    time TEXT NOT NULL,
+    category TEXT
 )
 """)
 
@@ -137,12 +138,12 @@ FROM UserDaily
 WHERE username = ? AND date(day) BETWEEN ? AND ?
 """, username, start_date, end_date)
 
-    def add_payment(self, sender, receiver, amount, currency='XUD'):
+    def add_payment(self, sender, receiver, amount, category, currency='XUD'):
         self._db.run(
 """
-INSERT INTO Payments (sender, receiver, amount, currency, day, time) VALUES
-(?, ?, ?, ?, ?, ?)
-""", sender, receiver, amount, currency, utils.today(), utils.nowtime())
+INSERT INTO Payments (sender, receiver, amount, currency, day, time, category) VALUES
+(?, ?, ?, ?, ?, ?, ?)
+""", sender, receiver, amount, currency, utils.today(), utils.nowtime(), category)
 
     def update_ticker(self, old_ticker, new_ticker):
         self._db.run(

@@ -411,7 +411,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
         return cb.place_order(ticker.upper(), command.issuer, Execution.MARKET, Side.BUY, qty, 0)
 
     @unet_command('pay', 'paga', 'pp', 'pa')
-    def pay(self, command: UNetServerCommand, who: str, amount: str):
+    def pay(self, command: UNetServerCommand, who: str, amount: str, category: str):
         if who not in EXCHANGE_DATABASE.users:
             return unet_make_status_message(
                 mode=UNetStatusMode.ERR,
@@ -439,7 +439,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             with EXCHANGE_DATABASE.users[who] as receiver:
                 receiver['immediate']['settled']['balance'] += real_amount
 
-            HistoryDB().add_payment(command.issuer, who, real_amount)
+            HistoryDB().add_payment(command.issuer, who, real_amount, category)
             return unet_make_status_message(
                 mode=UNetStatusMode.OK,
                 code=UNetStatusCode.DONE,
@@ -736,7 +736,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             if receiver['immediate']['settled']['assets'][ticker] == 0:
                 receiver['immediate']['settled']['assets'].pop(ticker)
         
-        HistoryDB().add_payment(command.issuer, who, qty, ticker)
+        HistoryDB().add_payment(command.issuer, who, qty, None, ticker)
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
