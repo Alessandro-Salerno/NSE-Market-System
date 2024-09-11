@@ -467,7 +467,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             with EXCHANGE_DATABASE.users[who] as receiver:
                 receiver['immediate']['settled']['balance'] += real_amount
 
-        HistoryDB().add_payment(command.issuer, who, real_amount)
+        HistoryDB().add_payment(command.issuer, who, real_amount, category)
         return unet_make_status_message(
             mode=UNetStatusMode.OK,
             code=UNetStatusCode.DONE,
