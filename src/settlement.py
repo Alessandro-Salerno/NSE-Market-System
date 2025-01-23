@@ -1,5 +1,5 @@
-# MC-UMSR-NSE Market System
-# Copyright (C) 2023 - 2024 Alessandro Salerno
+# NSE Market System
+# Copyright (C) 2023 - 2025 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -61,6 +61,8 @@ class MarketSettlement(UNetSingleton):
                 session_data = asset['sessionData']
         
                 session_data['close'] = immediate['mid']
+                if session_data['close'] == None:
+                    session_data['close'] = immediate['last']
 
                 HistoryDB().add_asset_daily(assetname, EXCHANGE_DATABASE.get_open_date(), session_data['buyVolume'], session_data['sellVolume'], session_data['tradedValue'], session_data['open'], session_data['close'])
 

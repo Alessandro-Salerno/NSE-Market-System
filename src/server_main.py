@@ -1,5 +1,5 @@
-# MC-UMSR-NSE Market System
-# Copyright (C) 2023 - 2024 Alessandro Salerno
+# NSE Market System
+# Copyright (C) 2023 - 2025 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ class ExchangeAuthenticationHandler(UNetAuthenticationHandler):
 
 if __name__ == '__main__':
     print(
-"""MC-UMSR-NSE-Market-System Copyright (C) 2023 - 2024 Alessandro Salerno
+"""NSE-Market-System Copyright (C) 2023 - 2025 Alessandro Salerno
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it
 """)

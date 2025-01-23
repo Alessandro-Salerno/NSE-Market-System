@@ -1,5 +1,5 @@
-# MC-UMSR-NSE Market System
-# Copyright (C) 2023 - 2024 Alessandro Salerno
+# NSE Market System
+# Copyright (C) 2023 - 2025 Alessandro Salerno
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -329,14 +329,14 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             ),
 
             unet_make_value_message(
-                name='settled Balance',
+                name='Settled Balance',
                 value=settled
             )
         )
     
     @unet_command('market', 'mercato', 'mm')
     def market(self, command: UNetServerCommand):
-        colums = ['TICKER', 'BID', 'ASK', 'MID', 'BID V', 'ASK V', 'CHANGE']
+        colums = ['TICKER', 'LAST', 'BID', 'ASK', 'MID', 'BID V', 'ASK V', 'CHANGE']
         tables = []
 
         for aclass in sorted(list(EXCHANGE_DATABASE.asset_classes.keys())):
@@ -350,14 +350,18 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
                     session_data = asset['sessionData']
 
                     rows[index].append(ticker)
+                    rows[index].append(utils.value_fmt(immediate['last']))
                     rows[index].append(utils.value_fmt(immediate['bid']))
                     rows[index].append(utils.value_fmt(immediate['ask']))
                     rows[index].append(utils.value_fmt(immediate['mid']))
                     rows[index].append(utils.value_fmt(immediate['bidVolume']))
                     rows[index].append(utils.value_fmt(immediate['askVolume']))
-                    rows[index].append(f"{(((immediate['mid'] - session_data['previousClose']) / session_data['previousClose']) * 100):+.2f}%"
-                                    if utils.are_none(immediate['mid'], session_data['previousClose'])
-                                        else utils.value_fmt(None))
+                    change = utils.value_fmt(None)
+                    if utils.are_none(immediate['mid'], session_data['previousClose']):
+                        change = f"{(((immediate['mid'] - session_data['previousClose']) / session_data['previousClose']) * 100):+.2f}%"
+                    elif utils.are_none(immediate['last'], session_data['previousClose']):
+                        change = f"{(((immediate['last'] - session_data['previousClose']) / session_data['previousClose']) * 100):+.2f}%"
+                    rows[index].append(change)
                     
             tables.append(unet_make_table_message(
                 title=f'CLASS {aclass} MARKET',
@@ -497,7 +501,7 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
             settled = user['immediate']['settled']['assets']
 
             rows = {}
-            cols = ['TICKER', 'SETTLED', 'UNSETTLED', 'VALUE']
+            cols = ['TICKER', 'SETTLED', 'UNSETTLED', 'NET', 'VALUE']
 
             for ticker, qty in settled.items():
                 rows[ticker] = [qty, 0]
@@ -509,8 +513,15 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
             for ticker, row in rows.items():
                 price = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['bid']
-                val = round((row[0] + row[1]) * price if price != None else 0)
-                final_rows.append([ticker, row[0], f'{row[1]:+}', val])
+                if price == None:
+                    if EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['last'] != None:
+                        price = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['last']
+                    else:
+                        price = 0
+
+                val = round((row[0] + row[1]) * price)
+                net = row[0] + row[1]
+                final_rows.append([ticker, row[0], f'{row[1]:+}', f'{net:+}', val])
 
             return unet_make_table_message(
                 title='YOUR POSITIONS',
