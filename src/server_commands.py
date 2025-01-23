@@ -499,29 +499,39 @@ class ExchangeUserCommandHandler(UNetCommandHandler):
 
             current = user['immediate']['current']['assets']
             settled = user['immediate']['settled']['assets']
+            orders = user['immediate']['orders']
 
             rows = {}
-            cols = ['TICKER', 'SETTLED', 'UNSETTLED', 'NET', 'VALUE']
+            cols = ['TICKER', 'SETTLED', 'UNSETTLED', 'PENDING', 'NET', 'VALUE']
 
             for ticker, qty in settled.items():
-                rows[ticker] = [qty, 0]
+                rows[ticker] = [qty, 0, 0]
 
             for ticker, qty in current.items():
-                rows.setdefault(ticker, [0, 0])[1] = qty
+                rows.setdefault(ticker, [0, 0, 0])[1] = qty
                 
+            for order_id in orders:
+                order = EXCHANGE_DATABASE.orders[str(order_id)]
+
+                if order['side'] == 'SELL':
+                    ticker = order['ticker']
+                    rows[ticker][2] -= int(order['size'])
+
             final_rows = []
 
             for ticker, row in rows.items():
                 price = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['bid']
                 if price == None:
-                    if EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['last'] != None:
+                    if EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['ask'] != None:
+                        price = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['ask']
+                    elif EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['last'] != None:
                         price = EXCHANGE_DATABASE.assets[ticker].get_unsafe()['immediate']['last']
                     else:
                         price = 0
 
                 val = round((row[0] + row[1]) * price)
-                net = row[0] + row[1]
-                final_rows.append([ticker, row[0], f'{row[1]:+}', f'{net:+}', val])
+                net = row[0] + row[1] + row[2]
+                final_rows.append([ticker, row[0], f'{row[1]:+}', row[2], f'{net:+}', val])
 
             return unet_make_table_message(
                 title='YOUR POSITIONS',
